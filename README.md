@@ -1,12 +1,11 @@
 # javaee-vs-spring-cloud
-Java EE vs Spring Cloud - University Graduation Project
+Java EE vs Spring Cloud
 
-Cloud system developed with WildFly
+This is a University Graduation Project that consists in development of:
+1. Cloud system developed with WildFly
+2. Cloud system developed with Spring Boot + Spring Cloud
 
-Cloud system developed with Spring Boot + Spring Cloud
-
-Author: Marco Romagnolo - romagnolo.marco@gmail.com
-
-Professor: Sonia Forconi
-
-Guglielmo Marconi University - http://www.unimarconi.it/
+Made by:
+* Author: Marco Romagnolo - romagnolo.marco@gmail.com
+* Supervisor: Prof. Sonia Forconi
+* University: Guglielmo Marconi University - http://www.unimarconi.it/
