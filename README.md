@@ -1,5 +1,4 @@
-# javaee-vs-spring-cloud
-Java EE vs Spring Cloud
+# Java EE vs Spring Cloud
 
 This is a University Graduation Project that consists in development of:
 1. Cloud system developed with WildFly
