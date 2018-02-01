@@ -11,7 +11,29 @@
     </parent>
 
     <artifactId>wildfly</artifactId>
+    <packaging>pom</packaging>
 
+    <modules>
+        <module>casino-game-web</module>
+        <module>casino-game</module>
+        <module>bingo-game-web</module>
+        <module>bingo-game</module>
+        <module>poker-game-web</module>
+        <module>poker-game</module>
+    </modules>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-ejb-plugin</artifactId>
+                    <configuration>
+                        <ejbVersion>3.0</ejbVersion>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
     
 </project>

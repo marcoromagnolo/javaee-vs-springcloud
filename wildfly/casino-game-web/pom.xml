@@ -6,11 +6,12 @@
 
     <parent>
         <groupId>javaee-vs-springcloud</groupId>
-        <artifactId>javaee-vs-springcloud</artifactId>
+        <artifactId>wildfly</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>casino-game-web</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     

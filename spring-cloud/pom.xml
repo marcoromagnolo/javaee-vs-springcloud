@@ -11,7 +11,16 @@
     </parent>
 
     <artifactId>spring-cloud</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-
+    <modules>
+        <module>casino-game-webapp</module>
+        <module>casino-game-apps</module>
+        <module>bingo-game-webapp</module>
+        <module>bingo-game-apps</module>
+        <module>poker-game-webapp</module>
+        <module>poker-game-apps</module>
+    </modules>
     
 </project>
