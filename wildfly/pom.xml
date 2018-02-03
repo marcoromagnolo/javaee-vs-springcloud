@@ -14,12 +14,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>casino-game-web</module>
-        <module>casino-game</module>
-        <module>bingo-game-web</module>
-        <module>bingo-game</module>
-        <module>poker-game-web</module>
-        <module>poker-game</module>
+        <module>back-office</module>
+        <module>games</module>
+        <module>website</module>
     </modules>
 
     <build>

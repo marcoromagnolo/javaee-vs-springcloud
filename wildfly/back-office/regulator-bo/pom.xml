@@ -5,13 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-      <groupId>javaee-vs-springcloud</groupId>
-        <artifactId>javaee-vs-springcloud</artifactId>
+        <groupId>javaee-vs-springcloud</groupId>
+        <artifactId>back-office</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-cloud</artifactId>
+    <artifactId>regulator-bo</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+
+
     
 </project>

@@ -5,13 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-      <groupId>javaee-vs-springcloud</groupId>
-        <artifactId>javaee-vs-springcloud</artifactId>
+        <groupId>javaee-vs-springcloud</groupId>
+        <artifactId>wildfly</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-cloud</artifactId>
+    <artifactId>games</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <modules>
+        <module>bingo</module>
+        <module>casino</module>
+        <module>poker</module>
+    </modules>
+
     
 </project>

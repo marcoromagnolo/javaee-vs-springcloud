@@ -5,13 +5,24 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-      <groupId>javaee-vs-springcloud</groupId>
-        <artifactId>javaee-vs-springcloud</artifactId>
+        <groupId>javaee-vs-springcloud</groupId>
+        <artifactId>wildfly</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-cloud</artifactId>
+    <artifactId>back-office</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <modules>
+        <module>account-bo</module>
+        <module>core-bo</module>
+        <module>history-bo</module>
+        <module>player-bo</module>
+        <module>regulator-bo</module>
+        <module>wallet-bo</module>
+    </modules>
+
+
     
 </project>

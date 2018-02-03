@@ -5,13 +5,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-      <groupId>javaee-vs-springcloud</groupId>
-        <artifactId>javaee-vs-springcloud</artifactId>
+        <groupId>javaee-vs-springcloud</groupId>
+        <artifactId>games</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-cloud</artifactId>
+    <artifactId>poker</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <modules>
+        <module>poker-client</module>
+        <module>poker-manager</module>
+    </modules>
+
     
 </project>
