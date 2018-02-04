@@ -1,4 +1,4 @@
-package jeevsspring.wildfly.games.poker.manager.json;
+package jeevsspring.wildfly.games.poker.manager.api.json;
 
 public class LoginOut {
     private String message;
