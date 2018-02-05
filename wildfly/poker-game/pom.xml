@@ -10,12 +10,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>poker</artifactId>
+    <artifactId>poker-game</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>poker-client</module>
+        <module>poker-console</module>
         <module>poker-manager</module>
     </modules>
 

@@ -16,7 +16,6 @@
     <modules>
         <module>back-office</module>
         <module>poker-game</module>
-        <module>website</module>
     </modules>
 
     <dependencyManagement>
