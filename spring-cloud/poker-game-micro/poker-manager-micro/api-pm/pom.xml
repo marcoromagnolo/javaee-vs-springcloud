@@ -6,18 +6,11 @@
 
     <parent>
         <groupId>javaee-vs-springcloud</groupId>
-        <artifactId>wildfly</artifactId>
+        <artifactId>poker-manager-micro</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>poker-game</artifactId>
+    <artifactId>api-pm</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
 
-    <modules>
-        <module>poker-console</module>
-        <module>poker-manager</module>
-    </modules>
-
-    
 </project>

@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>poker-client</module>
         <module>wildfly</module>
         <module>spring-cloud</module>
     </modules>
