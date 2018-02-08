@@ -10,7 +10,15 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>poker-manger-micro</artifactId>
+    <artifactId>poker-manager-micro</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>api-pm</module>
+        <module>lobby-pm</module>
+        <module>table-pm</module>
+        <module>round-pm</module>
+    </modules>
 
 </project>

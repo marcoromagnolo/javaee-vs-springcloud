@@ -15,10 +15,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>account-bo</module>
         <module>api-bo</module>
-        <module>core-bo</module>
-        <module>wallet-bo</module>
+        <module>operator-bo</module>
+        <module>player-bo</module>
+        <module>player-account-bo</module>
+        <module>player-wallet-bo</module>
     </modules>
     
 </project>

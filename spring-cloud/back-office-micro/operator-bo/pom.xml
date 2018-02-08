@@ -10,7 +10,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>wallet-bo</artifactId>
+    <artifactId>operator-bo</artifactId>
     <version>1.0-SNAPSHOT</version>
 
 </project>
