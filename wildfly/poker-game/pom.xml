@@ -15,9 +15,19 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>poker-common</module>
         <module>poker-console</module>
         <module>poker-manager</module>
     </modules>
 
-    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>javaee-vs-springcloud</groupId>
+                <artifactId>poker-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 </project>

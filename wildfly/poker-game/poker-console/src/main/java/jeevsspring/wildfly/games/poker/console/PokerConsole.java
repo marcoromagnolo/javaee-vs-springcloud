@@ -1,7 +1,7 @@
 package jeevsspring.wildfly.games.poker.console;
 
 import jeevsspring.wildfly.games.poker.console.bean.Operator;
-import jeevsspring.wildfly.games.poker.console.bean.Operators;
+import jeevsspring.wildfly.games.poker.console.bean.ConnectedOperators;
 
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
@@ -16,11 +16,11 @@ import java.util.List;
 public class PokerConsole {
 
     @Inject
-    private Operators operators;
+    private ConnectedOperators connectedOperators;
 
     @Produces
     @Named
-    public List<Operator> getOperators() {
-        return operators.getOperators();
+    public List<Operator> getConnectedOperators() {
+        return connectedOperators.getOperators();
     }
 }

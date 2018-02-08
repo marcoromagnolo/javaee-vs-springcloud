@@ -9,7 +9,7 @@ import java.util.List;
  * @author Marco Romagnolo
  */
 @Singleton
-public class Operators {
+public class ConnectedOperators {
 
     private List<Operator> operators;
 
