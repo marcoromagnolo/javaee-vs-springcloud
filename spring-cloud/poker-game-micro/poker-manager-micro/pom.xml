@@ -15,7 +15,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>api-pm</module>
         <module>lobby-pm</module>
         <module>table-pm</module>
         <module>round-pm</module>
