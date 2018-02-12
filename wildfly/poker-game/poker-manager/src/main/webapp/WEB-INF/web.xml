@@ -15,7 +15,7 @@
         </servlet-class>
         <init-param>
             <param-name>javax.ws.rs.Application</param-name>
-            <param-value>jeevsspring.wildfly.games.poker.manager.PokerManager</param-value>
+            <param-value>jeevsspring.wildfly.poker.manager.PokerManager</param-value>
         </init-param>
     </servlet>
 

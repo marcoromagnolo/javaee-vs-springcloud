@@ -6,23 +6,23 @@
 
     <managed-bean>
         <managed-bean-name>operator</managed-bean-name>
-        <managed-bean-class>jeevsspring.wildfly.games.poker.console.bean.Operator</managed-bean-class>
+        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.Operator</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
     <managed-bean>
         <managed-bean-name>connectedOperators</managed-bean-name>
-        <managed-bean-class>jeevsspring.wildfly.games.poker.console.bean.ConnectedOperators</managed-bean-class>
+        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.ConnectedOperators</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
     <managed-bean>
         <managed-bean-name>dashboardCtrl</managed-bean-name>
-        <managed-bean-class>jeevsspring.wildfly.games.poker.console.controller.DashboardCtrl</managed-bean-class>
+        <managed-bean-class>jeevsspring.wildfly.poker.console.controller.DashboardCtrl</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
         <managed-property>
             <property-name>operators</property-name>
-            <property-class>jeevsspring.wildfly.games.poker.console.bean.ConnectedOperators</property-class>
+            <property-class>jeevsspring.wildfly.poker.console.bean.ConnectedOperators</property-class>
             <value>#{connectedOperators}</value>
         </managed-property>
     </managed-bean>
