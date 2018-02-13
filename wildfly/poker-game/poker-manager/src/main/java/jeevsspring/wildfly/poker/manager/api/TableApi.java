@@ -1,11 +1,18 @@
 package jeevsspring.wildfly.poker.manager.api;
 
-import jeevsspring.wildfly.poker.manager.api.json.lobby.PlayerSessionOut;
-import jeevsspring.wildfly.poker.manager.api.json.table.*;
+import jeevsspring.wildfly.poker.manager.api.json.table.BuyinIn;
+import jeevsspring.wildfly.poker.manager.api.json.table.BuyinOut;
+import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutIn;
+import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutOut;
+import jeevsspring.wildfly.poker.manager.lobby.Lobby;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
@@ -15,12 +22,8 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class TableApi {
 
-    @GET
-    @Path("/updates")
-    public Updates updates(PlayerSessionOut in) {
-        Updates out = new Updates();
-        return out;
-    }
+    @EJB
+    private Lobby lobby;
 
     @POST
     @Path("/buyin")

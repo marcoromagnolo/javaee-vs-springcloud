@@ -2,11 +2,15 @@ package jeevsspring.wildfly.poker.manager.bo;
 
 import jeevsspring.wildfly.poker.manager.bo.json.*;
 
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import java.util.UUID;
 
 /**
  * @author Marco Romagnolo
  */
+@Stateless
+@LocalBean
 public class BoClient {
 
     public SigninOut signin(SigninIn in) {

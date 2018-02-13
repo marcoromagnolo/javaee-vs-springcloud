@@ -4,7 +4,9 @@ import jeevsspring.wildfly.poker.manager.api.json.lobby.*;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.bo.json.SigninIn;
 import jeevsspring.wildfly.poker.manager.bo.json.SignoutIn;
+import jeevsspring.wildfly.poker.manager.lobby.Lobby;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
@@ -17,7 +19,11 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class LobbyApi {
 
+    @EJB
     private BoClient boClient;
+
+    @EJB
+    private Lobby lobby;
 
     @GET
     @Path("/test")

@@ -1,7 +1,9 @@
 package jeevsspring.wildfly.poker.manager.api;
 
 import jeevsspring.wildfly.poker.manager.api.json.hand.*;
+import jeevsspring.wildfly.poker.manager.engine.hand.Hands;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -16,6 +18,9 @@ import javax.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class HandApi {
+
+    @EJB
+    private Hands hands;
 
     @POST
     @Path("/bet")

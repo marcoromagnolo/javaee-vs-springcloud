@@ -4,6 +4,7 @@ import jeevsspring.wildfly.poker.manager.engine.hand.Card;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Marco Romagnolo
@@ -13,18 +14,20 @@ public class Player {
     private final String id;
     private final String nickname;
     private long balance;
+    private int seat;
     private List<Card> cards;
-    private HandAction action;
     private boolean sitOut;
     private boolean turn;
     private boolean dealer;
     private boolean smallBlind;
     private boolean bigBlind;
 
-    public Player(String id, String nickname, long balance) {
+
+    public Player(String id, String nickname, long balance, int seat) {
         this.id = id;
         this.nickname = nickname;
         this.balance = balance;
+        this.seat = seat;
     }
 
     public String getId() {
@@ -39,6 +42,10 @@ public class Player {
         return balance;
     }
 
+    public int getSeat() {
+        return seat;
+    }
+
     public void setBalance(long balance) {
         this.balance = balance;
     }
@@ -49,14 +56,6 @@ public class Player {
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
-    }
-
-    public HandAction getAction() {
-        return action;
-    }
-
-    public void setAction(HandAction action) {
-        this.action = action;
     }
 
     public boolean isSitOut() {
@@ -100,6 +99,20 @@ public class Player {
     }
 
     public HandAction actionListen(long actionTimeOut) {
+        return null;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return Objects.equals(id, player.id);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
     }
 }

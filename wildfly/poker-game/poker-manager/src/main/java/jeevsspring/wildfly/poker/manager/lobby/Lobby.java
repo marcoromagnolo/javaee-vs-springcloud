@@ -2,17 +2,23 @@ package jeevsspring.wildfly.poker.manager.lobby;
 
 import jeevsspring.wildfly.poker.manager.engine.table.Table;
 
+import javax.annotation.PostConstruct;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateful;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Marco Romagnolo
  */
+@Stateful
+@LocalBean
 public class Lobby {
 
-    private final Map<String, Table> tables;
+    private Map<String, Table> tables;
 
-    public Lobby() {
+    @PostConstruct
+    public void init() {
         this.tables = new HashMap<>();
     }
 
