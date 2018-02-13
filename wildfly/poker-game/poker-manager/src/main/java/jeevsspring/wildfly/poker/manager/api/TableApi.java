@@ -1,6 +1,7 @@
 package jeevsspring.wildfly.poker.manager.api;
 
-import jeevsspring.wildfly.poker.manager.api.json.*;
+import jeevsspring.wildfly.poker.manager.api.json.lobby.PlayerSessionOut;
+import jeevsspring.wildfly.poker.manager.api.json.table.*;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -16,7 +17,7 @@ public class TableApi {
 
     @GET
     @Path("/updates")
-    public Updates updates(PlayerSession in) {
+    public Updates updates(PlayerSessionOut in) {
         Updates out = new Updates();
         return out;
     }

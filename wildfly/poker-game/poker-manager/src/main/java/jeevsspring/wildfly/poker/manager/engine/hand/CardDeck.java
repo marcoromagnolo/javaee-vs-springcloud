@@ -10,6 +10,7 @@ import java.util.Stack;
 public class CardDeck {
 
     public static final int CARD_NUMBER = 52;
+    public static final int SUIT_CARD_NUMBER = 13;
 
     private Stack<Card> cards;
 

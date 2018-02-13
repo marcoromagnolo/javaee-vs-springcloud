@@ -1,7 +1,9 @@
 package jeevsspring.wildfly.poker.manager.api;
 
-import jeevsspring.wildfly.poker.manager.api.json.*;
-import jeevsspring.wildfly.poker.manager.api.json.*;
+import jeevsspring.wildfly.poker.manager.api.json.lobby.*;
+import jeevsspring.wildfly.poker.manager.bo.BoClient;
+import jeevsspring.wildfly.poker.manager.bo.json.SigninIn;
+import jeevsspring.wildfly.poker.manager.bo.json.SignoutIn;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -15,6 +17,8 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class LobbyApi {
 
+    private BoClient boClient;
+
     @GET
     @Path("/test")
     @Produces(MediaType.TEXT_PLAIN)
@@ -26,27 +30,22 @@ public class LobbyApi {
     @Path("/login")
     public LoginOut login(LoginIn in) {
         LoginOut out = new LoginOut();
-        out.setMessage("Bye Bye!");
+        SigninIn signin = new SigninIn();
+        signin.setUsername(in.getUsername());
+        signin.setPassword(in.getPassword());
+        boClient.signin(signin);
         return out;
     }
 
     @POST
     @Path("/logout")
     public LogoutOut logout(LogoutIn in) {
-        return new LogoutOut();
-    }
-
-    @POST
-    @Path("/register")
-    public RegisterOut register(RegisterIn in) {
-        RegisterOut out = new RegisterOut();
+        LogoutOut out = new LogoutOut();
+        SignoutIn signout = new SignoutIn();
+        signout.setSession(in.getSession());
+        signout.setToken(in.getToken());
+        boClient.signout(signout);
         return out;
-    }
-
-    @POST
-    @Path("/unregister")
-    public UnregisterOut unregister(UnregisterIn in) {
-        return new UnregisterOut();
     }
 
     @POST

@@ -3,5 +3,8 @@ package jeevsspring.wildfly.poker.manager.engine.table;
 /**
  * @author Marco Romagnolo
  */
-public class TableActionType {
+public enum TableActionType {
+
+    OPEN, CLOSE
+
 }
