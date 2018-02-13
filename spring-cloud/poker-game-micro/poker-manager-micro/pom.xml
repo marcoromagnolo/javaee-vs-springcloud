@@ -17,7 +17,7 @@
     <modules>
         <module>lobby-pm</module>
         <module>table-pm</module>
-        <module>round-pm</module>
+        <module>hand-pm</module>
     </modules>
 
 </project>
