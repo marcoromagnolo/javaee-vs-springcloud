@@ -5,6 +5,6 @@ package jeevsspring.wildfly.poker.manager.engine.table;
  */
 public enum TableActionType {
 
-    OPEN, CLOSE
+    OPEN,  CLOSE
 
 }

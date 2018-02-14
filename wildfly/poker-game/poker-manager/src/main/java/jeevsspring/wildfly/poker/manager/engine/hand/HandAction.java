@@ -16,5 +16,14 @@ public class HandAction {
         this.table = table;
         this.player = player;
         this.actionType = actionType;
+        this.table.getGame().playerAction(actionType);
     }
+
+    public HandAction(Table table, Player player, HandActionType actionType, long amount) {
+        this.table = table;
+        this.player = player;
+        this.actionType = actionType;
+        this.table.getGame().playerAction(actionType, amount);
+    }
+
 }

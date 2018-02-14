@@ -16,6 +16,7 @@ public class Hand {
     private long actionTimeOut;
     private Map<String, Player> players;
     private List<HandAction> actions;
+    private long minBet;
 
     public Hand(Table table) {
         this.id = UUID.randomUUID().toString();
@@ -29,10 +30,19 @@ public class Hand {
         return id;
     }
 
-    public void addAction(String playerId, HandActionType actionType) {
+    public HandAction addAction(String playerId, HandActionType actionType) {
         Player player = players.get(playerId);
         HandAction action = new HandAction(table, player, actionType);
         actions.add(action);
+        return action;
+    }
+
+    public HandAction addAction(String playerId, HandActionType actionType, long amount) {
+        Player player = players.get(playerId);
+        HandAction action = new HandAction(table, player, actionType, amount);
+        actions.add(action);
+        minBet = amount;
+        return action;
     }
 
     @Override

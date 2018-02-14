@@ -3,7 +3,9 @@ package jeevsspring.wildfly.poker.manager.api;
 import jeevsspring.wildfly.poker.manager.api.json.lobby.*;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.bo.json.SigninIn;
+import jeevsspring.wildfly.poker.manager.bo.json.SigninOut;
 import jeevsspring.wildfly.poker.manager.bo.json.SignoutIn;
+import jeevsspring.wildfly.poker.manager.bo.json.SignoutOut;
 import jeevsspring.wildfly.poker.manager.lobby.Lobby;
 
 import javax.ejb.EJB;
@@ -36,10 +38,12 @@ public class LobbyApi {
     @Path("/login")
     public LoginOut login(LoginIn in) {
         LoginOut out = new LoginOut();
-        SigninIn signin = new SigninIn();
-        signin.setUsername(in.getUsername());
-        signin.setPassword(in.getPassword());
-        boClient.signin(signin);
+        SigninIn signinIn = new SigninIn();
+        signinIn.setUsername(in.getUsername());
+        signinIn.setPassword(in.getPassword());
+        SigninOut signinOut = boClient.signin(signinIn);
+        String playerId = signinOut.getUser().getId();
+        lobby.login(signinOut.getSessionId(), playerId);
         return out;
     }
 
@@ -47,10 +51,11 @@ public class LobbyApi {
     @Path("/logout")
     public LogoutOut logout(LogoutIn in) {
         LogoutOut out = new LogoutOut();
-        SignoutIn signout = new SignoutIn();
-        signout.setSession(in.getSession());
-        signout.setToken(in.getToken());
-        boClient.signout(signout);
+        SignoutIn signoutIn = new SignoutIn();
+        signoutIn.setSessionId(in.getSessionId());
+        signoutIn.setToken(in.getToken());
+        SignoutOut signoutOut = boClient.signout(signoutIn);
+        lobby.logout(signoutIn.getSessionId());
         return out;
     }
 

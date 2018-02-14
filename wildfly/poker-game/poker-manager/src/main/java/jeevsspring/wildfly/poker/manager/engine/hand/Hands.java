@@ -33,4 +33,9 @@ public class Hands {
         hand.addAction(playerId, actionType);
     }
 
+    public void action(String handId, String playerId, HandActionType actionType, long amount) {
+        Hand hand = hands.get(handId);
+        hand.addAction(playerId, actionType, amount);
+    }
+
 }

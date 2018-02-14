@@ -1,9 +1,15 @@
 package jeevsspring.wildfly.poker.manager.api;
 
+import jeevsspring.wildfly.poker.manager.api.json.hand.SitinIn;
+import jeevsspring.wildfly.poker.manager.api.json.hand.SitinOut;
+import jeevsspring.wildfly.poker.manager.api.json.hand.SitoutIn;
+import jeevsspring.wildfly.poker.manager.api.json.hand.SitoutOut;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyinIn;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyinOut;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutIn;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutOut;
+import jeevsspring.wildfly.poker.manager.engine.hand.HandActionType;
+import jeevsspring.wildfly.poker.manager.engine.table.TableActionType;
 import jeevsspring.wildfly.poker.manager.lobby.Lobby;
 
 import javax.ejb.EJB;

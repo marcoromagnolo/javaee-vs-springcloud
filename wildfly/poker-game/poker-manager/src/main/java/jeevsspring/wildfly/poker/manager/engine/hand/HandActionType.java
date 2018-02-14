@@ -36,5 +36,7 @@ public enum HandActionType {
     /**
      * Muck the cards in showdown.
      */
-    MUCK
+    MUCK,
+    SIT_IN,
+    SIT_OUT
 }

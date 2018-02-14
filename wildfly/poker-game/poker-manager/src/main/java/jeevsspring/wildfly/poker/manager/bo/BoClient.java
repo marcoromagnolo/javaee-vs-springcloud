@@ -15,7 +15,7 @@ public class BoClient {
 
     public SigninOut signin(SigninIn in) {
         SigninOut out = new SigninOut();
-        out.setSession(UUID.randomUUID().toString());
+        out.setSessionId(UUID.randomUUID().toString());
         out.setToken(UUID.randomUUID().toString());
         UserOut user = new UserOut();
         AccountOut account = new AccountOut();
@@ -37,6 +37,11 @@ public class BoClient {
     public SignoutOut signout(SignoutIn in) {
         SignoutOut out = new SignoutOut();
         out.setMessage("Bye Bye!");
+        return out;
+    }
+
+    public VerifyOut verify(VerifyIn in) {
+        VerifyOut out = new VerifyOut();
         return out;
     }
 }
