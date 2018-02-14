@@ -1,7 +1,6 @@
 package jeevsspring.wildfly.poker.manager.engine.player;
 
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
-import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
 
 import java.util.List;
 import java.util.Objects;
@@ -98,7 +97,7 @@ public class Player {
         this.bigBlind = bigBlind;
     }
 
-    public HandAction actionListen(long actionTimeOut) {
+    public PlayerAction actionListen(long actionTimeOut) {
         return null;
     }
 

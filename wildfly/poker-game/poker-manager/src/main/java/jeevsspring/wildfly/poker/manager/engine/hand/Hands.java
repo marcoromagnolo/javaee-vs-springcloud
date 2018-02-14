@@ -1,5 +1,6 @@
 package jeevsspring.wildfly.poker.manager.engine.hand;
 
+import jeevsspring.wildfly.poker.manager.engine.player.PlayerActionType;
 import jeevsspring.wildfly.poker.manager.engine.table.Table;
 
 import javax.annotation.PostConstruct;
@@ -28,14 +29,17 @@ public class Hands {
         return hand;
     }
 
-    public void action(String handId, String playerId, HandActionType actionType) {
+    public Hand get(String handId) {
         Hand hand = hands.get(handId);
-        hand.addAction(playerId, actionType);
+        return hand;
     }
 
-    public void action(String handId, String playerId, HandActionType actionType, long amount) {
-        Hand hand = hands.get(handId);
+    public void addHandAction(String handId, String playerId, PlayerActionType actionType, Long amount) {
+        Hand hand = get(handId);
         hand.addAction(playerId, actionType, amount);
     }
 
+    public void addHandAction(String handId, String playerId, PlayerActionType actionType) {
+        addHandAction(handId, playerId, actionType);
+    }
 }

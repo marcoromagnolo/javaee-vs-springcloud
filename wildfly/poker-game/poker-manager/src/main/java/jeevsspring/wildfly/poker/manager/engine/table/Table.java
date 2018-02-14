@@ -1,8 +1,9 @@
 package jeevsspring.wildfly.poker.manager.engine.table;
 
-import jeevsspring.wildfly.poker.manager.engine.game.TexasHoldem;
+import jeevsspring.wildfly.poker.manager.engine.game.GameType;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
+import jeevsspring.wildfly.poker.manager.util.IdGenerator;
 
 import java.util.*;
 
@@ -15,22 +16,23 @@ public class Table {
     private final TableSettings settings;
     private final List<Player> players;
     private final String[] seats;
-    private final TexasHoldem game;
+    private final GameType game;
     private boolean published;
-    private List<Card> cards;
+    private List<Card> communityCards;
     private List<Pot> pots;
     private Map<String, Pot> playerPot;
-    private TableAction action;
+    private List<TableAction> actions;
 
-    public Table(String id, TableSettings settings) {
-        this.id = id;
+    public Table(TableSettings settings) {
+        this.id = IdGenerator.newTableId();
         this.settings = settings;
         this.players = new ArrayList<>();
         this.seats = new String[settings.getNumberOfSeats()];
-        this.game = new TexasHoldem();
-        this.cards = new ArrayList<>();
+        this.game = GameType.TEXAS_HOLDEM;
+        this.communityCards = new ArrayList<>();
         this.pots = new ArrayList<>();
         this.playerPot = new HashMap<>();
+        this.published = true;
     }
 
     public String getId() {
@@ -57,20 +59,12 @@ public class Table {
         this.published = published;
     }
 
-    public TableActionType getAction() {
-        return action.getType();
-    }
-
-    public void setAction(TableActionType actionType) {
-        this.action = new TableAction(actionType);
-    }
-
-    public TexasHoldem getGame() {
+    public GameType getGame() {
         return game;
     }
 
-    public List<Card> getCards() {
-        return cards;
+    public List<Card> getCommunityCards() {
+        return communityCards;
     }
 
     public List<Pot> getPots() {
@@ -79,6 +73,14 @@ public class Table {
 
     public Map<String, Pot> getPlayerPot() {
         return playerPot;
+    }
+
+    public void addAction(TableActionType actionType, String playerId) {
+        actions.add(new TableAction(actionType, playerId));
+    }
+
+    public void addAction(TableActionType actionType, String playerId, long amount) {
+        actions.add(new TableAction(actionType, playerId, amount));
     }
 
     @Override

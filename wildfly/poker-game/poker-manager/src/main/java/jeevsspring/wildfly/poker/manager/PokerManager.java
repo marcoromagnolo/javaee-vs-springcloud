@@ -3,6 +3,7 @@ package jeevsspring.wildfly.poker.manager;
 import jeevsspring.wildfly.poker.manager.api.LobbyApi;
 import jeevsspring.wildfly.poker.manager.api.HandApi;
 import jeevsspring.wildfly.poker.manager.api.TableApi;
+import jeevsspring.wildfly.poker.manager.engine.game.GameExecutor;
 import jeevsspring.wildfly.poker.manager.lobby.Lobby;
 
 import javax.ws.rs.core.Application;
@@ -11,10 +12,8 @@ import java.util.Set;
 
 public class PokerManager extends Application {
 
-    private Lobby lobby;
-
     public PokerManager() {
-        this.lobby = new Lobby();
+        GameExecutor.load();
     }
 
     @Override

@@ -1,6 +1,8 @@
 package jeevsspring.wildfly.poker.manager.engine.hand;
 
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
+import jeevsspring.wildfly.poker.manager.engine.player.PlayerAction;
+import jeevsspring.wildfly.poker.manager.engine.player.PlayerActionType;
 import jeevsspring.wildfly.poker.manager.engine.table.Table;
 
 import java.util.*;
@@ -15,8 +17,7 @@ public class Hand {
     private Table table;
     private long actionTimeOut;
     private Map<String, Player> players;
-    private List<HandAction> actions;
-    private long minBet;
+    private List<PlayerAction> actions;
 
     public Hand(Table table) {
         this.id = UUID.randomUUID().toString();
@@ -24,25 +25,17 @@ public class Hand {
         this.table = table;
         this.actionTimeOut = table.getSettings().getActionTimeOut();
         this.players = new HashMap<>();
+        this.actions = new ArrayList<>();
     }
 
     public String getId() {
         return id;
     }
 
-    public HandAction addAction(String playerId, HandActionType actionType) {
+    public void addAction(String playerId, PlayerActionType actionType, Long amount) {
         Player player = players.get(playerId);
-        HandAction action = new HandAction(table, player, actionType);
+        PlayerAction action = new PlayerAction(table, player, actionType, amount);
         actions.add(action);
-        return action;
-    }
-
-    public HandAction addAction(String playerId, HandActionType actionType, long amount) {
-        Player player = players.get(playerId);
-        HandAction action = new HandAction(table, player, actionType, amount);
-        actions.add(action);
-        minBet = amount;
-        return action;
     }
 
     @Override

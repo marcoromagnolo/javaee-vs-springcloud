@@ -60,19 +60,6 @@ public class LobbyApi {
     }
 
     @POST
-    @Path("/enter")
-    public EnterOut enter(EnterIn in) {
-        EnterOut out = new EnterOut();
-        return out;
-    }
-
-    @POST
-    @Path("/quit")
-    public QuitOut quit(QuitIn in) {
-        return new QuitOut();
-    }
-
-    @POST
     @Path("/show")
     public ShowOut show(ShowIn in) {
         return new ShowOut();

@@ -1,83 +1,26 @@
 package jeevsspring.wildfly.poker.manager.engine.game;
 
-import jeevsspring.wildfly.poker.manager.engine.hand.HandActionType;
-import jeevsspring.wildfly.poker.manager.engine.player.Player;
-import jeevsspring.wildfly.poker.manager.engine.table.TableActionType;
+import jeevsspring.wildfly.poker.manager.engine.hand.Hands;
+import jeevsspring.wildfly.poker.manager.lobby.Lobby;
+
+import javax.ejb.EJB;
 
 /**
  * @author Marco Romagnolo
  */
-public class TexasHoldem {
+public class TexasHoldem implements Runnable {
 
-    public void tableAction(TableActionType type) {
+    @EJB
+    private Lobby lobby;
 
-    }
+    @EJB
+    private Hands hands;
 
-    public void tableAction(TableActionType type, Player player) {
+    @EJB
+    private GameActions gameActions;
 
-    }
-
-    public void playerAction(HandActionType type) {
-        switch (type) {
-            case CALL:
-                call();
-                break;
-            case CHECK:
-                check();
-                break;
-            case FOLD:
-                fold();
-                break;
-            case FOLD_AND_SHOW:
-                fold();
-                show();
-                break;
-            case SHOW:
-                show();
-                break;
-            case MUCK:
-                break;
-            case SIT_IN:
-                break;
-            case SIT_OUT:
-                break;
-            default:
-
-        }
-    }
-
-    public void playerAction(HandActionType type, Long amount) {
-        switch (type) {
-            case RAISE:
-                raise(amount);
-                break;
-            case BET:
-                bet(amount);
-                break;
-        }
-    }
-
-    private void show() {
-
-    }
-
-    private void fold() {
-
-    }
-
-    private void check() {
-
-    }
-
-    private void call() {
-
-    }
-
-    private void bet(Long amount) {
-
-    }
-
-    private void raise(Long amount) {
+    @Override
+    public void run() {
 
     }
 }

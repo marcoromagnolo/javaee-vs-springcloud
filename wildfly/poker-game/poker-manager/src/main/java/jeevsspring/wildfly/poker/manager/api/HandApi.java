@@ -2,9 +2,7 @@ package jeevsspring.wildfly.poker.manager.api;
 
 import jeevsspring.wildfly.poker.manager.api.json.hand.*;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
-import jeevsspring.wildfly.poker.manager.bo.json.VerifyIn;
-import jeevsspring.wildfly.poker.manager.bo.json.VerifyOut;
-import jeevsspring.wildfly.poker.manager.engine.hand.HandActionType;
+import jeevsspring.wildfly.poker.manager.engine.player.PlayerActionType;
 import jeevsspring.wildfly.poker.manager.engine.hand.Hands;
 import jeevsspring.wildfly.poker.manager.lobby.Lobby;
 
@@ -37,8 +35,8 @@ public class HandApi {
     @Path("/bet")
     public BetOut bet(BetIn in) {
         BetOut out = new BetOut();
-        String playerId = lobby.getPlayer(in.getSessionId());
-        hands.action(in.getHandId(), playerId, HandActionType.BET);
+        String playerId = lobby.getPlayerId(in.getSessionId());
+        hands.addHandAction(in.getHandId(), playerId, PlayerActionType.BET);
         return out;
     }
 
@@ -46,8 +44,8 @@ public class HandApi {
     @Path("/call")
     public CallOut call(CallIn in) {
         CallOut out = new CallOut();
-        String playerId = lobby.getPlayer(in.getSessionId());
-        hands.action(in.getHandId(), playerId, HandActionType.CALL);
+        String playerId = lobby.getPlayerId(in.getSessionId());
+        hands.addHandAction(in.getHandId(), playerId, PlayerActionType.CALL);
         return out;
     }
 
@@ -55,8 +53,8 @@ public class HandApi {
     @Path("/check")
     public CheckOut check(CheckIn in) {
         CheckOut out = new CheckOut();
-        String playerId = lobby.getPlayer(in.getSessionId());
-        hands.action(in.getHandId(), playerId, HandActionType.CHECK);
+        String playerId = lobby.getPlayerId(in.getSessionId());
+        hands.addHandAction(in.getHandId(), playerId, PlayerActionType.CHECK);
         return out;
     }
 
@@ -64,8 +62,8 @@ public class HandApi {
     @Path("/raise")
     public RaiseOut raise(RaiseIn in) {
         RaiseOut out = new RaiseOut();
-        String playerId = lobby.getPlayer(in.getSessionId());
-        hands.action(in.getHandId(), playerId, HandActionType.RAISE, in.getAmount());
+        String playerId = lobby.getPlayerId(in.getSessionId());
+        hands.addHandAction(in.getHandId(), playerId, PlayerActionType.RAISE, in.getAmount());
         return out;
     }
 
@@ -73,8 +71,8 @@ public class HandApi {
     @Path("/fold")
     public FoldOut fold(FoldIn in) {
         FoldOut out = new FoldOut();
-        String playerId = lobby.getPlayer(in.getSessionId());
-        hands.action(in.getHandId(), playerId, HandActionType.FOLD);
+        String playerId = lobby.getPlayerId(in.getSessionId());
+        hands.addHandAction(in.getHandId(), playerId, PlayerActionType.FOLD);
         return out;
     }
 
@@ -82,8 +80,8 @@ public class HandApi {
     @Path("/sitin")
     public SitinOut sitin(SitinIn in) {
         SitinOut out = new SitinOut();
-        String playerId = lobby.getPlayer(in.getSessionId());
-        hands.action(in.getHandId(), playerId, HandActionType.SIT_IN);
+        String playerId = lobby.getPlayerId(in.getSessionId());
+        hands.addHandAction(in.getHandId(), playerId, PlayerActionType.SIT_IN);
         return out;
     }
 
@@ -91,8 +89,8 @@ public class HandApi {
     @Path("/sitout")
     public SitoutOut sitout(SitoutIn in) {
         SitoutOut out = new SitoutOut();
-        String playerId = lobby.getPlayer(in.getSessionId());
-        hands.action(in.getHandId(), playerId, HandActionType.SIT_OUT);
+        String playerId = lobby.getPlayerId(in.getSessionId());
+        hands.addHandAction(in.getHandId(), playerId, PlayerActionType.SIT_OUT);
         return out;
     }
 }

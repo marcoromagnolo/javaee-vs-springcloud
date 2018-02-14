@@ -7,17 +7,22 @@ public class TableAction {
 
     private TableActionType type;
 
-    TableAction(TableActionType type) {
+    TableAction(TableActionType type, String playerId) {
         this.type = type;
         switch (type) {
-            case OPEN:
+            case BUY_IN:
                 break;
-            case CLOSE:
+            case BUY_OUT:
                 break;
         }
+    }
+
+    public TableAction(TableActionType actionType, String playerId, long amount) {
+
     }
 
     public TableActionType getType() {
         return type;
     }
+
 }

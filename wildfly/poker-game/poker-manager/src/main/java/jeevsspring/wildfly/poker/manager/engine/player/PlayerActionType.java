@@ -1,9 +1,9 @@
-package jeevsspring.wildfly.poker.manager.engine.hand;
+package jeevsspring.wildfly.poker.manager.engine.player;
 
 /**
  * @author Marco Romagnolo
  */
-public enum HandActionType {
+public enum PlayerActionType {
 
     /**
      * Raise in a betting round.
