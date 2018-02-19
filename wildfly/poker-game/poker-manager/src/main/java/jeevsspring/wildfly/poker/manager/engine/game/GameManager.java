@@ -42,13 +42,17 @@ public class GameManager {
 
                 // Wait Hand Finished to do buyin and buyout
                 if (game.isHandFinished()) {
-                    while (!tableQueue.isEmpty(tableId)) {
-                        TableAction tableAction = tableQueue.poll(tableId);
-                        game.action(tableAction);
-                        gameActions.addAll(tableId, game.getQueue()); // Action to return players
-                    }
+                    consumeTableQueue(tableId, game);
                 }
             }
+        }
+    }
+
+    private void consumeTableQueue(String tableId, Game game) {
+        while (!tableQueue.isEmpty(tableId)) {
+            TableAction tableAction = tableQueue.poll(tableId);
+            game.action(tableAction);
+            gameActions.addAll(tableId, game.getQueue()); // Action to return players
         }
     }
 }

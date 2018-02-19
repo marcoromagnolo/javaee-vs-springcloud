@@ -2,8 +2,10 @@ package jeevsspring.wildfly.poker.manager.engine.game;
 
 import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
+import jeevsspring.wildfly.poker.manager.engine.player.Player;
 import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
 
+import java.util.List;
 import java.util.Queue;
 
 public abstract class Game {
@@ -16,9 +18,13 @@ public abstract class Game {
 
     private boolean handFinished;
 
+    private boolean playing;
+
     private TableSettings updateSettings;
 
     private boolean stop;
+
+    private List<Player> visitors;
 
     public Game(String tableId, TableSettings settings) {
         this.tableId = tableId;
@@ -45,8 +51,16 @@ public abstract class Game {
         return handFinished;
     }
 
-    public void setHandFinished(boolean handFinished) {
+    protected void setHandFinished(boolean handFinished) {
         this.handFinished = handFinished;
+    }
+
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    protected void setPlaying(boolean playing) {
+        this.playing = playing;
     }
 
     public void update(TableSettings settings) {
@@ -57,4 +71,7 @@ public abstract class Game {
         stop = true;
     }
 
+    public void addVisitor(String playerId) {
+
+    }
 }

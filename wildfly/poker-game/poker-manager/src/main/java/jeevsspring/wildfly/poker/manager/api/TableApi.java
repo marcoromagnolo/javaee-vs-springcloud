@@ -60,9 +60,6 @@ public class TableApi {
         BuyinOut out = new BuyinOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         tableQueue.insert(TableActionType.BUY_IN, in.getTableId(), playerId, in.getAmount());
-        Queue<GameAction> queue = gameActions.get(in.getTableId(), playerId);
-        List<ActionOut> actions = HandApi.toActions(queue);
-        out.setActions(actions);
         out.setSessionId(in.getSessionId());
         out.setToken(in.getToken());
         return out;
@@ -74,7 +71,6 @@ public class TableApi {
         BuyoutOut out = new BuyoutOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         tableQueue.insert(TableActionType.BUY_OUT, in.getTableId(), playerId, null);
-        // TODO add Sync
         out.setSessionId(in.getSessionId());
         out.setToken(in.getToken());
         return out;
@@ -86,10 +82,7 @@ public class TableApi {
         EnterOut out = new EnterOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         Game game = games.get(in.getTableId());
-        game.action(new TableAction(TableActionType.ENTER, in.getTableId(), playerId, null));
-        Queue<GameAction> queue = gameActions.get(in.getTableId(), playerId);
-        List<ActionOut> actions = HandApi.toActions(queue);
-        out.setActions(actions);
+        game.addVisitor(playerId);
         out.setSessionId(in.getSessionId());
         out.setToken(in.getToken());
         return out;
@@ -101,7 +94,7 @@ public class TableApi {
         QuitOut out = new QuitOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         Game game = games.get(in.getTableId());
-        game.action(new TableAction(TableActionType.QUIT, in.getTableId(), playerId, null));
+        game.addVisitor(playerId);
         out.setSessionId(in.getSessionId());
         out.setToken(in.getToken());
         return out;

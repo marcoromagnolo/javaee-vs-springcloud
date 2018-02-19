@@ -1,24 +1,14 @@
-package jeevsspring.wildfly.poker.manager.engine.hand;
+package jeevsspring.wildfly.poker.manager.api.json.hand;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Marco Romagnolo
  */
-public class Pot {
+public class PotOut {
 
-    private String id;
     private long value;
     private List<String> players;
-
-    public Pot(String id) {
-        this.id = UUID.randomUUID().toString();
-    }
-
-    public String getId() {
-        return id;
-    }
 
     public long getValue() {
         return value;

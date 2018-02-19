@@ -1,6 +1,6 @@
 package jeevsspring.wildfly.poker.manager.api.json.table;
 
-import jeevsspring.wildfly.poker.manager.api.json.hand.SyncOut;
+import jeevsspring.wildfly.poker.manager.api.json.PlayerSessionOut;
 
-public class BuyinOut extends SyncOut {
+public class BuyinOut extends PlayerSessionOut {
 }

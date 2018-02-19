@@ -14,25 +14,25 @@ import java.util.Map;
  */
 public class GameAction {
 
-    private int id;
+    private long id;
     private String handId;
     private String tableId;
     private CardDeck cardDeck;
+    private Map<String, String> visitors;
     private Map<String, Player> players;
     private String[] seats;
     private GameType game;
     private List<Card> communityCards;
     private List<Pot> pots;
-    private Map<String, Pot> playerPot;
     private String turn;
 
-    public GameAction(int id, String handId, String tableId) {
-        this.id = id;
+    public GameAction(String handId, String tableId) {
+        this.id = System.nanoTime();
         this.handId = handId;
         this.tableId = tableId;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -50,6 +50,14 @@ public class GameAction {
 
     public void setCardDeck(CardDeck cardDeck) {
         this.cardDeck = cardDeck;
+    }
+
+    public Map<String, String> getVisitors() {
+        return visitors;
+    }
+
+    public void setVisitors(Map<String, String> visitors) {
+        this.visitors = visitors;
     }
 
     public Map<String, Player> getPlayers() {
@@ -90,14 +98,6 @@ public class GameAction {
 
     public void setPots(List<Pot> pots) {
         this.pots = pots;
-    }
-
-    public Map<String, Pot> getPlayerPot() {
-        return playerPot;
-    }
-
-    public void setPlayerPot(Map<String, Pot> playerPot) {
-        this.playerPot = playerPot;
     }
 
     public String getTurn() {

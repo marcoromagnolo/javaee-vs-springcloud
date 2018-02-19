@@ -4,18 +4,18 @@ package jeevsspring.wildfly.poker.manager.engine.hand;
  * @author Marco Romagnolo
  */
 public enum CardSuitType {
-    HEARTS(4),
-    DIAMONDS(3),
-    CLUBS(2),
-    SPADES(1);
+    HEARTS("H"),
+    DIAMONDS("D"),
+    CLUBS("C"),
+    SPADES("S");
 
-    private final int value;
+    private final String value;
 
-    CardSuitType(Integer value) {
+    CardSuitType(String value) {
         this.value = value;
     }
 
-    public Integer getValue() {
+    public String getValue() {
         return value;
     }
 }
