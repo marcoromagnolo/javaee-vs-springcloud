@@ -1,11 +1,21 @@
-package jeevsspring.wildfly.poker.manager.api.json.hand;
+package jeevsspring.wildfly.poker.manager.api.json;
 
-import jeevsspring.wildfly.poker.manager.api.json.PlayerSessionIn;
+/**
+ * @author Marco Romagnolo
+ */
+public class ActionOut {
 
-public class SyncIn extends PlayerSessionIn {
-
+    private int id;
     private String handId;
     private String tableId;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getHandId() {
         return handId;

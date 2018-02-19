@@ -4,6 +4,8 @@ import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
 import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
 
+import java.util.Queue;
+
 public class TexasHoldem extends Game {
 
     public TexasHoldem(String tableId, TableSettings settings) {
@@ -11,18 +13,13 @@ public class TexasHoldem extends Game {
     }
 
     @Override
-    public GameAction action(HandAction action) {
-        return null;
+    public void action(HandAction action) {
+
     }
 
     @Override
-    public GameAction action(TableAction action) {
-        return null;
-    }
+    public void action(TableAction action) {
 
-    @Override
-    public GameAction sync() {
-        return null;
     }
 
 }

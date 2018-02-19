@@ -3,9 +3,7 @@ package jeevsspring.wildfly.poker.manager.engine.game;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
-import javax.ejb.Stateful;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -35,5 +33,9 @@ public class GameActions {
 
     public void add(String tableId, GameAction action) {
         get(tableId).offer(action);
+    }
+
+    public void addAll(String tableId, Queue<GameAction> actions) {
+        get(tableId).addAll(actions);
     }
 }

@@ -1,5 +1,6 @@
 package jeevsspring.wildfly.poker.manager.api;
 
+import jeevsspring.wildfly.poker.manager.api.json.Status;
 import jeevsspring.wildfly.poker.manager.api.json.lobby.*;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.bo.json.SigninIn;
@@ -7,10 +8,7 @@ import jeevsspring.wildfly.poker.manager.bo.json.SigninOut;
 import jeevsspring.wildfly.poker.manager.bo.json.SignoutIn;
 import jeevsspring.wildfly.poker.manager.bo.json.SignoutOut;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
-import jeevsspring.wildfly.poker.manager.engine.game.GameAction;
 import jeevsspring.wildfly.poker.manager.engine.game.Games;
-import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
-import jeevsspring.wildfly.poker.manager.engine.table.TableActionType;
 import jeevsspring.wildfly.poker.manager.lobby.LobbyPlayers;
 
 import javax.ejb.EJB;
@@ -38,9 +36,10 @@ public class LobbyApi {
 
     @GET
     @Path("/test")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String test() {
-        return "Test completed";
+    public Status test() {
+        Status out = new Status();
+        out.setMessage("Test completed");
+        return out;
     }
 
     @POST
@@ -69,8 +68,8 @@ public class LobbyApi {
     }
 
     @POST
-    @Path("/show-tables")
-    public ShowOut showTables(ShowIn in) {
+    @Path("/show")
+    public ShowOut show(ShowIn in) {
         ShowOut out = new ShowOut();
         Collection<Game> tables = games.getAll();
         for (Game table : tables) {
@@ -79,30 +78,6 @@ public class LobbyApi {
             lobbyTable.setName(table.getSettings().getName());
             out.getTables().add(lobbyTable);
         }
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
-        return out;
-    }
-
-    @POST
-    @Path("/enter-table")
-    public EnterOut enterTable(EnterIn in) {
-        EnterOut out = new EnterOut();
-        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        Game game = games.get(in.getTableId());
-        GameAction action = game.action(new TableAction(TableActionType.ENTER, in.getTableId(), playerId, null));
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
-        return out;
-    }
-
-    @POST
-    @Path("/quit-table")
-    public QuitOut quitTable(QuitIn in) {
-        QuitOut out = new QuitOut();
-        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        Game game = games.get(in.getTableId());
-        game.action(new TableAction(TableActionType.QUIT, in.getTableId(), playerId, null));
         out.setSessionId(in.getSessionId());
         out.setToken(in.getToken());
         return out;

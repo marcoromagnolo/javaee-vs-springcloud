@@ -1,7 +1,7 @@
 package jeevsspring.wildfly.poker.manager;
 
-import jeevsspring.wildfly.poker.manager.api.LobbyApi;
 import jeevsspring.wildfly.poker.manager.api.HandApi;
+import jeevsspring.wildfly.poker.manager.api.LobbyApi;
 import jeevsspring.wildfly.poker.manager.api.TableApi;
 
 import javax.ws.rs.core.Application;

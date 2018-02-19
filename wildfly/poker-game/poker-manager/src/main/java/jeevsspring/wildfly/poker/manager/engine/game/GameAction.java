@@ -3,8 +3,8 @@ package jeevsspring.wildfly.poker.manager.engine.game;
 import jeevsspring.wildfly.poker.common.GameType;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
 import jeevsspring.wildfly.poker.manager.engine.hand.CardDeck;
-import jeevsspring.wildfly.poker.manager.engine.player.Player;
 import jeevsspring.wildfly.poker.manager.engine.hand.Pot;
+import jeevsspring.wildfly.poker.manager.engine.player.Player;
 
 import java.util.List;
 import java.util.Map;

@@ -1,6 +1,6 @@
-package jeevsspring.wildfly.poker.manager.api.json.lobby;
+package jeevsspring.wildfly.poker.manager.api.json;
 
-public class PlayerSessionOut extends ApiStatus {
+public class PlayerSessionOut extends Status {
 
     private String sessionId;
     private String token;

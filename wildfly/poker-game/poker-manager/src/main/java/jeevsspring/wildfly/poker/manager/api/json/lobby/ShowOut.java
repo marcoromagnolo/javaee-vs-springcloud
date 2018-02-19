@@ -1,5 +1,7 @@
 package jeevsspring.wildfly.poker.manager.api.json.lobby;
 
+import jeevsspring.wildfly.poker.manager.api.json.PlayerSessionOut;
+
 import java.util.Collection;
 
 public class ShowOut extends PlayerSessionOut {

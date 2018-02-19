@@ -1,23 +1,22 @@
 package jeevsspring.wildfly.poker.manager.api;
 
+import jeevsspring.wildfly.poker.manager.api.json.ActionOut;
+import jeevsspring.wildfly.poker.manager.api.json.Status;
 import jeevsspring.wildfly.poker.manager.api.json.hand.*;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.game.GameAction;
 import jeevsspring.wildfly.poker.manager.engine.game.GameActions;
-import jeevsspring.wildfly.poker.manager.engine.game.Games;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandActionQueue;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandActionType;
 import jeevsspring.wildfly.poker.manager.lobby.LobbyPlayers;
-import jeevsspring.wildfly.poker.manager.lobby.LobbyTables;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 @Stateless
@@ -39,6 +38,13 @@ public class HandApi {
     @EJB
     private GameActions gameActions;
 
+    @GET
+    @Path("/test")
+    public Status test() {
+        Status out = new Status();
+        out.setMessage("Test completed");
+        return out;
+    }
 
     @POST
     @Path("/bet")
@@ -46,6 +52,11 @@ public class HandApi {
         BetOut out = new BetOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         handQueue.insert(HandActionType.BET, in.getTableId(), in.getHandId(), playerId, in.getAmount());
+        Queue<GameAction> queue = gameActions.get(in.getTableId(), playerId);
+        List<ActionOut> actions = toActions(queue);
+        out.setActions(actions);
+        out.setSessionId(in.getSessionId());
+        out.setToken(in.getToken());
         return out;
     }
 
@@ -55,6 +66,11 @@ public class HandApi {
         CallOut out = new CallOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         handQueue.insert(HandActionType.CALL, in.getTableId(), in.getHandId(), playerId, null);
+        Queue<GameAction> queue = gameActions.get(in.getTableId(), playerId);
+        List<ActionOut> actions = toActions(queue);
+        out.setActions(actions);
+        out.setSessionId(in.getSessionId());
+        out.setToken(in.getToken());
         return out;
     }
 
@@ -64,6 +80,11 @@ public class HandApi {
         CheckOut out = new CheckOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         handQueue.insert(HandActionType.CHECK, in.getTableId(), in.getHandId(), playerId, null);
+        Queue<GameAction> queue = gameActions.get(in.getTableId(), playerId);
+        List<ActionOut> actions = toActions(queue);
+        out.setActions(actions);
+        out.setSessionId(in.getSessionId());
+        out.setToken(in.getToken());
         return out;
     }
 
@@ -73,6 +94,11 @@ public class HandApi {
         RaiseOut out = new RaiseOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         handQueue.insert(HandActionType.RAISE, in.getTableId(), in.getHandId(), playerId, in.getAmount());
+        Queue<GameAction> queue = gameActions.get(in.getTableId(), playerId);
+        List<ActionOut> actions = toActions(queue);
+        out.setActions(actions);
+        out.setSessionId(in.getSessionId());
+        out.setToken(in.getToken());
         return out;
     }
 
@@ -82,6 +108,11 @@ public class HandApi {
         FoldOut out = new FoldOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         handQueue.insert(HandActionType.FOLD, in.getTableId(), in.getHandId(), playerId, null);
+        Queue<GameAction> queue = gameActions.get(in.getTableId(), playerId);
+        List<ActionOut> actions = toActions(queue);
+        out.setActions(actions);
+        out.setSessionId(in.getSessionId());
+        out.setToken(in.getToken());
         return out;
     }
 
@@ -91,6 +122,11 @@ public class HandApi {
         SitinOut out = new SitinOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         handQueue.insert(HandActionType.SIT_IN, in.getTableId(), in.getHandId(), playerId, null);
+        Queue<GameAction> queue = gameActions.get(in.getTableId(), playerId);
+        List<ActionOut> actions = toActions(queue);
+        out.setActions(actions);
+        out.setSessionId(in.getSessionId());
+        out.setToken(in.getToken());
         return out;
     }
 
@@ -100,6 +136,11 @@ public class HandApi {
         SitoutOut out = new SitoutOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         handQueue.insert(HandActionType.SIT_OUT, in.getTableId(), in.getHandId(), playerId, null);
+        Queue<GameAction> queue = gameActions.get(in.getTableId(), playerId);
+        List<ActionOut> actions = toActions(queue);
+        out.setActions(actions);
+        out.setSessionId(in.getSessionId());
+        out.setToken(in.getToken());
         return out;
     }
 
@@ -109,7 +150,21 @@ public class HandApi {
         SyncOut out = new SyncOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         Queue<GameAction> queue = gameActions.get(in.getTableId(), playerId);
-        // TODO return out json with player data
+        List<ActionOut> actions = toActions(queue);
+        out.setActions(actions);
+        out.setSessionId(in.getSessionId());
+        out.setToken(in.getToken());
+        return out;
+    }
+
+    static List<ActionOut> toActions(Queue<GameAction> queue) {
+        List<ActionOut> out = new ArrayList<>();
+        for (GameAction a : queue) {
+            ActionOut json = new ActionOut();
+            json.setId(a.getId());
+            json.setHandId(a.getHandId());
+            json.setTableId(a.getTableId());
+        }
         return out;
     }
 }

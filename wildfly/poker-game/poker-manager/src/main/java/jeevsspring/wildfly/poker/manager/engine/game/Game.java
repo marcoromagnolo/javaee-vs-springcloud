@@ -4,11 +4,15 @@ import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
 import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
 
+import java.util.Queue;
+
 public abstract class Game {
 
     private final TableSettings settings;
 
     private final String tableId;
+
+    private Queue<GameAction> queue;
 
     private boolean handFinished;
 
@@ -25,13 +29,17 @@ public abstract class Game {
         return tableId;
     }
 
+    public Queue<GameAction> getQueue() {
+        return queue;
+    }
+
     public TableSettings getSettings() {
         return settings;
     }
 
-    public abstract GameAction action(HandAction action);
+    public abstract void action(HandAction action);
 
-    public abstract GameAction action(TableAction action);
+    public abstract void action(TableAction action);
 
     public boolean isHandFinished() {
         return handFinished;
@@ -49,5 +57,4 @@ public abstract class Game {
         stop = true;
     }
 
-    public abstract GameAction sync();
 }

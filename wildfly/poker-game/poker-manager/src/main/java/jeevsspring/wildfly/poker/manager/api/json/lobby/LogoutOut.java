@@ -1,4 +1,6 @@
 package jeevsspring.wildfly.poker.manager.api.json.lobby;
 
-public class LogoutOut extends ApiStatus {
+import jeevsspring.wildfly.poker.manager.api.json.Status;
+
+public class LogoutOut extends Status {
 }

@@ -3,7 +3,6 @@ package jeevsspring.wildfly.poker.manager.engine.hand;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
-import javax.ejb.Stateful;
 import java.util.ArrayDeque;
 import java.util.Queue;
 

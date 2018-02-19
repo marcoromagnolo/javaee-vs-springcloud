@@ -37,15 +37,15 @@ public class GameManager {
                 HandAction handAction = handQueue.poll();
                 String tableId = handAction.getTableId();
                 Game game = games.get(tableId);
-                GameAction gameAction = game.action(handAction);
-                gameActions.add(tableId, gameAction); // Action to return players
+                game.action(handAction);
+                gameActions.addAll(tableId, game.getQueue()); // Action to return players
 
                 // Wait Hand Finished to do buyin and buyout
                 if (game.isHandFinished()) {
                     while (!tableQueue.isEmpty(tableId)) {
                         TableAction tableAction = tableQueue.poll(tableId);
-                        gameAction = game.action(tableAction);
-                        gameActions.add(tableId, gameAction); // Action to return players
+                        game.action(tableAction);
+                        gameActions.addAll(tableId, game.getQueue()); // Action to return players
                     }
                 }
             }

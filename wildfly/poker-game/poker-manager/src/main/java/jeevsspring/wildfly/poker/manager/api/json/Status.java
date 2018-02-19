@@ -1,9 +1,9 @@
-package jeevsspring.wildfly.poker.manager.api.json.lobby;
+package jeevsspring.wildfly.poker.manager.api.json;
 
 /**
  * @author Marco Romagnolo
  */
-public class ApiStatus {
+public class Status {
 
     private boolean error;
     private String errorCode;
