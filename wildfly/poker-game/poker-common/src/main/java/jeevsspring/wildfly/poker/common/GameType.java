@@ -1,4 +1,4 @@
-package jeevsspring.wildfly.poker.manager.engine.game;
+package jeevsspring.wildfly.poker.common;
 
 /**
  * @author Marco Romagnolo

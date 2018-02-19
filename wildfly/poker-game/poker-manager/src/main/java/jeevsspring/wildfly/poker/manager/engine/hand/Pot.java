@@ -1,4 +1,4 @@
-package jeevsspring.wildfly.poker.manager.engine.table;
+package jeevsspring.wildfly.poker.manager.engine.hand;
 
 import java.util.UUID;
 

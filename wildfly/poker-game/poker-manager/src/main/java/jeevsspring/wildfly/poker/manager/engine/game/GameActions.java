@@ -1,25 +1,39 @@
 package jeevsspring.wildfly.poker.manager.engine.game;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
+import javax.ejb.Singleton;
 import javax.ejb.Stateful;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * @author Marco Romagnolo
  */
-@Stateful
+@Singleton
 @LocalBean
 public class GameActions {
 
-    private Map<String, List<GameAction>> actions;
+    private Map<String, Queue<GameAction>> actions;
 
-    public GameActions() {
+    @PostConstruct
+    public void init() {
         this.actions = new HashMap<>();
     }
 
-    public Map<String, List<GameAction>> getActions() {
-        return actions;
+    public Queue<GameAction> get(String tableId) {
+        return actions.get(tableId);
+    }
+
+    public Queue<GameAction> get(String tableId, String playerId) {
+        Queue<GameAction> queue = actions.get(tableId);
+        // TODO prepare player data
+        return queue;
+    }
+
+    public void add(String tableId, GameAction action) {
+        get(tableId).offer(action);
     }
 }

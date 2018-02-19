@@ -1,15 +1,22 @@
-package jeevsspring.wildfly.poker.manager.engine.table;
-
-import jeevsspring.wildfly.poker.manager.engine.game.GameType;
+package jeevsspring.wildfly.poker.common;
 
 /**
  * @author Marco Romagnolo
  */
 public class TableSettings {
 
+    private String name;
     private int numberOfSeats;
     private long actionTimeOut;
-    private GameType game;
+    private GameType gameType;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getNumberOfSeats() {
         return numberOfSeats;
@@ -27,11 +34,11 @@ public class TableSettings {
         this.actionTimeOut = actionTimeOut;
     }
 
-    public GameType getGame() {
-        return game;
+    public GameType getGameType() {
+        return gameType;
     }
 
-    public void setGame(GameType game) {
-        this.game = game;
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
     }
 }

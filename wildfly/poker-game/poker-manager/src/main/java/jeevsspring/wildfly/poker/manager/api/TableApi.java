@@ -8,11 +8,11 @@ import jeevsspring.wildfly.poker.manager.api.json.table.BuyinIn;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyinOut;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutIn;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutOut;
-import jeevsspring.wildfly.poker.manager.engine.hand.Hands;
-import jeevsspring.wildfly.poker.manager.engine.player.PlayerActionType;
-import jeevsspring.wildfly.poker.manager.engine.table.Table;
+import jeevsspring.wildfly.poker.manager.engine.game.GameActions;
+import jeevsspring.wildfly.poker.manager.engine.game.Games;
+import jeevsspring.wildfly.poker.manager.engine.table.TableActionQueue;
 import jeevsspring.wildfly.poker.manager.engine.table.TableActionType;
-import jeevsspring.wildfly.poker.manager.lobby.Lobby;
+import jeevsspring.wildfly.poker.manager.lobby.LobbyPlayers;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -31,15 +31,21 @@ import javax.ws.rs.core.MediaType;
 public class TableApi {
 
     @EJB
-    private Lobby lobby;
+    private TableActionQueue tableQueue;
+
+    @EJB
+    private LobbyPlayers lobbyPlayers;
+
+    @EJB
+    private GameActions gameActions;
 
     @POST
     @Path("/buyin")
     public BuyinOut buyin(BuyinIn in) {
         BuyinOut out = new BuyinOut();
-        String playerId = lobby.getPlayerId(in.getSessionId());
-        Table table = lobby.getTable(in.getTableId());
-        table.addAction(TableActionType.BUY_IN, playerId, in.getAmount());
+        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
+        tableQueue.insert(TableActionType.BUY_IN, in.getTableId(), playerId, in.getAmount());
+        // TODO add Sync
         out.setSessionId(in.getSessionId());
         out.setToken(in.getToken());
         return out;
@@ -49,33 +55,9 @@ public class TableApi {
     @Path("/buyout")
     public BuyoutOut buyout(BuyoutIn in) {
         BuyoutOut out = new BuyoutOut();
-        String playerId = lobby.getPlayerId(in.getSessionId());
-        Table table = lobby.getTable(in.getTableId());
-        table.addAction(TableActionType.BUY_OUT, playerId);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
-        return out;
-    }
-
-    @POST
-    @Path("/enter")
-    public EnterOut enter(EnterIn in) {
-        EnterOut out = new EnterOut();
-        String playerId = lobby.getPlayerId(in.getSessionId());
-        Table table = lobby.getTable(in.getTableId());
-        table.addAction(TableActionType.BUY_OUT, playerId);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
-        return out;
-    }
-
-    @POST
-    @Path("/quit")
-    public QuitOut quit(QuitIn in) {
-        QuitOut out = new QuitOut();
-        String playerId = lobby.getPlayerId(in.getSessionId());
-        Table table = lobby.getTable(in.getTableId());
-        table.addAction(TableActionType.BUY_OUT, playerId);
+        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
+        tableQueue.insert(TableActionType.BUY_OUT, in.getTableId(), playerId, null);
+        // TODO add Sync
         out.setSessionId(in.getSessionId());
         out.setToken(in.getToken());
         return out;

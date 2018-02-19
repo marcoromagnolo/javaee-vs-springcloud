@@ -97,10 +97,6 @@ public class Player {
         this.bigBlind = bigBlind;
     }
 
-    public PlayerAction actionListen(long actionTimeOut) {
-        return null;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

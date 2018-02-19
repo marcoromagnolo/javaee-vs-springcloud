@@ -5,6 +5,15 @@ import jeevsspring.wildfly.poker.manager.api.json.lobby.PlayerSessionIn;
 public class CheckIn extends PlayerSessionIn {
 
     private String handId;
+    private String tableId;
+
+    public String getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(String tableId) {
+        this.tableId = tableId;
+    }
 
     public String getHandId() {
         return handId;

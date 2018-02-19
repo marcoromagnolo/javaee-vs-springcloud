@@ -11,8 +11,10 @@ import java.util.Properties;
  */
 public class PokerConfig {
 
-    private final Logger logger = Logger.getLogger(PokerConfig.class);
+    private final Logger logger = Logger.getLogger(getClass());
+
     private final String fileName = "poker.properties";
+
     private Properties properties;
 
     private PokerConfig() {

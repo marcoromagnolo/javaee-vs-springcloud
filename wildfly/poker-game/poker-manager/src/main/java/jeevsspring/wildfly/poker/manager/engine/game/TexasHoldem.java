@@ -1,26 +1,28 @@
 package jeevsspring.wildfly.poker.manager.engine.game;
 
-import jeevsspring.wildfly.poker.manager.engine.hand.Hands;
-import jeevsspring.wildfly.poker.manager.lobby.Lobby;
+import jeevsspring.wildfly.poker.common.TableSettings;
+import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
+import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
 
-import javax.ejb.EJB;
+public class TexasHoldem extends Game {
 
-/**
- * @author Marco Romagnolo
- */
-public class TexasHoldem implements Runnable {
-
-    @EJB
-    private Lobby lobby;
-
-    @EJB
-    private Hands hands;
-
-    @EJB
-    private GameActions gameActions;
+    public TexasHoldem(String tableId, TableSettings settings) {
+       super(tableId, settings);
+    }
 
     @Override
-    public void run() {
-
+    public GameAction action(HandAction action) {
+        return null;
     }
+
+    @Override
+    public GameAction action(TableAction action) {
+        return null;
+    }
+
+    @Override
+    public GameAction sync() {
+        return null;
+    }
+
 }
