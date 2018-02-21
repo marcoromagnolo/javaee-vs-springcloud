@@ -6,7 +6,7 @@ public class RaiseIn extends PlayerSessionIn {
 
     private String tableId;
     private String handId;
-    private long amount;
+    private String amount;
 
     public String getTableId() {
         return tableId;
@@ -24,11 +24,11 @@ public class RaiseIn extends PlayerSessionIn {
         this.handId = handId;
     }
 
-    public long getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 }

@@ -119,7 +119,7 @@ public class HandApi {
     public SitinOut sitin(SitinIn in) {
         SitinOut out = new SitinOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        handQueue.insert(HandActionType.SIT_IN, in.getTableId(), in.getHandId(), playerId, null);
+        handQueue.insert(HandActionType.SIT_IN, in.getTableId(), in.getHandId(), playerId, in.getSeat());
         List<ActionOut> actions = toActions(in.getTableId(), playerId);
         out.setActions(actions);
         out.setSessionId(in.getSessionId());
@@ -185,12 +185,8 @@ public class HandApi {
             }
             playerOut.setBalance(player.getBalance());
             playerOut.setNickname(player.getNickname());
-            playerOut.setBigBlind(player.isBigBlind());
-            playerOut.setSmallBlind(player.isSmallBlind());
-            playerOut.setDealer(player.isDealer());
             playerOut.setSeat(player.getSeat());
             playerOut.setSitOut(player.isSitOut());
-            playerOut.setTurn(player.isTurn());
             actionOut.getPlayers().add(playerOut);
         }
 

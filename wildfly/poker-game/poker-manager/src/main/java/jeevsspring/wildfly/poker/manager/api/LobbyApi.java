@@ -75,7 +75,7 @@ public class LobbyApi {
         for (Game table : tables) {
             LobbyTable lobbyTable = new LobbyTable();
             lobbyTable.setId(table.getTableId());
-            lobbyTable.setName(table.getSettings().getName());
+            lobbyTable.setName(table.getTableName());
             out.getTables().add(lobbyTable);
         }
         out.setSessionId(in.getSessionId());

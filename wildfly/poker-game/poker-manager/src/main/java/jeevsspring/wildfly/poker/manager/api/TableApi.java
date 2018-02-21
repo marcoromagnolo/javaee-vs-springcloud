@@ -1,6 +1,5 @@
 package jeevsspring.wildfly.poker.manager.api;
 
-import jeevsspring.wildfly.poker.manager.api.json.ActionOut;
 import jeevsspring.wildfly.poker.manager.api.json.Status;
 import jeevsspring.wildfly.poker.manager.api.json.lobby.EnterIn;
 import jeevsspring.wildfly.poker.manager.api.json.lobby.EnterOut;
@@ -11,10 +10,8 @@ import jeevsspring.wildfly.poker.manager.api.json.table.BuyinOut;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutIn;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutOut;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
-import jeevsspring.wildfly.poker.manager.engine.game.GameAction;
 import jeevsspring.wildfly.poker.manager.engine.game.GameActions;
 import jeevsspring.wildfly.poker.manager.engine.game.Games;
-import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
 import jeevsspring.wildfly.poker.manager.engine.table.TableActionQueue;
 import jeevsspring.wildfly.poker.manager.engine.table.TableActionType;
 import jeevsspring.wildfly.poker.manager.lobby.LobbyPlayers;
@@ -24,8 +21,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.Queue;
 
 @Stateless
 @LocalBean
@@ -82,7 +77,7 @@ public class TableApi {
         EnterOut out = new EnterOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         Game game = games.get(in.getTableId());
-        game.addVisitor(playerId);
+        game.getVisitors().add(playerId);
         out.setSessionId(in.getSessionId());
         out.setToken(in.getToken());
         return out;
@@ -94,7 +89,7 @@ public class TableApi {
         QuitOut out = new QuitOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         Game game = games.get(in.getTableId());
-        game.addVisitor(playerId);
+        game.getVisitors().add(playerId);
         out.setSessionId(in.getSessionId());
         out.setToken(in.getToken());
         return out;

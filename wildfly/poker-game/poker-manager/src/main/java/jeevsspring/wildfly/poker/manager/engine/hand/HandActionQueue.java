@@ -24,8 +24,8 @@ public class HandActionQueue {
         return actions.isEmpty();
     }
 
-    public boolean insert(HandActionType actionType, String tableId, String handId, String playerId, Long amount) {
-        HandAction hand = new HandAction(actionType, tableId, handId, playerId, amount);
+    public boolean insert(HandActionType actionType, String tableId, String handId, String playerId, String option) {
+        HandAction hand = new HandAction(actionType, tableId, handId, playerId, option);
         return actions.offer(hand);
     }
 

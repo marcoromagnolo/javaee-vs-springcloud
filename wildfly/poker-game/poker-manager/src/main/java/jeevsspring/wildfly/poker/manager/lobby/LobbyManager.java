@@ -1,6 +1,7 @@
 package jeevsspring.wildfly.poker.manager.lobby;
 
 import jeevsspring.wildfly.poker.common.TableSettings;
+import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
 import jeevsspring.wildfly.poker.manager.engine.game.GameActions;
 import jeevsspring.wildfly.poker.manager.engine.game.Games;
@@ -21,6 +22,9 @@ public class LobbyManager {
     private final Logger logger = Logger.getLogger(getClass());
 
     @EJB
+    private BoClient boClient;
+
+    @EJB
     private Games games;
 
     @EJB
@@ -39,7 +43,7 @@ public class LobbyManager {
         // Make this job forever
         while (true) {
 
-            // Check and add tables games (async)
+            // Check and add game instances (async)
             if (!lobbyTables.getCreated().isEmpty()) {
                 for (String tableId : lobbyTables.getCreated().keySet()) {
                     TableSettings settings = lobbyTables.getCreated().get(tableId);
@@ -47,7 +51,7 @@ public class LobbyManager {
                     switch (settings.getGameType()) {
 
                         case TEXAS_HOLDEM:
-                            game = new TexasHoldem(tableId, settings);
+                            game = new TexasHoldem(tableId, settings, boClient);
                             break;
 
                         default:

@@ -8,6 +8,7 @@ public class TableSettings {
     private String name;
     private int numberOfSeats;
     private long actionTimeOut;
+    private long startTimeout;
     private GameType gameType;
 
     public String getName() {
@@ -32,6 +33,14 @@ public class TableSettings {
 
     public void setActionTimeOut(long actionTimeOut) {
         this.actionTimeOut = actionTimeOut;
+    }
+
+    public long getStartTimeout() {
+        return startTimeout;
+    }
+
+    public void setStartTimeout(long startTimeout) {
+        this.startTimeout = startTimeout;
     }
 
     public GameType getGameType() {

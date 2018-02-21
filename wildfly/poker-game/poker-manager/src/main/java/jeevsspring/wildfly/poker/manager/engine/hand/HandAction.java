@@ -6,14 +6,14 @@ public class HandAction {
     private final HandActionType actionType;
     private final String handId;
     private final String playerId;
-    private final Long amount;
+    private final String option;
 
-    public HandAction(HandActionType actionType, String tabledId,  String handId, String playerId, Long amount) {
+    public HandAction(HandActionType actionType, String tabledId,  String handId, String playerId, String option) {
         this.actionType = actionType;
         this.tableId = tabledId;
         this.handId = handId;
         this.playerId = playerId;
-        this.amount = amount;
+        this.option = option;
     }
 
     public HandActionType getActionType() {
@@ -32,7 +32,7 @@ public class HandAction {
         return playerId;
     }
 
-    public Long getAmount() {
-        return amount;
+    public String getOption() {
+        return option;
     }
 }

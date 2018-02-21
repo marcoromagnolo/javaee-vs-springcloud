@@ -22,8 +22,8 @@ public class TableActionQueue {
         return actions.get(tableId).isEmpty();
     }
 
-    public boolean insert(TableActionType actionType, String tableId, String playerId, Long amount) {
-        TableAction hand = new TableAction(actionType, tableId, playerId, amount);
+    public boolean insert(TableActionType actionType, String tableId, String playerId, String option) {
+        TableAction hand = new TableAction(actionType, playerId, option);
         return actions.get(tableId).offer(hand);
     }
 

@@ -6,30 +6,24 @@ package jeevsspring.wildfly.poker.manager.engine.table;
 public class TableAction {
 
     private TableActionType actionType;
-    private String tableId;
     private String playerId;
-    private Long amount;
+    private String option;
 
-    public TableAction(TableActionType actionType, String tableId, String playerId, Long amount) {
+    public TableAction(TableActionType actionType, String playerId, String option) {
         this.actionType = actionType;
-        this.tableId = tableId;
         this.playerId = playerId;
-        this.amount = amount;
+        this.option = option;
     }
 
     public TableActionType getActionType() {
         return actionType;
     }
 
-    public String getTableId() {
-        return tableId;
-    }
-
     public String getPlayerId() {
         return playerId;
     }
 
-    public Long getAmount() {
-        return amount;
+    public String getOption() {
+        return option;
     }
 }

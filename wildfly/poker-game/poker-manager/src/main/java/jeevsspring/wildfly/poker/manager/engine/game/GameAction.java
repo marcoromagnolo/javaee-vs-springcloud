@@ -17,7 +17,6 @@ public class GameAction {
     private long id;
     private String handId;
     private String tableId;
-    private CardDeck cardDeck;
     private Map<String, String> visitors;
     private Map<String, Player> players;
     private String[] seats;
@@ -42,14 +41,6 @@ public class GameAction {
 
     public String getTableId() {
         return tableId;
-    }
-
-    public CardDeck getCardDeck() {
-        return cardDeck;
-    }
-
-    public void setCardDeck(CardDeck cardDeck) {
-        this.cardDeck = cardDeck;
     }
 
     public Map<String, String> getVisitors() {

@@ -12,10 +12,6 @@ public class PlayerOut {
     private int seat;
     private List<CardOut> cards;
     private boolean sitOut;
-    private boolean turn;
-    private boolean dealer;
-    private boolean smallBlind;
-    private boolean bigBlind;
 
     public String getNickname() {
         return nickname;
@@ -57,35 +53,4 @@ public class PlayerOut {
         this.sitOut = sitOut;
     }
 
-    public boolean isTurn() {
-        return turn;
-    }
-
-    public void setTurn(boolean turn) {
-        this.turn = turn;
-    }
-
-    public boolean isDealer() {
-        return dealer;
-    }
-
-    public void setDealer(boolean dealer) {
-        this.dealer = dealer;
-    }
-
-    public boolean isSmallBlind() {
-        return smallBlind;
-    }
-
-    public void setSmallBlind(boolean smallBlind) {
-        this.smallBlind = smallBlind;
-    }
-
-    public boolean isBigBlind() {
-        return bigBlind;
-    }
-
-    public void setBigBlind(boolean bigBlind) {
-        this.bigBlind = bigBlind;
-    }
 }

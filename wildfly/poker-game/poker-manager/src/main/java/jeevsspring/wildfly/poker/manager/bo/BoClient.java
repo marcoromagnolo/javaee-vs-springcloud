@@ -1,6 +1,7 @@
 package jeevsspring.wildfly.poker.manager.bo;
 
 import jeevsspring.wildfly.poker.manager.bo.json.*;
+import jeevsspring.wildfly.poker.manager.engine.player.Player;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -12,6 +13,10 @@ import java.util.UUID;
 @Stateless
 @LocalBean
 public class BoClient {
+
+    public Player getPlayer(String playerId) {
+        return new Player("1", "Ciccio", 20000 );
+    }
 
     public SigninOut signin(SigninIn in) {
         SigninOut out = new SigninOut();

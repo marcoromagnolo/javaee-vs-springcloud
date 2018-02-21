@@ -5,7 +5,7 @@ import jeevsspring.wildfly.poker.manager.api.json.PlayerSessionIn;
 public class SitinIn extends PlayerSessionIn {
 
     private String handId;
-    private int seat;
+    private String seat;
     private String tableId;
 
     public String getTableId() {
@@ -24,11 +24,11 @@ public class SitinIn extends PlayerSessionIn {
         this.handId = handId;
     }
 
-    public int getSeat() {
+    public String getSeat() {
         return seat;
     }
 
-    public void setSeat(int seat) {
+    public void setSeat(String seat) {
         this.seat = seat;
     }
 }

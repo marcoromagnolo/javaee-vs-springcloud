@@ -16,17 +16,11 @@ public class Player {
     private int seat;
     private List<Card> cards;
     private boolean sitOut;
-    private boolean turn;
-    private boolean dealer;
-    private boolean smallBlind;
-    private boolean bigBlind;
 
-
-    public Player(String id, String nickname, long balance, int seat) {
+    public Player(String id, String nickname, long balance) {
         this.id = id;
         this.nickname = nickname;
         this.balance = balance;
-        this.seat = seat;
     }
 
     public String getId() {
@@ -43,6 +37,10 @@ public class Player {
 
     public int getSeat() {
         return seat;
+    }
+
+    public void setSeat(int seat) {
+        this.seat = seat;
     }
 
     public void setBalance(long balance) {
@@ -65,37 +63,6 @@ public class Player {
         this.sitOut = sitOut;
     }
 
-    public boolean isTurn() {
-        return turn;
-    }
-
-    public void setTurn(boolean turn) {
-        this.turn = turn;
-    }
-
-    public boolean isDealer() {
-        return dealer;
-    }
-
-    public void setDealer(boolean dealer) {
-        this.dealer = dealer;
-    }
-
-    public boolean isSmallBlind() {
-        return smallBlind;
-    }
-
-    public void setSmallBlind(boolean smallBlind) {
-        this.smallBlind = smallBlind;
-    }
-
-    public boolean isBigBlind() {
-        return bigBlind;
-    }
-
-    public void setBigBlind(boolean bigBlind) {
-        this.bigBlind = bigBlind;
-    }
 
     @Override
     public boolean equals(Object o) {

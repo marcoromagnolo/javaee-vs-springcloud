@@ -5,7 +5,7 @@ import jeevsspring.wildfly.poker.manager.api.json.PlayerSessionIn;
 public class BuyinIn extends PlayerSessionIn {
 
     private String tableId;
-    private long amount;
+    private String amount;
 
     public String getTableId() {
         return tableId;
@@ -15,11 +15,11 @@ public class BuyinIn extends PlayerSessionIn {
         this.tableId = tableId;
     }
 
-    public long getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 }
