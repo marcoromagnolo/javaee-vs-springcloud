@@ -4,14 +4,18 @@ import jeevsspring.wildfly.poker.manager.api.json.ActionOut;
 import jeevsspring.wildfly.poker.manager.api.json.Status;
 import jeevsspring.wildfly.poker.manager.api.json.hand.*;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
+import jeevsspring.wildfly.poker.manager.engine.game.Game;
 import jeevsspring.wildfly.poker.manager.engine.game.GameAction;
 import jeevsspring.wildfly.poker.manager.engine.game.GameActions;
+import jeevsspring.wildfly.poker.manager.engine.game.Games;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandActionQueue;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandActionType;
 import jeevsspring.wildfly.poker.manager.engine.hand.Pot;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
+import jeevsspring.wildfly.poker.manager.exception.PMException;
 import jeevsspring.wildfly.poker.manager.lobby.LobbyPlayers;
+import org.jboss.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -28,6 +32,8 @@ import java.util.Queue;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class HandApi {
+
+    private final Logger logger = Logger.getLogger(getClass());
 
     @EJB
     private BoClient boClient;
@@ -54,11 +60,17 @@ public class HandApi {
     public BetOut bet(BetIn in) {
         BetOut out = new BetOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        handQueue.insert(HandActionType.BET, in.getTableId(), in.getHandId(), playerId, in.getAmount());
-        List<ActionOut> actions = toActions(in.getTableId(), playerId);
-        out.setActions(actions);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
+        try {
+            handQueue.insert(HandActionType.BET, in.getTableId(), in.getHandId(), playerId, in.getAmount());
+            List<ActionOut> actions = toActions(in.getTableId(), playerId);
+            out.setActions(actions);
+            out.setSessionId(in.getSessionId());
+            out.setToken(in.getToken());
+        } catch (PMException e) {
+            logger.error(e.getMessage(), e);
+            out.setError(true);
+            out.setErrorCode("GAME_NOT_STARTED");
+        }
         return out;
     }
 
@@ -67,11 +79,17 @@ public class HandApi {
     public CallOut call(CallIn in) {
         CallOut out = new CallOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        handQueue.insert(HandActionType.CALL, in.getTableId(), in.getHandId(), playerId, null);
-        List<ActionOut> actions = toActions(in.getTableId(), playerId);
-        out.setActions(actions);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
+        try {
+            handQueue.insert(HandActionType.CALL, in.getTableId(), in.getHandId(), playerId, null);
+            List<ActionOut> actions = toActions(in.getTableId(), playerId);
+            out.setActions(actions);
+            out.setSessionId(in.getSessionId());
+            out.setToken(in.getToken());
+        } catch (PMException e) {
+            logger.error(e.getMessage(), e);
+            out.setError(true);
+            out.setErrorCode("GAME_NOT_STARTED");
+        }
         return out;
     }
 
@@ -80,11 +98,17 @@ public class HandApi {
     public CheckOut check(CheckIn in) {
         CheckOut out = new CheckOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        handQueue.insert(HandActionType.CHECK, in.getTableId(), in.getHandId(), playerId, null);
-        List<ActionOut> actions = toActions(in.getTableId(), playerId);
-        out.setActions(actions);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
+        try {
+            handQueue.insert(HandActionType.CHECK, in.getTableId(), in.getHandId(), playerId, null);
+            List<ActionOut> actions = toActions(in.getTableId(), playerId);
+            out.setActions(actions);
+            out.setSessionId(in.getSessionId());
+            out.setToken(in.getToken());
+        } catch (PMException e) {
+            logger.error(e.getMessage(), e);
+            out.setError(true);
+            out.setErrorCode("GAME_NOT_STARTED");
+        }
         return out;
     }
 
@@ -93,11 +117,17 @@ public class HandApi {
     public RaiseOut raise(RaiseIn in) {
         RaiseOut out = new RaiseOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        handQueue.insert(HandActionType.RAISE, in.getTableId(), in.getHandId(), playerId, in.getAmount());
-        List<ActionOut> actions = toActions(in.getTableId(), playerId);
-        out.setActions(actions);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
+        try {
+            handQueue.insert(HandActionType.RAISE, in.getTableId(), in.getHandId(), playerId, in.getAmount());
+            List<ActionOut> actions = toActions(in.getTableId(), playerId);
+            out.setActions(actions);
+            out.setSessionId(in.getSessionId());
+            out.setToken(in.getToken());
+        } catch (PMException e) {
+            logger.error(e.getMessage(), e);
+            out.setError(true);
+            out.setErrorCode("GAME_NOT_STARTED");
+        }
         return out;
     }
 
@@ -106,11 +136,17 @@ public class HandApi {
     public FoldOut fold(FoldIn in) {
         FoldOut out = new FoldOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        handQueue.insert(HandActionType.FOLD, in.getTableId(), in.getHandId(), playerId, null);
-        List<ActionOut> actions = toActions(in.getTableId(), playerId);
-        out.setActions(actions);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
+        try {
+            handQueue.insert(HandActionType.FOLD, in.getTableId(), in.getHandId(), playerId, null);
+            List<ActionOut> actions = toActions(in.getTableId(), playerId);
+            out.setActions(actions);
+            out.setSessionId(in.getSessionId());
+            out.setToken(in.getToken());
+        } catch (PMException e) {
+            logger.error(e.getMessage(), e);
+            out.setError(true);
+            out.setErrorCode("GAME_NOT_STARTED");
+        }
         return out;
     }
 
@@ -119,11 +155,17 @@ public class HandApi {
     public SitinOut sitin(SitinIn in) {
         SitinOut out = new SitinOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        handQueue.insert(HandActionType.SIT_IN, in.getTableId(), in.getHandId(), playerId, in.getSeat());
-        List<ActionOut> actions = toActions(in.getTableId(), playerId);
-        out.setActions(actions);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
+        try {
+            handQueue.insert(HandActionType.SIT_IN, in.getTableId(), in.getHandId(), playerId, in.getSeat());
+            List<ActionOut> actions = toActions(in.getTableId(), playerId);
+            out.setActions(actions);
+            out.setSessionId(in.getSessionId());
+            out.setToken(in.getToken());
+        } catch (PMException e) {
+            logger.error(e.getMessage(), e);
+            out.setError(true);
+            out.setErrorCode("GAME_NOT_STARTED");
+        }
         return out;
     }
 
@@ -132,11 +174,17 @@ public class HandApi {
     public SitoutOut sitout(SitoutIn in) {
         SitoutOut out = new SitoutOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        handQueue.insert(HandActionType.SIT_OUT, in.getTableId(), in.getHandId(), playerId, null);
-        List<ActionOut> actions = toActions(in.getTableId(), playerId);
-        out.setActions(actions);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
+        try {
+            handQueue.insert(HandActionType.SIT_OUT, in.getTableId(), in.getHandId(), playerId, null);
+            List<ActionOut> actions = toActions(in.getTableId(), playerId);
+            out.setActions(actions);
+            out.setSessionId(in.getSessionId());
+            out.setToken(in.getToken());
+        } catch (PMException e) {
+            logger.error(e.getMessage(), e);
+            out.setError(true);
+            out.setErrorCode("GAME_NOT_STARTED");
+        }
         return out;
     }
 
@@ -158,6 +206,7 @@ public class HandApi {
         for (GameAction action : actions) {
             boolean isVisitor = action.getVisitors().containsKey(playerId);
             ActionOut actionOut = newGameAction(action, playerId, isVisitor);
+            actionOut.setTableId(tableId);
             out.add(actionOut);
         }
         return out;
@@ -168,8 +217,7 @@ public class HandApi {
 
         // Set mandatory params
         actionOut.setActionId(o.getId());
-        actionOut.setTableId(o.getTableId());
-        actionOut.setHandId(o.getTableId());
+        actionOut.setHandId(o.getHandId());
 
         // Set Players (without player id)
         for (Player player : o.getPlayers().values()) {

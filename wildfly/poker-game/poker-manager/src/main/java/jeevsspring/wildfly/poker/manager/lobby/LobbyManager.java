@@ -79,7 +79,7 @@ public class LobbyManager {
 
             // Consume all games not playing with table queue
             for (Game game : games.getAll()) {
-                if (!game.isPlaying() && !tableQueue.isEmpty(game.getTableId())) {
+                if (!game.isRunning() && !tableQueue.isEmpty(game.getTableId())) {
                     consumeTableQueue(game.getTableId(), game);
                 }
             }

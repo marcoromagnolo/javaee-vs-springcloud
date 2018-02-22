@@ -41,7 +41,7 @@ public class GameManager {
                 gameActions.addAll(tableId, game.getQueue()); // Action to return players
 
                 // Wait Hand Finished to do buyin and buyout
-                if (game.isHandFinished()) {
+                if (!game.isHandRunning()) {
                     consumeTableQueue(tableId, game);
                 }
             }

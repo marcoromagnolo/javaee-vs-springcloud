@@ -16,7 +16,6 @@ public class GameAction {
 
     private long id;
     private String handId;
-    private String tableId;
     private Map<String, String> visitors;
     private Map<String, Player> players;
     private String[] seats;
@@ -25,10 +24,9 @@ public class GameAction {
     private List<Pot> pots;
     private String turn;
 
-    public GameAction(String handId, String tableId) {
+    public GameAction(String handId) {
         this.id = System.nanoTime();
         this.handId = handId;
-        this.tableId = tableId;
     }
 
     public long getId() {
@@ -37,10 +35,6 @@ public class GameAction {
 
     public String getHandId() {
         return handId;
-    }
-
-    public String getTableId() {
-        return tableId;
     }
 
     public Map<String, String> getVisitors() {

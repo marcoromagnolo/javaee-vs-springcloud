@@ -12,8 +12,9 @@ public class TexasHoldem extends Game {
     private final TableSettings settings;
     private final BoClient boClient;
 
-    private boolean smallBlind;
-    private boolean bigBlind;
+    private int smallBlind;
+    private int bigBlind;
+    private Phase phase;
 
     public TexasHoldem(String tableId, TableSettings settings, BoClient boClient) {
        super(tableId, settings);
@@ -24,44 +25,91 @@ public class TexasHoldem extends Game {
 
     @Override
     public void action(HandAction action) {
-        waitStart();
+        if (!isRunning()) {
+            waitStart();
+            int dealerSeat = randomSeat();
+            setRunning(true);
+            setDealer(dealerSeat);
+        }
 
-        switch (action.getActionType()) {
+        if (!isRoundRunning()) {
+            setDealer(nextSeat(getDealer()));
+            smallBlind = nextSeat(getDealer());
+            bigBlind = nextSeat(smallBlind);
+            setFirst(nextSeat(bigBlind));
+            setRoundRunning(true);
+            setHandRunning(true);
+            phase = Phase.PREFLOP;
+            GameAction gameAction = new GameAction(action.getHandId());
+            // TODO Add info
+            addGameAction(gameAction);
+        }
 
-            case RAISE:
-                raise(action.getHandId(), action.getPlayerId(), action.getOption());
-                break;
-            case BET:
-                bet(action.getHandId(), action.getPlayerId(), action.getOption());
-                break;
-            case CALL:
-                call(action.getHandId(), action.getPlayerId());
-                break;
-            case CHECK:
-                check(action.getHandId(), action.getPlayerId());
-                break;
-            case FOLD:
-                fold(action.getHandId(), action.getPlayerId());
-                break;
-            case FOLD_AND_SHOW:
-                fold(action.getHandId(), action.getPlayerId());
-                show();
-                break;
-            case SHOW:
-                show();
-                break;
-            case SIT_IN:
-                sitin(action.getPlayerId(), action.getOption());
-                break;
-            case SIT_OUT:
-                sitout(action.getPlayerId());
-                break;
+        // Play the hand
+        if (isHandRunning()) {
+            switch (action.getActionType()) {
+
+                case RAISE:
+                    raise(action.getHandId(), action.getPlayerId(), action.getOption());
+                    break;
+                case BET:
+                    bet(action.getHandId(), action.getPlayerId(), action.getOption());
+                    break;
+                case CALL:
+                    call(action.getHandId(), action.getPlayerId());
+                    break;
+                case CHECK:
+                    check(action.getHandId(), action.getPlayerId());
+                    break;
+                case FOLD:
+                    fold(action.getHandId(), action.getPlayerId());
+                    break;
+                case FOLD_AND_SHOW:
+                    fold(action.getHandId(), action.getPlayerId());
+                    show();
+                    break;
+                case SHOW:
+                    show();
+                    break;
+                case SIT_IN:
+                    sitin(action.getPlayerId(), action.getOption());
+                    break;
+                case SIT_OUT:
+                    sitout(action.getPlayerId());
+                    break;
+            }
+        }
+
+        // Go ahead with game phases
+        if (!isHandRunning()) {
+            switch (phase) {
+
+                case PREFLOP:
+                    phase = Phase.FLOP;
+                    setHandRunning(true);
+                    break;
+                case FLOP:
+                    phase = Phase.RIVER;
+                    setHandRunning(true);
+                    break;
+                case RIVER:
+                    phase = Phase.TURN;
+                    setHandRunning(true);
+                    break;
+                case TURN:
+                    phase = Phase.SHOWDOWN;
+                    setHandRunning(true);
+                    break;
+                case SHOWDOWN:
+                    setRoundRunning(false);
+                    break;
+            }
         }
     }
 
     @Override
     public void action(TableAction action) {
-        if (!isPlaying()) {
+        if (!isRunning()) {
             switch (action.getActionType()) {
                 case BUY_IN:
                     buyin(action.getPlayerId(), action.getOption());
@@ -71,6 +119,22 @@ public class TexasHoldem extends Game {
                     break;
             }
         }
+    }
+
+    public int getSmallBlind() {
+        return smallBlind;
+    }
+
+    public void setSmallBlind(int smallBlind) {
+        this.smallBlind = smallBlind;
+    }
+
+    public int getBigBlind() {
+        return bigBlind;
+    }
+
+    public void setBigBlind(int bigBlind) {
+        this.bigBlind = bigBlind;
     }
 
     private void raise(String handId, String playerId, String amount) {
@@ -103,7 +167,7 @@ public class TexasHoldem extends Game {
         Player player = boClient.getPlayer(playerId);
         player.setSeat(s);
         getPlayers().put(playerId, player);
-        if (getPlayers().size() >= 2 && !isPlaying()) {
+        if (getPlayers().size() >= 2 && !isRunning()) {
             start();
         }
     }
@@ -129,4 +193,11 @@ public class TexasHoldem extends Game {
         PREFLOP, FLOP, RIVER, TURN, SHOWDOWN
     }
 
+    public Phase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(Phase phase) {
+        this.phase = phase;
+    }
 }

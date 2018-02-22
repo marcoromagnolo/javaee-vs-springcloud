@@ -24,20 +24,26 @@ public abstract class Game {
     // List of game actions result to return players
     private Queue<GameAction> queue;
 
-    // True when hand is finished
-    private boolean handFinished;
+    // True when hand is running
+    private boolean handRunning;
 
-    // Players playing
-    private boolean playing;
+    // True when round is running
+    private boolean roundRunning;
 
-    // Game will start when startTimer is over
+    // True if game is running playing
+    private boolean running;
+
+    // Game will start when start is over
     private boolean starting;
 
     // Settings to update for this game
     private TableSettings updateSettings;
 
-    // True if game will stop
-    private boolean stop;
+    // Time of start
+    private Long startTime;
+
+    // Time of stop
+    private Long stopTime;
 
     // List of Players
     private Map<String, Player> players;
@@ -57,12 +63,10 @@ public abstract class Game {
     // List of Pots
     private List<Pot> pots;
 
-    // PlayerId of the next player turn
-    private String turn;
+    // index of the next player player on hand
+    private int first;
 
-    private boolean dealer;
-
-    private long start;
+    private int dealer;
 
     public Game(String tableId, TableSettings settings) {
         this.tableId = tableId;
@@ -98,7 +102,7 @@ public abstract class Game {
         return actionTimeout;
     }
 
-    public long getStartTimout() {
+    public long getStartTimeout() {
         return startTimeout;
     }
 
@@ -106,24 +110,36 @@ public abstract class Game {
         return queue;
     }
 
+    protected void addGameAction(GameAction gameAction) {
+
+    }
+
     public abstract void action(HandAction action);
 
     public abstract void action(TableAction action);
 
-    public boolean isHandFinished() {
-        return handFinished;
+    public boolean isHandRunning() {
+        return handRunning;
     }
 
-    protected void setHandFinished(boolean handFinished) {
-        this.handFinished = handFinished;
+    protected void setHandRunning(boolean handRunning) {
+        this.handRunning = handRunning;
     }
 
-    public boolean isPlaying() {
-        return playing;
+    public boolean isRoundRunning() {
+        return roundRunning;
     }
 
-    protected void setPlaying(boolean playing) {
-        this.playing = playing;
+    public void setRoundRunning(boolean roundRunning) {
+        this.roundRunning = roundRunning;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    protected void setRunning(boolean running) {
+        this.running = running;
     }
 
     public boolean isStarting() {
@@ -135,16 +151,20 @@ public abstract class Game {
     }
 
     public void start() {
-        start = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
+    }
+
+    public Long getStartTime() {
+        return startTime;
     }
 
     public void waitStart() {
         long now;
         do {
             now = System.currentTimeMillis();
-        } while(now < start + startTimeout);
+            starting = true;
+        } while (now < startTime + startTimeout);
         starting = false;
-        playing = true;
     }
 
     public void update(TableSettings settings) {
@@ -152,7 +172,11 @@ public abstract class Game {
     }
 
     public void stop() {
-        stop = true;
+        stopTime = System.currentTimeMillis();
+    }
+
+    public Long getStopTime() {
+        return stopTime;
     }
 
     public Map<String, Player> getPlayers() {
@@ -179,11 +203,29 @@ public abstract class Game {
         return pots;
     }
 
-    public String getTurn() {
-        return turn;
+    public int getFirst() {
+        return first;
     }
 
-    public boolean isDealer() {
+    public void setFirst(int first) {
+        this.first = first;
+    }
+
+    public int getDealer() {
         return dealer;
+    }
+
+    public void setDealer(int dealer) {
+        this.dealer = dealer;
+    }
+
+    public int randomSeat() {
+        Random r = new Random();
+        return r.nextInt(numberOfSeats);
+    }
+
+    public int nextSeat(int seat) {
+        if (seat < 0) seat = 0;
+        return (seat + 1) % numberOfSeats;
     }
 }
