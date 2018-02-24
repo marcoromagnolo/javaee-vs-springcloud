@@ -1,7 +1,8 @@
 package jeevsspring.wildfly.poker.manager.engine.hand;
 
-import java.security.SecureRandom;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -15,69 +16,65 @@ public class CardDeck {
     private Stack<Card> cards;
 
     public CardDeck() {
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.ACE));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.TWO));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.THREE));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.FOUR));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.FIVE));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.SIX));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.SEVEN));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.EIGHT));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.NINE));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.TEN));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.JACK));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.QUEEN));
-        cards.add(new Card(CardSuitType.SPADES, CardSymbolType.KING));
+        Set<Card> set = new HashSet<>();
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.ACE));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.TWO));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.THREE));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.FOUR));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.FIVE));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.SIX));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.SEVEN));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.EIGHT));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.NINE));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.TEN));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.JACK));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.QUEEN));
+        set.add(new Card(CardSuitType.SPADES, CardSymbolType.KING));
 
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.ACE));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.TWO));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.THREE));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.FOUR));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.FIVE));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.SIX));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.SEVEN));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.EIGHT));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.NINE));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.TEN));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.JACK));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.QUEEN));
-        cards.add(new Card(CardSuitType.CLUBS, CardSymbolType.KING));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.ACE));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.TWO));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.THREE));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.FOUR));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.FIVE));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.SIX));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.SEVEN));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.EIGHT));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.NINE));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.TEN));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.JACK));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.QUEEN));
+        set.add(new Card(CardSuitType.CLUBS, CardSymbolType.KING));
 
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.ACE));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.TWO));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.THREE));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.FOUR));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.FIVE));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.SIX));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.SEVEN));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.EIGHT));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.NINE));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.TEN));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.JACK));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.QUEEN));
-        cards.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.KING));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.ACE));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.TWO));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.THREE));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.FOUR));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.FIVE));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.SIX));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.SEVEN));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.EIGHT));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.NINE));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.TEN));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.JACK));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.QUEEN));
+        set.add(new Card(CardSuitType.DIAMONDS, CardSymbolType.KING));
 
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.ACE));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.TWO));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.THREE));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.FOUR));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.FIVE));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.SIX));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.SEVEN));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.EIGHT));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.NINE));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.TEN));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.JACK));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.QUEEN));
-        cards.add(new Card(CardSuitType.HEARTS, CardSymbolType.KING));
-    }
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.ACE));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.TWO));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.THREE));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.FOUR));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.FIVE));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.SIX));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.SEVEN));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.EIGHT));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.NINE));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.TEN));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.JACK));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.QUEEN));
+        set.add(new Card(CardSuitType.HEARTS, CardSymbolType.KING));
 
-    public Stack<Card> getCards(int number) {
-        Stack<Card> cards = new Stack<>();
-        for (int i = 0; i < number; i++) {
-            cards.push(cards.pop());
-        }
-        return cards;
+        cards.addAll(set);
+        shuffle();
     }
 
     public Card getCard() {
@@ -85,7 +82,20 @@ public class CardDeck {
     }
 
     public void shuffle() {
-        Random rand = new SecureRandom();
-        int number = rand.nextInt(52);
+        Random random = new Random();
+        int numberOfShuffle = random.nextInt(100) + 30;
+        int randStart = random.nextInt(CARD_NUMBER);
+        Card removed = cards.remove(randStart);
+        for (int i = 0; i < numberOfShuffle; i++) {
+            removed = addRemove(random, removed);
+        }
+        cards.push(removed);
+    }
+
+    private Card addRemove(Random random, Card card) {
+        int intRand = random.nextInt(CARD_NUMBER - 1);
+        Card removed = cards.remove(intRand);
+        cards.add(intRand, card);
+        return removed;
     }
 }

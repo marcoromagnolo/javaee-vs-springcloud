@@ -2,6 +2,7 @@ package jeevsspring.wildfly.poker.manager.engine.game;
 
 import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
+import jeevsspring.wildfly.poker.manager.engine.hand.CardDeck;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
 import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
@@ -12,6 +13,7 @@ public class TexasHoldem extends Game {
     private final TableSettings settings;
     private final BoClient boClient;
 
+    private CardDeck cardDeck;
     private int smallBlind;
     private int bigBlind;
     private Phase phase;
@@ -21,6 +23,7 @@ public class TexasHoldem extends Game {
        this.tableId = tableId;
        this.settings = settings;
        this.boClient = boClient;
+       this.cardDeck = new CardDeck();
     }
 
     @Override
