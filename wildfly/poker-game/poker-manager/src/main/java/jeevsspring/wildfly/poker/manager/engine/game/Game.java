@@ -1,16 +1,20 @@
 package jeevsspring.wildfly.poker.manager.engine.game;
 
 import jeevsspring.wildfly.poker.common.TableSettings;
+import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
 import jeevsspring.wildfly.poker.manager.engine.hand.CardDeck;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
 import jeevsspring.wildfly.poker.manager.engine.hand.Pot;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
+import jeevsspring.wildfly.poker.manager.engine.table.Seats;
 import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
 
 import java.util.*;
 
-public abstract class Game {
+public abstract class Game<E extends GameAction> {
+
+    private final BoClient boClient;
 
     // Table Id
     private final String tableId;
@@ -22,7 +26,7 @@ public abstract class Game {
     private long startTimeout;
 
     // List of game actions result to return players
-    private Queue<GameAction> queue;
+    private Queue<E> queue;
 
     // True when hand is running
     private boolean handRunning;
@@ -55,7 +59,7 @@ public abstract class Game {
     private CardDeck cardDeck;
 
     // Seats associated to playerId (array index is the seat number)
-    private String[] seats;
+    private Seats seats;
 
     // Community Cards
     private List<Card> communityCards;
@@ -63,18 +67,20 @@ public abstract class Game {
     // List of Pots
     private List<Pot> pots;
 
-    // index of the next player player on hand
-    private int first;
+    // index of the next player on hand
+    private int turn;
 
+    // index of the player dealer
     private int dealer;
 
-    public Game(String tableId, TableSettings settings) {
+    public Game(String tableId, TableSettings settings, BoClient boClient) {
         this.tableId = tableId;
         setSettings(settings);
+        this.boClient = boClient;
         this.players = new HashMap<>();
         this.visitors = new ArrayList<>();
         this.cardDeck = new CardDeck();
-        this.seats = new String[numberOfSeats];
+        this.seats = new Seats(numberOfSeats);
         this.communityCards = new ArrayList<>();
         this.pots = new ArrayList<>();
     }
@@ -94,6 +100,10 @@ public abstract class Game {
         return tableName;
     }
 
+    public BoClient getBoClient() {
+        return boClient;
+    }
+
     public int getNumberOfSeats() {
         return numberOfSeats;
     }
@@ -106,12 +116,8 @@ public abstract class Game {
         return startTimeout;
     }
 
-    public Queue<GameAction> getQueue() {
+    public Queue<E> getQueue() {
         return queue;
-    }
-
-    protected void addGameAction(GameAction gameAction) {
-
     }
 
     public abstract void action(HandAction action);
@@ -130,7 +136,7 @@ public abstract class Game {
         return roundRunning;
     }
 
-    public void setRoundRunning(boolean roundRunning) {
+    protected void setRoundRunning(boolean roundRunning) {
         this.roundRunning = roundRunning;
     }
 
@@ -146,7 +152,7 @@ public abstract class Game {
         return starting;
     }
 
-    public void setStarting(boolean starting) {
+    protected void setStarting(boolean starting) {
         this.starting = starting;
     }
 
@@ -191,7 +197,7 @@ public abstract class Game {
         return cardDeck;
     }
 
-    public String[] getSeats() {
+    public Seats getSeats() {
         return seats;
     }
 
@@ -203,29 +209,37 @@ public abstract class Game {
         return pots;
     }
 
-    public int getFirst() {
-        return first;
+    public int getTurn() {
+        return turn;
     }
 
-    public void setFirst(int first) {
-        this.first = first;
+    protected void setTurn(int turn) {
+        this.turn = turn;
     }
 
     public int getDealer() {
         return dealer;
     }
 
-    public void setDealer(int dealer) {
+    protected void setDealer(int dealer) {
         this.dealer = dealer;
     }
 
-    public int randomSeat() {
+    public int randomPlayerIndex() {
         Random r = new Random();
-        return r.nextInt(numberOfSeats);
+        return r.nextInt(getPlayers().size());
     }
 
-    public int nextSeat(int seat) {
+    public int nextPlayerIndex(int seat) {
         if (seat < 0) seat = 0;
-        return (seat + 1) % numberOfSeats;
+        return (seat + 1) % getPlayers().size();
+    }
+
+    protected void calculatePots() {
+
+    }
+
+    protected void reward() {
+
     }
 }

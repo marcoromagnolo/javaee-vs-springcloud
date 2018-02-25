@@ -1,8 +1,6 @@
 package jeevsspring.wildfly.poker.manager.engine.game;
 
-import jeevsspring.wildfly.poker.common.GameType;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
-import jeevsspring.wildfly.poker.manager.engine.hand.CardDeck;
 import jeevsspring.wildfly.poker.manager.engine.hand.Pot;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
 
@@ -16,13 +14,12 @@ public class GameAction {
 
     private long id;
     private String handId;
-    private Map<String, String> visitors;
+    private List<String> visitors;
     private Map<String, Player> players;
     private String[] seats;
-    private GameType game;
     private List<Card> communityCards;
     private List<Pot> pots;
-    private String turn;
+    private int turn;
 
     public GameAction(String handId) {
         this.id = System.nanoTime();
@@ -37,11 +34,11 @@ public class GameAction {
         return handId;
     }
 
-    public Map<String, String> getVisitors() {
+    public List<String> getVisitors() {
         return visitors;
     }
 
-    public void setVisitors(Map<String, String> visitors) {
+    public void setVisitors(List<String> visitors) {
         this.visitors = visitors;
     }
 
@@ -61,14 +58,6 @@ public class GameAction {
         this.seats = seats;
     }
 
-    public GameType getGame() {
-        return game;
-    }
-
-    public void setGame(GameType game) {
-        this.game = game;
-    }
-
     public List<Card> getCommunityCards() {
         return communityCards;
     }
@@ -85,11 +74,11 @@ public class GameAction {
         this.pots = pots;
     }
 
-    public String getTurn() {
+    public int getTurn() {
         return turn;
     }
 
-    public void setTurn(String turn) {
+    public void setTurn(int turn) {
         this.turn = turn;
     }
 }

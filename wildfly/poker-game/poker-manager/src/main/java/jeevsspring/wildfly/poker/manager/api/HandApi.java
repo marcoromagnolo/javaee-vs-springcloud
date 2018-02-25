@@ -151,44 +151,6 @@ public class HandApi {
     }
 
     @POST
-    @Path("/sitin")
-    public SitinOut sitin(SitinIn in) {
-        SitinOut out = new SitinOut();
-        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        try {
-            handQueue.insert(HandActionType.SIT_IN, in.getTableId(), in.getHandId(), playerId, in.getSeat());
-            List<ActionOut> actions = toActions(in.getTableId(), playerId);
-            out.setActions(actions);
-            out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
-        } catch (PMException e) {
-            logger.error(e.getMessage(), e);
-            out.setError(true);
-            out.setErrorCode("GAME_NOT_STARTED");
-        }
-        return out;
-    }
-
-    @POST
-    @Path("/sitout")
-    public SitoutOut sitout(SitoutIn in) {
-        SitoutOut out = new SitoutOut();
-        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        try {
-            handQueue.insert(HandActionType.SIT_OUT, in.getTableId(), in.getHandId(), playerId, null);
-            List<ActionOut> actions = toActions(in.getTableId(), playerId);
-            out.setActions(actions);
-            out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
-        } catch (PMException e) {
-            logger.error(e.getMessage(), e);
-            out.setError(true);
-            out.setErrorCode("GAME_NOT_STARTED");
-        }
-        return out;
-    }
-
-    @POST
     @Path("/sync")
     public SyncOut sync(SyncIn in) {
         SyncOut out = new SyncOut();
@@ -204,7 +166,7 @@ public class HandApi {
         Queue<GameAction> actions = gameActions.get(tableId, playerId);
         List<ActionOut> out = new ArrayList<>();
         for (GameAction action : actions) {
-            boolean isVisitor = action.getVisitors().containsKey(playerId);
+            boolean isVisitor = action.getVisitors().contains(playerId);
             ActionOut actionOut = newGameAction(action, playerId, isVisitor);
             actionOut.setTableId(tableId);
             out.add(actionOut);

@@ -5,6 +5,9 @@ package jeevsspring.wildfly.poker.manager.engine.table;
  */
 public enum TableActionType {
 
-    BUY_IN, BUY_OUT
+    BUY_IN,
+    BUY_OUT,
+    SIT_IN,
+    SIT_OUT
 
 }

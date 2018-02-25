@@ -12,24 +12,24 @@ import java.util.Queue;
  */
 @Singleton
 @LocalBean
-public class GameActions {
+public class GameActions <E extends GameAction> {
 
-    private Map<String, Queue<GameAction>> actions;
+    private Map<String, Queue<E>> actions;
 
     @PostConstruct
     public void init() {
         this.actions = new HashMap<>();
     }
 
-    public Queue<GameAction> get(String tableId, String playerId) {
+    public Queue<E> get(String tableId, String playerId) {
         return actions.get(tableId);
     }
 
-    public void add(String tableId, GameAction action) {
+    public void add(String tableId, E action) {
         actions.get(tableId).offer(action);
     }
 
-    public void addAll(String tableId, Queue<GameAction> queue) {
+    public void addAll(String tableId, Queue<E> queue) {
         actions.get(tableId).addAll(queue);
     }
 }

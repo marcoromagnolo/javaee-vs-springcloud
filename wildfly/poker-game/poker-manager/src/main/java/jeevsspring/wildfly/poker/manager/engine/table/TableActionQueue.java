@@ -1,6 +1,11 @@
 package jeevsspring.wildfly.poker.manager.engine.table;
 
+import jeevsspring.wildfly.poker.manager.engine.game.Game;
+import jeevsspring.wildfly.poker.manager.engine.game.Games;
+import jeevsspring.wildfly.poker.manager.exception.PMException;
+
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 import java.util.HashMap;
@@ -10,6 +15,9 @@ import java.util.Queue;
 @Singleton
 @LocalBean
 public class TableActionQueue {
+
+    @EJB
+    private Games games;
 
     private Map<String, Queue<TableAction>> actions;
 
@@ -22,7 +30,9 @@ public class TableActionQueue {
         return actions.get(tableId).isEmpty();
     }
 
-    public boolean insert(TableActionType actionType, String tableId, String playerId, String option) {
+    public boolean insert(TableActionType actionType, String tableId, String playerId, String option) throws PMException {
+        Game game = games.get(tableId);
+        if (!game.isRunning()) throw new PMException();
         TableAction hand = new TableAction(actionType, playerId, option);
         return actions.get(tableId).offer(hand);
     }

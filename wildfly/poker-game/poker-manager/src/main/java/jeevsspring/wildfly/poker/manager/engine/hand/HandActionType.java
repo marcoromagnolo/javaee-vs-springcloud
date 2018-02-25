@@ -20,15 +20,5 @@ public enum HandActionType {
     /**
      * Fold in a hand.
      */
-    FOLD,
-    /**
-     * Fold in a hand and show your cards.
-     */
-    FOLD_AND_SHOW,
-    /**
-     * Show the cards in showdown.
-     */
-    SHOW,
-    SIT_IN,
-    SIT_OUT
+    FOLD
 }
