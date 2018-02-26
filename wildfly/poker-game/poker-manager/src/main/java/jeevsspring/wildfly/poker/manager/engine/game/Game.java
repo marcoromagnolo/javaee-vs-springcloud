@@ -1,5 +1,6 @@
 package jeevsspring.wildfly.poker.manager.engine.game;
 
+import jeevsspring.wildfly.poker.common.GameType;
 import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
@@ -14,19 +15,25 @@ import java.util.*;
 
 public abstract class Game<E extends GameAction> {
 
-    private final BoClient boClient;
-
     // Table Id
     private final String tableId;
+
+    private String handId;
 
     // Table Settings
     private String tableName;
     private int numberOfSeats;
     private long actionTimeout;
     private long startTimeout;
+    private GameType gameType;
 
-    // List of game actions result to return players
+    // Back-Office Client
+    private final BoClient boClient;
+
+    // List of game actions result to return to players
     private Queue<E> queue;
+
+    private Map<String, HandAction> temp;
 
     // True when hand is running
     private boolean handRunning;
@@ -39,6 +46,9 @@ public abstract class Game<E extends GameAction> {
 
     // Game will start when start is over
     private boolean starting;
+
+    // True if game can be started
+    private boolean startable;
 
     // Settings to update for this game
     private TableSettings updateSettings;
@@ -85,6 +95,10 @@ public abstract class Game<E extends GameAction> {
         this.pots = new ArrayList<>();
     }
 
+    public abstract void action(HandAction action);
+
+    public abstract void action(TableAction action);
+
     public void setSettings(TableSettings settings) {
         this.tableName = settings.getName();
         this.numberOfSeats = settings.getNumberOfSeats();
@@ -116,13 +130,13 @@ public abstract class Game<E extends GameAction> {
         return startTimeout;
     }
 
+    public GameType getGameType() {
+        return gameType;
+    }
+
     public Queue<E> getQueue() {
         return queue;
     }
-
-    public abstract void action(HandAction action);
-
-    public abstract void action(TableAction action);
 
     public boolean isHandRunning() {
         return handRunning;
@@ -156,8 +170,21 @@ public abstract class Game<E extends GameAction> {
         this.starting = starting;
     }
 
+    public boolean isStartable() {
+        return startable;
+    }
+
+    public void setStartable(boolean startable) {
+        this.startable = startable;
+    }
+
     public void start() {
         startTime = System.currentTimeMillis();
+        startable = false;
+    }
+
+    public boolean isStarted() {
+        return startTime != null;
     }
 
     public Long getStartTime() {
@@ -183,6 +210,10 @@ public abstract class Game<E extends GameAction> {
 
     public Long getStopTime() {
         return stopTime;
+    }
+
+    public void delete() {
+        stop();
     }
 
     public Map<String, Player> getPlayers() {
@@ -223,16 +254,6 @@ public abstract class Game<E extends GameAction> {
 
     protected void setDealer(int dealer) {
         this.dealer = dealer;
-    }
-
-    public int randomPlayerIndex() {
-        Random r = new Random();
-        return r.nextInt(getPlayers().size());
-    }
-
-    public int nextPlayerIndex(int seat) {
-        if (seat < 0) seat = 0;
-        return (seat + 1) % getPlayers().size();
     }
 
     protected void calculatePots() {

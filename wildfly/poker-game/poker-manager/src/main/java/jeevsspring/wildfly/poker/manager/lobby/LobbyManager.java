@@ -3,7 +3,6 @@ package jeevsspring.wildfly.poker.manager.lobby;
 import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
-import jeevsspring.wildfly.poker.manager.engine.game.GameActions;
 import jeevsspring.wildfly.poker.manager.engine.game.Games;
 import jeevsspring.wildfly.poker.manager.engine.game.texasholdem.THGame;
 import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
@@ -25,17 +24,13 @@ public class LobbyManager {
     private BoClient boClient;
 
     @EJB
-    private Games games;
+    private Games<Game> games;
 
     @EJB
     private LobbyTables lobbyTables;
 
     @EJB
     private TableActionQueue tableQueue;
-
-    @EJB
-    private GameActions gameActions;
-
 
     @PostConstruct
     public void init() {
@@ -47,7 +42,7 @@ public class LobbyManager {
             if (!lobbyTables.getCreated().isEmpty()) {
                 for (String tableId : lobbyTables.getCreated().keySet()) {
                     TableSettings settings = lobbyTables.getCreated().get(tableId);
-                    Game game = null;
+                    THGame game = null;
                     switch (settings.getGameType()) {
 
                         case TEXAS_HOLDEM:
@@ -70,16 +65,16 @@ public class LobbyManager {
                 }
             }
 
-            // Check and drop tables games (async)
-            if (!lobbyTables.getDropped().isEmpty()) {
+            // Check and delete tables games (async)
+            if (!lobbyTables.getDeleted().isEmpty()) {
                 for (String tableId : lobbyTables.getUpdated().keySet()) {
-                    games.get(tableId).stop();
+                    games.get(tableId).delete();
                 }
             }
 
             // Consume all games not playing with table queue
             for (Game game : games.getAll()) {
-                if (!game.isRunning() && !tableQueue.isEmpty(game.getTableId())) {
+                if (!game.isHandRunning() && !tableQueue.isEmpty(game.getTableId())) {
                     consumeTableQueue(game.getTableId(), game);
                 }
             }
@@ -90,7 +85,6 @@ public class LobbyManager {
         while (!tableQueue.isEmpty(tableId)) {
             TableAction tableAction = tableQueue.poll(tableId);
             game.action(tableAction);
-            gameActions.addAll(tableId, game.getQueue()); // Action to return players
         }
     }
 

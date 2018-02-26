@@ -22,13 +22,13 @@ public class LobbyTables {
 
     private Map<String, TableSettings> updated;
 
-    private List<String> dropped;
+    private List<String> deleted;
 
     @PostConstruct
     public void init() {
         this.created = new HashMap<>();
         this.updated = new HashMap<>();
-        this.dropped = new ArrayList<>();
+        this.deleted = new ArrayList<>();
     }
 
     /**
@@ -51,8 +51,8 @@ public class LobbyTables {
      * Get drop tables
      * @return
      */
-    public List<String> getDropped() {
-        return dropped;
+    public List<String> getDeleted() {
+        return deleted;
     }
 
     /**
@@ -79,8 +79,8 @@ public class LobbyTables {
      * Drop table
      * @param tableId
      */
-    public void drop(String tableId) {
-        dropped.add(tableId);
+    public void delete(String tableId) {
+        deleted.add(tableId);
     }
 
 }

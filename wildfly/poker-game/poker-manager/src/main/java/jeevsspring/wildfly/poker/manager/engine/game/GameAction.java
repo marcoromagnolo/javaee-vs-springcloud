@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * @author Marco Romagnolo
  */
-public class GameAction {
+public abstract class GameAction {
 
     private long id;
     private String handId;

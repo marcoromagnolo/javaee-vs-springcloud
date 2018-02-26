@@ -14,7 +14,6 @@ import jeevsspring.wildfly.poker.manager.api.json.table.BuyinOut;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutIn;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutOut;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
-import jeevsspring.wildfly.poker.manager.engine.game.GameActions;
 import jeevsspring.wildfly.poker.manager.engine.game.Games;
 import jeevsspring.wildfly.poker.manager.engine.table.TableActionQueue;
 import jeevsspring.wildfly.poker.manager.engine.table.TableActionType;
@@ -42,9 +41,6 @@ public class TableApi {
 
     @EJB
     private LobbyPlayers lobbyPlayers;
-
-    @EJB
-    private GameActions gameActions;
 
     @EJB
     private Games games;

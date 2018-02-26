@@ -12,25 +12,25 @@ import java.util.Map;
  */
 @Singleton
 @LocalBean
-public class Games {
+public class Games<E extends Game> {
 
-    private Map<String, Game> instances;
+    private Map<String, E> instances;
 
     @PostConstruct
     public void init() {
         instances = new HashMap<>();
     }
 
-    public void add(Game game) {
+    public void add(E game) {
         instances.put(game.getTableId(), game);
     }
 
-    public Collection<Game> getAll() {
+    public Collection<E> getAll() {
         return instances.values();
     }
 
 
-    public Game get(String tableId) {
+    public E get(String tableId) {
         return instances.get(tableId);
     }
 }

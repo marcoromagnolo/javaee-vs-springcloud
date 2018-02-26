@@ -3,11 +3,11 @@ package jeevsspring.wildfly.poker.manager.api;
 import jeevsspring.wildfly.poker.manager.api.json.ActionOut;
 import jeevsspring.wildfly.poker.manager.api.json.Status;
 import jeevsspring.wildfly.poker.manager.api.json.hand.*;
-import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
 import jeevsspring.wildfly.poker.manager.engine.game.GameAction;
-import jeevsspring.wildfly.poker.manager.engine.game.GameActions;
 import jeevsspring.wildfly.poker.manager.engine.game.Games;
+import jeevsspring.wildfly.poker.manager.engine.game.texasholdem.THGame;
+import jeevsspring.wildfly.poker.manager.engine.game.texasholdem.THGameAction;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandActionQueue;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandActionType;
@@ -31,12 +31,9 @@ import java.util.Queue;
 @Path("/hand")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class HandApi {
+public class HandApi<E extends Game> {
 
     private final Logger logger = Logger.getLogger(getClass());
-
-    @EJB
-    private BoClient boClient;
 
     @EJB
     private HandActionQueue handQueue;
@@ -45,7 +42,7 @@ public class HandApi {
     private LobbyPlayers lobbyPlayers;
 
     @EJB
-    private GameActions gameActions;
+    private Games<E> games;
 
     @GET
     @Path("/test")
@@ -163,9 +160,9 @@ public class HandApi {
     }
 
     private List<ActionOut> toActions(String tableId, String playerId) {
-        Queue<GameAction> actions = gameActions.get(tableId, playerId);
         List<ActionOut> out = new ArrayList<>();
-        for (GameAction action : actions) {
+        THGame game = (THGame) games.get(tableId);
+        for (GameAction action : game.getQueue()) {
             boolean isVisitor = action.getVisitors().contains(playerId);
             ActionOut actionOut = newGameAction(action, playerId, isVisitor);
             actionOut.setTableId(tableId);

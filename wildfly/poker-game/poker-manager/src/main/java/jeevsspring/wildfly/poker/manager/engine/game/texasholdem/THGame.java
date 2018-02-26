@@ -5,6 +5,7 @@ import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
+import jeevsspring.wildfly.poker.manager.engine.player.Turns;
 import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
 
 import java.util.ArrayList;
@@ -12,21 +13,17 @@ import java.util.List;
 
 public class THGame extends Game<THGameAction> {
 
-    private final String tableId;
-    private final TableSettings settings;
-
     private int smallBlind;
     private int bigBlind;
     private RoundPhase roundPhase;
     private Long bet;
-    private List<Integer> playersIndex = new ArrayList<>();
-    private List<Integer> hand = new ArrayList<>();
-    private List<Integer> round = new ArrayList<>();
+    private Turns turns;
+    private List<Integer> hand;
+    private List<Integer> round;
 
     public THGame(String tableId, TableSettings settings, BoClient boClient) {
        super(tableId, settings, boClient);
-       this.tableId = tableId;
-       this.settings = settings;
+
     }
 
     @Override
@@ -38,10 +35,8 @@ public class THGame extends Game<THGameAction> {
             waitStart();
             setRunning(true);
 
-            preparePlayersIndex();
-
             // Set Random dealer
-            int dealerIndex = randomPlayerIndex();
+            int dealerIndex = turns.randomIndex();
             setDealer(dealerIndex);
         }
 
@@ -49,11 +44,11 @@ public class THGame extends Game<THGameAction> {
         if (!isHandRunning()) {
 
             // Set Dealer
-            int dealerIndex = nextPlayerIndex(getDealer());
+            int dealerIndex = turns.nextIndex(getDealer());
             setDealer(dealerIndex);
 
             // Prepare Players turn for hand
-            prepareHand(dealerIndex);
+            hand = turns.generate(dealerIndex);
 
             // Set SmallBlind, BigBlind and First to play
             smallBlind = hand.get(0);
@@ -126,13 +121,18 @@ public class THGame extends Game<THGameAction> {
                     }
 
                     // Prepare Players turns for round
-                    prepareRound(getTurn());
+                    round = turns.generate(getTurn());
                     setRoundRunning(true);
             }
         }
 
         // Play the Betting Round
         if (isRoundRunning()) {
+            int seat = turns.getSeat(getTurn());
+            String playerIdTurn = getSeats().get(seat);
+            if (playerIdTurn.equals(action.getPlayerId())) {
+
+            }
             switch (action.getActionType()) {
 
                 case RAISE:
@@ -151,45 +151,6 @@ public class THGame extends Game<THGameAction> {
                     fold(action.getHandId(), action.getPlayerId());
                     break;
             }
-        }
-    }
-
-    /**
-     * Assign a turn for each seat with a player
-     */
-    private void preparePlayersIndex() {
-        playersIndex.clear();
-        for (int i = 0; i < getNumberOfSeats(); i++) {
-            String playerId = getSeats().get(i);
-            if (playerId != null) {
-                playersIndex.add(i);
-            }
-        }
-    }
-
-    /**
-     * Prepare round by assigning turn order
-     * @param index
-     */
-    private void prepareRound(int index) {
-        for (int i = 0; i < getPlayers().size(); i++) {
-            index = nextPlayerIndex(index);
-            round.add(index);
-        }
-    }
-
-    /**
-     * Prepare hand by assigning dealer player to index 0
-     * SmallBlind to index 1 and BigBlind to index 2
-     * Player that have the turn have the index 3 if number of player is >= 3
-     * @param dealerIndex
-     */
-    private void prepareHand(int dealerIndex) {
-        int index = dealerIndex;
-        hand.clear();
-        for (int i = 0; i < getPlayers().size(); i++) {
-            index = nextPlayerIndex(index);
-            hand.add(index);
         }
     }
 
@@ -269,10 +230,10 @@ public class THGame extends Game<THGameAction> {
         getPlayers().put(playerId, player);
 
         // Prepare turns
-        preparePlayersIndex();
+        turns = new Turns(getPlayers().size(), getSeats());
 
         if (getPlayers().size() >= 2 && !isRunning()) {
-            start();
+            setStartable(true);
         }
     }
 
@@ -288,7 +249,11 @@ public class THGame extends Game<THGameAction> {
         getPlayers().remove(playerId);
 
         // Prepare turns
-        preparePlayersIndex();
+        turns = new Turns(getPlayers().size(), getSeats());
+
+        if (getPlayers().size() < 2 && isRunning()) {
+            stop();
+        }
     }
 
     private void buyin(String playerId, String amount) {

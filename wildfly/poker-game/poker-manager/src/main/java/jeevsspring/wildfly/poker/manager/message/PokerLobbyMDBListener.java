@@ -39,7 +39,7 @@ public class PokerLobbyMDBListener implements MessageListener {
                         lobbyTables.create(lobbyMessage.getTableSettings());
                         break;
                     case DROP:
-                        lobbyTables.drop(lobbyMessage.getTableId());
+                        lobbyTables.delete(lobbyMessage.getTableId());
                         break;
                     case UPDATE:
                         lobbyTables.update(lobbyMessage.getTableId(), lobbyMessage.getTableSettings());

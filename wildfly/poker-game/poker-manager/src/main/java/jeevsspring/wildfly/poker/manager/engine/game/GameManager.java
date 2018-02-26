@@ -21,16 +21,22 @@ public class GameManager {
     private TableActionQueue tableQueue;
 
     @EJB
-    private GameActions gameActions;
-
-    @EJB
-    private Games games;
+    private Games<Game> games;
 
     @PostConstruct
     private void init() {
 
         // Make this job forever
         while (true) {
+
+            // Start all startable games
+            for (Game game : games.getAll()) {
+                if (game.isStartable()) {
+                    game.start();
+                }
+            }
+
+            // Check Hand Queue
             if (!handQueue.isEmpty()) {
 
                 // Poll hand action made from players
@@ -38,9 +44,8 @@ public class GameManager {
                 String tableId = handAction.getTableId();
                 Game game = games.get(tableId);
                 game.action(handAction);
-                gameActions.addAll(tableId, game.getQueue()); // Action to return players
 
-                // Wait Hand Finished to do buyin and buyout
+                // Wait Hand Finished to do buyin, buyout, sitin and sitout
                 if (!game.isRoundRunning()) {
                     consumeTableQueue(tableId, game);
                 }
@@ -52,7 +57,6 @@ public class GameManager {
         while (!tableQueue.isEmpty(tableId)) {
             TableAction tableAction = tableQueue.poll(tableId);
             game.action(tableAction);
-            gameActions.addAll(tableId, game.getQueue()); // Action to return players
         }
     }
 }
