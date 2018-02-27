@@ -84,6 +84,7 @@ public class TableApi {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             tableQueue.insert(TableActionType.BUY_IN, in.getTableId(), playerId, in.getAmount());
+            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
         } catch (PMException e) {
@@ -101,6 +102,7 @@ public class TableApi {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             tableQueue.insert(TableActionType.BUY_OUT, in.getTableId(), playerId, null);
+            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
         } catch (PMException e) {
@@ -118,6 +120,7 @@ public class TableApi {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             tableQueue.insert(TableActionType.SIT_IN, in.getTableId(), playerId, in.getSeat());
+            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
         } catch (PMException e) {
@@ -135,6 +138,7 @@ public class TableApi {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             tableQueue.insert(TableActionType.SIT_OUT, in.getTableId(), playerId, null);
+            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
         } catch (PMException e) {

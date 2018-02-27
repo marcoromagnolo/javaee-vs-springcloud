@@ -10,12 +10,10 @@ import jeevsspring.wildfly.poker.manager.engine.table.TableActionQueue;
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
+import javax.ejb.*;
 
-@Stateless
-@LocalBean
+@Singleton
+@Startup
 public class LobbyManager {
 
     private final Logger logger = Logger.getLogger(getClass());
@@ -28,9 +26,6 @@ public class LobbyManager {
 
     @EJB
     private LobbyTables lobbyTables;
-
-    @EJB
-    private TableActionQueue tableQueue;
 
     @PostConstruct
     public void init() {
@@ -71,20 +66,6 @@ public class LobbyManager {
                     games.get(tableId).delete();
                 }
             }
-
-            // Consume all games not playing with table queue
-            for (Game game : games.getAll()) {
-                if (!game.isHandRunning() && !tableQueue.isEmpty(game.getTableId())) {
-                    consumeTableQueue(game.getTableId(), game);
-                }
-            }
-        }
-    }
-
-    private void consumeTableQueue(String tableId, Game game) {
-        while (!tableQueue.isEmpty(tableId)) {
-            TableAction tableAction = tableQueue.poll(tableId);
-            game.action(tableAction);
         }
     }
 

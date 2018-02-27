@@ -3,9 +3,7 @@ package jeevsspring.wildfly.poker.manager.engine.game;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Marco Romagnolo
@@ -25,8 +23,8 @@ public class Games<E extends Game> {
         instances.put(game.getTableId(), game);
     }
 
-    public Collection<E> getAll() {
-        return instances.values();
+    public List<E> getAll() {
+        return new ArrayList<>(instances.values());
     }
 
 

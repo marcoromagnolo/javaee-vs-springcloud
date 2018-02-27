@@ -1,14 +1,11 @@
 package jeevsspring.wildfly.poker.manager.engine.hand;
 
-import jeevsspring.wildfly.poker.manager.engine.game.Game;
-import jeevsspring.wildfly.poker.manager.engine.game.Games;
-import jeevsspring.wildfly.poker.manager.exception.PMException;
-
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
 
 /**
@@ -18,33 +15,25 @@ import java.util.Queue;
 @LocalBean
 public class HandActionQueue {
 
-    @EJB
-    private Games games;
-
-    private Queue<HandAction> actions;
+    private Map<String, Queue<HandAction>> map;
 
     @PostConstruct
     public void init() {
-        actions = new ArrayDeque<>();
+        map = new HashMap<>();
     }
 
     public boolean isEmpty() {
-        return actions.isEmpty();
+        return map.isEmpty();
     }
 
-    public boolean insert(HandActionType actionType, String tableId, String handId, String playerId, String option) throws PMException {
-        Game game = games.get(tableId);
-        if (!game.isRunning()) throw new PMException();
+    public boolean insert(HandActionType actionType, String tableId, String handId, String playerId, String option) {
+        if (!map.containsKey(tableId)) map.put(tableId, new ArrayDeque<>());
         HandAction hand = new HandAction(actionType, tableId, handId, playerId, option);
-        return actions.offer(hand);
+        return map.get(tableId).offer(hand);
     }
 
-    public HandAction examine() {
-        return actions.peek();
-    }
-
-    public HandAction poll() {
-        return actions.poll();
+    public Queue<HandAction> poll(String tableId) {
+        return map.get(tableId);
     }
 
 }

@@ -59,6 +59,7 @@ public class HandApi<E extends Game> {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             handQueue.insert(HandActionType.BET, in.getTableId(), in.getHandId(), playerId, in.getAmount());
+            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
@@ -78,6 +79,7 @@ public class HandApi<E extends Game> {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             handQueue.insert(HandActionType.CALL, in.getTableId(), in.getHandId(), playerId, null);
+            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
@@ -97,6 +99,7 @@ public class HandApi<E extends Game> {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             handQueue.insert(HandActionType.CHECK, in.getTableId(), in.getHandId(), playerId, null);
+            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
@@ -116,6 +119,7 @@ public class HandApi<E extends Game> {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             handQueue.insert(HandActionType.RAISE, in.getTableId(), in.getHandId(), playerId, in.getAmount());
+            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
@@ -135,6 +139,7 @@ public class HandApi<E extends Game> {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             handQueue.insert(HandActionType.FOLD, in.getTableId(), in.getHandId(), playerId, null);
+            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());

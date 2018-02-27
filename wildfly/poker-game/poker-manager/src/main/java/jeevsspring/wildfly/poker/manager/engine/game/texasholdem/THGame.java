@@ -10,6 +10,7 @@ import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 public class THGame extends Game<THGameAction> {
 
@@ -23,7 +24,6 @@ public class THGame extends Game<THGameAction> {
 
     public THGame(String tableId, TableSettings settings, BoClient boClient) {
        super(tableId, settings, boClient);
-
     }
 
     @Override
@@ -32,7 +32,7 @@ public class THGame extends Game<THGameAction> {
         if (!isRunning() && getPlayers().size() >= 2) {
 
             // Wait some seconds before game running
-            waitStart();
+            // waitStart();
             setRunning(true);
 
             // Set Random dealer
@@ -129,28 +129,39 @@ public class THGame extends Game<THGameAction> {
         // Play the Betting Round
         if (isRoundRunning()) {
             int seat = turns.getSeat(getTurn());
-            String playerIdTurn = getSeats().get(seat);
-            if (playerIdTurn.equals(action.getPlayerId())) {
+            String playerId = getSeats().get(seat);
 
+            // Check temp on first
+            if (getTemp().containsKey(playerId) && getTemp().get(playerId).getHandId().equals(getHandId())) {
+                HandAction tempAction = getTemp().remove(playerId);
+                round(tempAction);
             }
-            switch (action.getActionType()) {
 
-                case RAISE:
-                    raise(action.getHandId(), action.getPlayerId(), action.getOption());
-                    break;
-                case BET:
-                    bet(action.getHandId(), action.getPlayerId(), action.getOption());
-                    break;
-                case CALL:
-                    call(action.getHandId(), action.getPlayerId());
-                    break;
-                case CHECK:
-                    check(action.getHandId(), action.getPlayerId());
-                    break;
-                case FOLD:
-                    fold(action.getHandId(), action.getPlayerId());
-                    break;
+            // go ahead with queue
+            if (playerId.equals(action.getPlayerId()) && action.getHandId().equals(getHandId())) {
+                round(action);
             }
+        }
+    }
+
+    private void round(HandAction action) {
+        switch (action.getActionType()) {
+
+            case RAISE:
+                raise(action.getHandId(), action.getPlayerId(), action.getOption());
+                break;
+            case BET:
+                bet(action.getHandId(), action.getPlayerId(), action.getOption());
+                break;
+            case CALL:
+                call(action.getHandId(), action.getPlayerId());
+                break;
+            case CHECK:
+                check(action.getHandId(), action.getPlayerId());
+                break;
+            case FOLD:
+                fold(action.getHandId(), action.getPlayerId());
+                break;
         }
     }
 
@@ -231,10 +242,6 @@ public class THGame extends Game<THGameAction> {
 
         // Prepare turns
         turns = new Turns(getPlayers().size(), getSeats());
-
-        if (getPlayers().size() >= 2 && !isRunning()) {
-            setStartable(true);
-        }
     }
 
     private void sitout(String playerId) {
@@ -250,10 +257,6 @@ public class THGame extends Game<THGameAction> {
 
         // Prepare turns
         turns = new Turns(getPlayers().size(), getSeats());
-
-        if (getPlayers().size() < 2 && isRunning()) {
-            stop();
-        }
     }
 
     private void buyin(String playerId, String amount) {

@@ -33,6 +33,7 @@ public abstract class Game<E extends GameAction> {
     // List of game actions result to return to players
     private Queue<E> queue;
 
+    // List of temporary hand action to consume by playerId
     private Map<String, HandAction> temp;
 
     // True when hand is running
@@ -44,20 +45,11 @@ public abstract class Game<E extends GameAction> {
     // True if game is running playing
     private boolean running;
 
-    // Game will start when start is over
-    private boolean starting;
-
-    // True if game can be started
-    private boolean startable;
-
     // Settings to update for this game
     private TableSettings updateSettings;
 
     // Time of start
     private Long startTime;
-
-    // Time of stop
-    private Long stopTime;
 
     // List of Players
     private Map<String, Player> players;
@@ -93,11 +85,26 @@ public abstract class Game<E extends GameAction> {
         this.seats = new Seats(numberOfSeats);
         this.communityCards = new ArrayList<>();
         this.pots = new ArrayList<>();
+        this.startTime = System.currentTimeMillis();
     }
 
-    public abstract void action(HandAction action);
+    public void doActions(Queue<HandAction> handActions, Queue<TableAction> tableActions) {
+        // Hand action
+        while (handActions.peek() != null) {
+            HandAction action = handActions.poll();
+            action(action);
+        }
 
-    public abstract void action(TableAction action);
+        // Table action
+        while (tableActions.peek() != null) {
+            TableAction action = tableActions.poll();
+            action(action);
+        }
+    }
+
+    protected abstract void action(HandAction action);
+
+    protected abstract void action(TableAction action);
 
     public void setSettings(TableSettings settings) {
         this.tableName = settings.getName();
@@ -108,6 +115,10 @@ public abstract class Game<E extends GameAction> {
 
     public String getTableId() {
         return tableId;
+    }
+
+    public String getHandId() {
+        return handId;
     }
 
     public String getTableName() {
@@ -138,6 +149,10 @@ public abstract class Game<E extends GameAction> {
         return queue;
     }
 
+    public Map<String, HandAction> getTemp() {
+        return temp;
+    }
+
     public boolean isHandRunning() {
         return handRunning;
     }
@@ -162,58 +177,20 @@ public abstract class Game<E extends GameAction> {
         this.running = running;
     }
 
-    public boolean isStarting() {
-        return starting;
-    }
-
-    protected void setStarting(boolean starting) {
-        this.starting = starting;
-    }
-
-    public boolean isStartable() {
-        return startable;
-    }
-
-    public void setStartable(boolean startable) {
-        this.startable = startable;
-    }
-
-    public void start() {
-        startTime = System.currentTimeMillis();
-        startable = false;
-    }
-
-    public boolean isStarted() {
-        return startTime != null;
-    }
-
-    public Long getStartTime() {
-        return startTime;
-    }
 
     public void waitStart() {
         long now;
         do {
             now = System.currentTimeMillis();
-            starting = true;
         } while (now < startTime + startTimeout);
-        starting = false;
     }
 
     public void update(TableSettings settings) {
         updateSettings = settings;
     }
 
-    public void stop() {
-        stopTime = System.currentTimeMillis();
-    }
-
-    public Long getStopTime() {
-        return stopTime;
-    }
-
     public void delete() {
-        stop();
+
     }
 
     public Map<String, Player> getPlayers() {
