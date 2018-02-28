@@ -5,12 +5,9 @@ import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
+import jeevsspring.wildfly.poker.manager.engine.player.OrderIndex;
 import jeevsspring.wildfly.poker.manager.engine.player.Turns;
 import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
 
 public class THGame extends Game<THGameAction> {
 
@@ -18,12 +15,12 @@ public class THGame extends Game<THGameAction> {
     private int bigBlind;
     private RoundPhase roundPhase;
     private Long bet;
+    private OrderIndex orderIndex;
     private Turns turns;
-    private List<Integer> hand;
-    private List<Integer> round;
 
     public THGame(String tableId, TableSettings settings, BoClient boClient) {
        super(tableId, settings, boClient);
+        orderIndex = new OrderIndex(getSeats());
     }
 
     @Override
@@ -36,26 +33,27 @@ public class THGame extends Game<THGameAction> {
             setRunning(true);
 
             // Set Random dealer
-            int dealerIndex = turns.randomIndex();
-            setDealer(dealerIndex);
+            orderIndex.randomize();
         }
 
         // On hand starting
         if (!isHandRunning()) {
 
             // Set Dealer
-            int dealerIndex = turns.nextIndex(getDealer());
-            setDealer(dealerIndex);
+            orderIndex.next();
+            setDealer(orderIndex.current());
 
             // Prepare Players turn for hand
-            hand = turns.generate(dealerIndex);
+            turns = new Turns(orderIndex.getAll());
 
             // Set SmallBlind, BigBlind and First to play
-            smallBlind = hand.get(0);
-            bigBlind = hand.get(1);
+            smallBlind = orderIndex.get(0);
+            bigBlind = orderIndex.get(1);
             if (getPlayers().size() > 2) {
-                setTurn(hand.get(2));
-            } else setTurn(hand.get(1));
+                turns.set(orderIndex.get(2));
+            } else {
+                turns.set(orderIndex.get(1));
+            }
 
             // Set all instance var for next actions
             setHandRunning(true);
@@ -121,14 +119,13 @@ public class THGame extends Game<THGameAction> {
                     }
 
                     // Prepare Players turns for round
-                    round = turns.generate(getTurn());
                     setRoundRunning(true);
             }
         }
 
         // Play the Betting Round
         if (isRoundRunning()) {
-            int seat = turns.getSeat(getTurn());
+            int seat = orderIndex.getSeatByOrder(turns.current());
             String playerId = getSeats().get(seat);
 
             // Check temp on first
@@ -163,6 +160,7 @@ public class THGame extends Game<THGameAction> {
                 fold(action.getHandId(), action.getPlayerId());
                 break;
         }
+        turns.next();
     }
 
     @Override
@@ -191,7 +189,7 @@ public class THGame extends Game<THGameAction> {
         gameAction.setPlayers(getPlayers());
         gameAction.setPots(getPots());
         gameAction.setSeats(getSeats().toArray());
-        gameAction.setTurn(getTurn());
+        gameAction.setTurn(turns.current());
         gameAction.setVisitors(getVisitors());
         gameAction.setBigBlind(bigBlind);
         gameAction.setSmallBlind(smallBlind);
@@ -227,28 +225,31 @@ public class THGame extends Game<THGameAction> {
     }
 
     private void fold(String handId, String playerId) {
-
+        int seat = getSeats().getByPlayerId(playerId);
+        Integer index = orderIndex.get(seat);
+        Integer turn = turns.getTurnByOrderIndex(index);
+        turns.remove(turn);
     }
 
     private void sitin(String playerId, String seat) {
         // Add player to Seats
         int s = Integer.parseInt(seat);
-        getSeats().set(s ,playerId);
+        getSeats().add(s ,playerId);
 
         // Retrieve Player and add to players
         Player player = getBoClient().getPlayer(playerId);
         player.setSeat(s);
         getPlayers().put(playerId, player);
 
-        // Prepare turns
-        turns = new Turns(getPlayers().size(), getSeats());
+        // Update Player Index
+        orderIndex.update(getSeats());
     }
 
     private void sitout(String playerId) {
         // remove Player from Seats
         for (int i =0; i < getSeats().size(); i++) {
             if (getSeats().get(i).equals(playerId)) {
-                getSeats().unset(i);
+                getSeats().remove(i);
             }
         }
 
@@ -256,7 +257,7 @@ public class THGame extends Game<THGameAction> {
         getPlayers().remove(playerId);
 
         // Prepare turns
-        turns = new Turns(getPlayers().size(), getSeats());
+        orderIndex = new OrderIndex(getSeats());
     }
 
     private void buyin(String playerId, String amount) {

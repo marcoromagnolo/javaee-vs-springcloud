@@ -4,7 +4,9 @@ import jeevsspring.wildfly.poker.manager.engine.hand.HandActionQueue;
 import jeevsspring.wildfly.poker.manager.engine.table.TableActionQueue;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.*;
+import javax.ejb.EJB;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 
 @Singleton
 @Startup

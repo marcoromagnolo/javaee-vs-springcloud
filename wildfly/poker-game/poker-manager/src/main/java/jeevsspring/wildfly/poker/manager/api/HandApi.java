@@ -7,7 +7,6 @@ import jeevsspring.wildfly.poker.manager.engine.game.Game;
 import jeevsspring.wildfly.poker.manager.engine.game.GameAction;
 import jeevsspring.wildfly.poker.manager.engine.game.Games;
 import jeevsspring.wildfly.poker.manager.engine.game.texasholdem.THGame;
-import jeevsspring.wildfly.poker.manager.engine.game.texasholdem.THGameAction;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandActionQueue;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandActionType;
@@ -24,7 +23,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 @Stateless
 @LocalBean

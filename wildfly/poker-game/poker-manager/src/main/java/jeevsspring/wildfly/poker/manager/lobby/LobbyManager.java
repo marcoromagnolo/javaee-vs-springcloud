@@ -5,12 +5,12 @@ import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
 import jeevsspring.wildfly.poker.manager.engine.game.Games;
 import jeevsspring.wildfly.poker.manager.engine.game.texasholdem.THGame;
-import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
-import jeevsspring.wildfly.poker.manager.engine.table.TableActionQueue;
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.*;
+import javax.ejb.EJB;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 
 @Singleton
 @Startup

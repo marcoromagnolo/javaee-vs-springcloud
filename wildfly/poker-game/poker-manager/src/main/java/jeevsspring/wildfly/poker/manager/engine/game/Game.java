@@ -69,9 +69,6 @@ public abstract class Game<E extends GameAction> {
     // List of Pots
     private List<Pot> pots;
 
-    // index of the next player on hand
-    private int turn;
-
     // index of the player dealer
     private int dealer;
 
@@ -215,14 +212,6 @@ public abstract class Game<E extends GameAction> {
 
     public List<Pot> getPots() {
         return pots;
-    }
-
-    public int getTurn() {
-        return turn;
-    }
-
-    protected void setTurn(int turn) {
-        this.turn = turn;
     }
 
     public int getDealer() {
