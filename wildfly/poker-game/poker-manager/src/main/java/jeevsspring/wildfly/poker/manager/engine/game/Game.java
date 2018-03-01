@@ -33,9 +33,6 @@ public abstract class Game<E extends GameAction> {
     // List of game actions result to return to players
     private Queue<E> queue;
 
-    // List of temporary hand action to consume by playerId
-    private Map<String, HandAction> temp;
-
     // True when hand is running
     private boolean handRunning;
 
@@ -85,12 +82,10 @@ public abstract class Game<E extends GameAction> {
         this.startTime = System.currentTimeMillis();
     }
 
-    public void doActions(Queue<HandAction> handActions, Queue<TableAction> tableActions) {
+    public void doActions(Map<String, HandAction> handActions, Queue<TableAction> tableActions) {
+
         // Hand action
-        while (handActions.peek() != null) {
-            HandAction action = handActions.poll();
-            action(action);
-        }
+        action(handActions);
 
         // Table action
         while (tableActions.peek() != null) {
@@ -99,7 +94,7 @@ public abstract class Game<E extends GameAction> {
         }
     }
 
-    protected abstract void action(HandAction action);
+    protected abstract void action(Map<String, HandAction> actions);
 
     protected abstract void action(TableAction action);
 
@@ -148,10 +143,6 @@ public abstract class Game<E extends GameAction> {
 
     public Queue<E> getQueue() {
         return queue;
-    }
-
-    public Map<String, HandAction> getTemp() {
-        return temp;
     }
 
     public boolean isHandRunning() {

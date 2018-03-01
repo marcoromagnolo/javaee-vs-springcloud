@@ -13,9 +13,9 @@ import java.util.Queue;
  */
 @Singleton
 @LocalBean
-public class HandActionQueue {
+public class HandActions {
 
-    private Map<String, Queue<HandAction>> map;
+    private Map<String, Map<String, HandAction>> map;
 
     @PostConstruct
     public void init() {
@@ -26,13 +26,15 @@ public class HandActionQueue {
         return map.isEmpty();
     }
 
-    public boolean insert(HandActionType actionType, String tableId, String handId, String playerId, String option) {
-        if (!map.containsKey(tableId)) map.put(tableId, new ArrayDeque<>());
+    public void insert(HandActionType actionType, String tableId, String handId, String playerId, String option) {
+        if (!map.containsKey(tableId)) {
+            map.put(tableId, new HashMap<>());
+        }
         HandAction hand = new HandAction(actionType, tableId, handId, playerId, option);
-        return map.get(tableId).offer(hand);
+        map.get(tableId).put(playerId, hand);
     }
 
-    public Queue<HandAction> poll(String tableId) {
+    public Map<String, HandAction> get(String tableId) {
         return map.get(tableId);
     }
 

@@ -8,7 +8,7 @@ import jeevsspring.wildfly.poker.manager.engine.game.GameAction;
 import jeevsspring.wildfly.poker.manager.engine.game.Games;
 import jeevsspring.wildfly.poker.manager.engine.game.texasholdem.THGame;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
-import jeevsspring.wildfly.poker.manager.engine.hand.HandActionQueue;
+import jeevsspring.wildfly.poker.manager.engine.hand.HandActions;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandActionType;
 import jeevsspring.wildfly.poker.manager.engine.hand.Pot;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
@@ -34,7 +34,7 @@ public class HandApi<E extends Game> {
     private final Logger logger = Logger.getLogger(getClass());
 
     @EJB
-    private HandActionQueue handQueue;
+    private HandActions handQueue;
 
     @EJB
     private LobbyPlayers lobbyPlayers;

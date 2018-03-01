@@ -23,16 +23,16 @@ public class THGame extends Game<THGameAction> {
     private Bets bets;
     private Orders orders;
     private Turns turns;
-    private Map<String, GameTimer> timers;
+    private GameTimer timer;
 
     public THGame(String tableId, TableSettings settings, BoClient boClient) {
        super(tableId, settings, boClient);
         orders = new Orders(getSeats());
-        timers = new HashMap<>();
+        timer = new GameTimer(getActionTimeout());
     }
 
     @Override
-    public void action(HandAction action) {
+    public void action(Map<String, HandAction> actions) {
         // On the first time when game is starting
         if (!isRunning() && getPlayers().size() >= 2) {
 
@@ -68,11 +68,11 @@ public class THGame extends Game<THGameAction> {
             }
             turns.set(turn);
 
-            // Set all instance var for next actions
+            // Set hand as running
             setHandRunning(true);
 
             // Add Game Action to Queue
-            addGameAction(action.getHandId());
+            addGameAction();
         }
 
         // On betting round start or change
@@ -144,25 +144,32 @@ public class THGame extends Game<THGameAction> {
             String playerId = getSeats().get(seat);
 
             // Start waiting timer for this playerId
-            timers.put(playerId, new GameTimer(getActionTimeout()));
+            if (timer.isOnTime(playerId)) {
 
-            // Check temp on first
-            if (getTemp().containsKey(playerId) && getTemp().get(playerId).getHandId().equals(getHandId())) {
-                HandAction tempAction = getTemp().remove(playerId);
-                round(tempAction);
-            }
+                // Process round action or wait until timeout
+                if (actions.containsKey(playerId)) {
+                    HandAction action = actions.get(playerId);
+                    if (action.getHandId().equals(getHandId())) {
+                        round(action);
 
-            // go ahead with queue
-            if (playerId.equals(action.getPlayerId()) && action.getHandId().equals(getHandId())) {
-                round(action);
+                        // Go next turn
+                        turns.next();
+
+                        // Reset timer for this player
+                        timer.reset(playerId);
+                    }
+                }
             } else {
 
-                // Put Player in temp
-                getTemp().put(action.getPlayerId(), action);
-            }
+                // On timeout player fold
+                fold(playerId);
 
-            // Go next turn
-            turns.next();
+                // Go next turn
+                turns.next();
+
+                // Reset timer for this player
+                timer.reset(playerId);
+            }
         }
     }
 
@@ -174,23 +181,23 @@ public class THGame extends Game<THGameAction> {
             switch (action.getActionType()) {
 
                 case RAISE:
-                    raise(action.getHandId(), action.getPlayerId(), action.getOption());
+                    raise(action.getPlayerId(), action.getOption());
                     break;
                 case BET:
-                    bet(action.getHandId(), action.getPlayerId(), action.getOption());
+                    bet(action.getPlayerId(), action.getOption());
                     break;
                 case CALL:
-                    call(action.getHandId(), action.getPlayerId());
+                    call(action.getPlayerId());
                     break;
                 case CHECK:
-                    check(action.getHandId(), action.getPlayerId());
+                    check(action.getPlayerId());
                     break;
                 case FOLD:
-                    fold(action.getHandId(), action.getPlayerId());
+                    fold(action.getPlayerId());
                     break;
             }
         } else {
-            fold(action.getHandId(), action.getPlayerId());
+            fold(action.getPlayerId());
         }
     }
 
@@ -214,8 +221,8 @@ public class THGame extends Game<THGameAction> {
         }
     }
 
-    private void addGameAction(String handId) {
-        THGameAction gameAction = new THGameAction(handId);
+    private void addGameAction() {
+        THGameAction gameAction = new THGameAction(getHandId());
         gameAction.setCommunityCards(getCommunityCards());
         gameAction.setPlayers(getPlayers());
         gameAction.setPots(getPots());
@@ -228,7 +235,7 @@ public class THGame extends Game<THGameAction> {
         getQueue().offer(gameAction);
     }
 
-    private void raise(String handId, String playerId, String amount) {
+    private void raise(String playerId, String amount) {
         switch (roundPhase) {
             case PREFLOP:
                 break;
@@ -243,22 +250,22 @@ public class THGame extends Game<THGameAction> {
         }
     }
 
-    private void bet(String handId, String playerId, String amount) {
+    private void bet(String playerId, String amount) {
 
     }
 
-    private void call(String handId, String playerId) {
+    private void call(String playerId) {
 
     }
 
-    private void check(String handId, String playerId) {
+    private void check(String playerId) {
 
     }
 
-    private void fold(String handId, String playerId) {
+    private void fold(String playerId) {
         int seat = getSeats().indexOf(playerId);
-        Integer index = orders.get(seat);
-        Integer turn = turns.indexOf(index);
+        int order = orders.indexOf(seat);
+        int turn = turns.indexOf(order);
         turns.remove(turn);
     }
 

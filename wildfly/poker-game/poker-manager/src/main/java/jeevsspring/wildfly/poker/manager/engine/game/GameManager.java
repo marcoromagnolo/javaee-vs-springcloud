@@ -1,6 +1,6 @@
 package jeevsspring.wildfly.poker.manager.engine.game;
 
-import jeevsspring.wildfly.poker.manager.engine.hand.HandActionQueue;
+import jeevsspring.wildfly.poker.manager.engine.hand.HandActions;
 import jeevsspring.wildfly.poker.manager.engine.table.TableActionQueue;
 
 import javax.annotation.PostConstruct;
@@ -13,7 +13,7 @@ import javax.ejb.Startup;
 public class GameManager {
 
     @EJB
-    private HandActionQueue handQueue;
+    private HandActions handActions;
 
     @EJB
     private TableActionQueue tableQueue;
@@ -30,7 +30,7 @@ public class GameManager {
             // Poll Hand and Table actions made from players
             games.getAll().parallelStream()
                     .forEach(game -> game.doActions(
-                            handQueue.poll(game.getTableId()),
+                            handActions.get(game.getTableId()),
                             tableQueue.poll(game.getTableId())
                     ));
         }

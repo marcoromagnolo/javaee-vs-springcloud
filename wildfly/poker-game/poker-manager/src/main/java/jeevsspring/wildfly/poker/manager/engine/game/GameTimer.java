@@ -1,17 +1,28 @@
 package jeevsspring.wildfly.poker.manager.engine.game;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GameTimer {
 
-    private long timer;
-    private long limit;
+    private final Map<String, Long> timers;
+    private final long limit;
 
     public GameTimer(long limit) {
         this.limit = limit;
-        this.timer = System.currentTimeMillis();
+        timers = new HashMap<>();
     }
 
-    public boolean isElapsed() {
+    public boolean isOnTime(String playerId) {
+        if (!timers.containsKey(playerId)) {
+            timers.put(playerId, System.currentTimeMillis());
+        }
         long now = System.currentTimeMillis();
-        return (timer + limit) > now;
+        long start = timers.get(playerId);
+        return  (start + limit) > now;
+    }
+
+    public void reset(String playerId) {
+        timers.remove(playerId);
     }
 }
