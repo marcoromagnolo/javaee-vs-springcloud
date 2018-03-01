@@ -3,12 +3,14 @@ package jeevsspring.wildfly.poker.manager.engine.game.texasholdem;
 import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
+import jeevsspring.wildfly.poker.manager.engine.game.GameTimer;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
 import jeevsspring.wildfly.poker.manager.engine.player.Bets;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
 import jeevsspring.wildfly.poker.manager.engine.player.Orders;
 import jeevsspring.wildfly.poker.manager.engine.player.Turns;
 import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
+import jeevsspring.wildfly.poker.manager.util.IdGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +23,7 @@ public class THGame extends Game<THGameAction> {
     private Bets bets;
     private Orders orders;
     private Turns turns;
-    private Map<String, Long> timers;
+    private Map<String, GameTimer> timers;
 
     public THGame(String tableId, TableSettings settings, BoClient boClient) {
        super(tableId, settings, boClient);
@@ -44,6 +46,9 @@ public class THGame extends Game<THGameAction> {
 
         // On hand starting
         if (!isHandRunning()) {
+
+            // Generate handId
+            setHandId(IdGenerator.newHandId());
 
             // Set Dealer
             orders.next();
@@ -133,8 +138,13 @@ public class THGame extends Game<THGameAction> {
 
         // Play the Betting Round
         if (isRoundRunning()) {
+
+            // Get PlayerId from current turn index
             int seat = orders.indexOf(turns.current());
             String playerId = getSeats().get(seat);
+
+            // Start waiting timer for this playerId
+            timers.put(playerId, new GameTimer(getActionTimeout()));
 
             // Check temp on first
             if (getTemp().containsKey(playerId) && getTemp().get(playerId).getHandId().equals(getHandId())) {
@@ -148,8 +158,11 @@ public class THGame extends Game<THGameAction> {
             } else {
 
                 // Put Player in temp
-                getTemp().put(playerId, action);
+                getTemp().put(action.getPlayerId(), action);
             }
+
+            // Go next turn
+            turns.next();
         }
     }
 
@@ -179,7 +192,6 @@ public class THGame extends Game<THGameAction> {
         } else {
             fold(action.getHandId(), action.getPlayerId());
         }
-        turns.next();
     }
 
     @Override

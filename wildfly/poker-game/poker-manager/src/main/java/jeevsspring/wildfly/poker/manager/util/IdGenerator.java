@@ -6,7 +6,7 @@ import java.util.UUID;
  * @author Marco Romagnolo
  */
 public class IdGenerator {
-    public static String newSessionId() {
+    public static String newHandId() {
         return UUID.randomUUID().toString();
     }
 

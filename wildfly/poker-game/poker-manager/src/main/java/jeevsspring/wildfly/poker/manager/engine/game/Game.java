@@ -118,6 +118,10 @@ public abstract class Game<E extends GameAction> {
         return handId;
     }
 
+    protected void setHandId(String handId) {
+        this.handId = handId;
+    }
+
     public String getTableName() {
         return tableName;
     }
