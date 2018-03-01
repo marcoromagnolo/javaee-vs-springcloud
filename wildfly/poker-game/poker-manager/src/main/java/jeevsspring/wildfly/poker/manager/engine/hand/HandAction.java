@@ -7,6 +7,7 @@ public class HandAction {
     private final String handId;
     private final String playerId;
     private final String option;
+    private final long time;
 
     public HandAction(HandActionType actionType, String tabledId,  String handId, String playerId, String option) {
         this.actionType = actionType;
@@ -14,6 +15,7 @@ public class HandAction {
         this.handId = handId;
         this.playerId = playerId;
         this.option = option;
+        this.time = System.currentTimeMillis();
     }
 
     public HandActionType getActionType() {
@@ -34,5 +36,9 @@ public class HandAction {
 
     public String getOption() {
         return option;
+    }
+
+    public long getTime() {
+        return time;
     }
 }

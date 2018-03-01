@@ -8,41 +8,39 @@ import java.util.List;
  */
 public class Turns {
 
-    // {turn: index} turns = {3, 6, 9}
-    private List<Integer> turns;
-    private int turn;
+    // {index: seat} turns = {2, 3, 7}
+    private List<Integer> list;
 
-    public Turns(List<Integer> indexes) {
-        this.turns = new ArrayList<>();
-        for (int index : indexes) {
-            turns.add(index);
-        }
+    // Current index
+    private int index;
+
+    public Turns(List<Integer> orderList) {
+        this(orderList, 0);
     }
 
-    public Integer getTurnByOrderIndex(int index) {
-        for (int turn = 0; turn < turns.size(); turn++) {
-            if (turns.get(turn) == index) return turn;
-        }
-        return null;
+    public Turns(List<Integer> orderList, int index) {
+        this.list = new ArrayList<>();
+
+        list.addAll(orderList);
     }
 
-    public Integer get(int turn) {
-        return turns.get(turn);
+    public Integer indexOf(Integer turn) {
+        return list.indexOf(turn);
     }
 
     public int current() {
-        return turn;
+        return index;
     }
 
-    public void set(int turn) {
-        this.turn = turn;
+    public void set(int index) {
+        this.index = index;
     }
 
-    public void remove(int turn) {
-        turns.remove(turn);
+    public void remove(int index) {
+        list.remove(index);
     }
 
     public void next() {
-        turn = (turn + 1) % turns.size();
+        index = (index + 1) % list.size();
     }
 }
