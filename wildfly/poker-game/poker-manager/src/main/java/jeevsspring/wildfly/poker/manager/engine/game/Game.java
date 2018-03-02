@@ -1,6 +1,5 @@
 package jeevsspring.wildfly.poker.manager.engine.game;
 
-import jeevsspring.wildfly.poker.common.GameType;
 import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
@@ -21,11 +20,10 @@ public abstract class Game<E extends GameAction> {
     private String handId;
 
     // Table Settings
-    private String tableName;
-    private int numberOfSeats;
-    private long actionTimeout;
-    private long startTimeout;
-    private GameType gameType;
+    private TableSettings settings;
+
+    // Table Settings to update
+    private TableSettings updateSettings;
 
     // Back-Office Client
     private final BoClient boClient;
@@ -41,9 +39,6 @@ public abstract class Game<E extends GameAction> {
 
     // True if game is running playing
     private boolean running;
-
-    // Settings to update for this game
-    private TableSettings updateSettings;
 
     // Time of start
     private Long startTime;
@@ -71,42 +66,46 @@ public abstract class Game<E extends GameAction> {
 
     public Game(String tableId, TableSettings settings, BoClient boClient) {
         this.tableId = tableId;
-        setSettings(settings);
+        this.settings = settings;
         this.boClient = boClient;
         this.players = new HashMap<>();
         this.visitors = new ArrayList<>();
-        this.cardDeck = new CardDeck();
-        this.seats = new Seats(numberOfSeats);
         this.communityCards = new ArrayList<>();
         this.pots = new ArrayList<>();
         this.startTime = System.currentTimeMillis();
     }
 
+    public void onSettingsApply() {
+        this.cardDeck = new CardDeck();
+        this.seats = new Seats(settings.getNumberOfSeats());
+    }
+
     public void doActions(Map<String, HandAction> handActions, Queue<TableAction> tableActions) {
 
         // Hand action
-        action(handActions);
+        onAction(handActions);
 
         // Table action
         while (tableActions.peek() != null) {
             TableAction action = tableActions.poll();
-            action(action);
+            onAction(action);
         }
     }
 
-    protected abstract void action(Map<String, HandAction> actions);
+    protected abstract void onAction(Map<String, HandAction> actions);
 
-    protected abstract void action(TableAction action);
-
-    public void setSettings(TableSettings settings) {
-        this.tableName = settings.getName();
-        this.numberOfSeats = settings.getNumberOfSeats();
-        this.actionTimeout = settings.getActionTimeOut();
-        this.startTimeout = settings.getStartTimeout();
-    }
+    protected abstract void onAction(TableAction action);
 
     public String getTableId() {
         return tableId;
+    }
+
+    public BoClient getBoClient() {
+        return boClient;
+    }
+
+    public TableSettings getSettings() {
+        return settings;
     }
 
     public String getHandId() {
@@ -115,30 +114,6 @@ public abstract class Game<E extends GameAction> {
 
     protected void setHandId(String handId) {
         this.handId = handId;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public BoClient getBoClient() {
-        return boClient;
-    }
-
-    public int getNumberOfSeats() {
-        return numberOfSeats;
-    }
-
-    public long getActionTimeout() {
-        return actionTimeout;
-    }
-
-    public long getStartTimeout() {
-        return startTimeout;
-    }
-
-    public GameType getGameType() {
-        return gameType;
     }
 
     public Queue<E> getQueue() {
@@ -167,14 +142,6 @@ public abstract class Game<E extends GameAction> {
 
     protected void setRunning(boolean running) {
         this.running = running;
-    }
-
-
-    public void waitStart() {
-        long now;
-        do {
-            now = System.currentTimeMillis();
-        } while (now < startTime + startTimeout);
     }
 
     public void update(TableSettings settings) {
@@ -209,19 +176,15 @@ public abstract class Game<E extends GameAction> {
         return pots;
     }
 
+    public void setPots(List<Pot> pots) {
+        this.pots = pots;
+    }
+
     public int getDealer() {
         return dealer;
     }
 
     protected void setDealer(int dealer) {
         this.dealer = dealer;
-    }
-
-    protected void calculatePots() {
-
-    }
-
-    protected void reward() {
-
     }
 }

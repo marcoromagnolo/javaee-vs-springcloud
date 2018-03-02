@@ -49,4 +49,12 @@ public class BoClient {
         VerifyOut out = new VerifyOut();
         return out;
     }
+
+    public void win(String player, long value) {
+
+    }
+
+    public void stake(String playerId, long value) {
+
+    }
 }

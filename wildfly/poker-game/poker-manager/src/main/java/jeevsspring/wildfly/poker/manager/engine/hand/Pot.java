@@ -1,5 +1,6 @@
 package jeevsspring.wildfly.poker.manager.engine.hand;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,8 +13,13 @@ public class Pot {
     private long value;
     private List<String> players;
 
-    public Pot(String id) {
+    public Pot() {
+        this(new ArrayList<>());
+    }
+
+    public Pot(List<String> players) {
         this.id = UUID.randomUUID().toString();
+        this.players = players;
     }
 
     public String getId() {
