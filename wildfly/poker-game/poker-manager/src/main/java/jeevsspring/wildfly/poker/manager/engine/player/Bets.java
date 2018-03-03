@@ -1,10 +1,15 @@
 package jeevsspring.wildfly.poker.manager.engine.player;
 
+import org.jboss.logging.Logger;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Bets {
+
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
     // Max value of bet
     private long max;
@@ -22,6 +27,7 @@ public class Bets {
      * Constructor
      */
     public Bets() {
+        logger.debug("Bets :: Constructor()");
         this.players = new HashMap<>();
     }
 
@@ -40,6 +46,7 @@ public class Bets {
      * @param amount
      */
     public void bet(String playerId, long amount, boolean isAllin) {
+        logger.debug("Bets :: bet(" + playerId + ", " + amount + ", " + isAllin + ")");
         players.put(playerId, amount);
         if (amount > max) {
             max = amount;
@@ -69,6 +76,7 @@ public class Bets {
      * @return
      */
     public boolean isEven() {
+        logger.debug("Bets :: isEven()");
         for (Map.Entry<String, Long> entry : players.entrySet()) {
 
             // Bet are not even if one value is not equal to max and is not included in allin players

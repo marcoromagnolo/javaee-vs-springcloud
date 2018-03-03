@@ -2,6 +2,7 @@ package jeevsspring.wildfly.poker.manager.bo;
 
 import jeevsspring.wildfly.poker.manager.bo.json.*;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
+import org.jboss.logging.Logger;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -14,11 +15,15 @@ import java.util.UUID;
 @LocalBean
 public class BoClient {
 
+    // Jboss Logger
+    private final Logger logger = Logger.getLogger(getClass());
+
     public Player getPlayer(String playerId) {
         return new Player("1", "Ciccio", 20000 );
     }
 
     public SigninOut signin(SigninIn in) {
+        logger.trace("BoClient :: signin(" + in + ")");
         SigninOut out = new SigninOut();
         out.setSessionId(UUID.randomUUID().toString());
         out.setToken(UUID.randomUUID().toString());
@@ -36,25 +41,38 @@ public class BoClient {
         user.setAccount(account);
         user.setWallet(wallet);
         out.setUser(user);
+
+        logger.debug("BoClient :: signin (" + in + ") return " + out);
         return out;
     }
 
     public SignoutOut signout(SignoutIn in) {
+        logger.trace("BoClient :: signout(" + in + ")");
         SignoutOut out = new SignoutOut();
         out.setMessage("Bye Bye!");
+        logger.debug("BoClient :: signout (" + in + ") return " + out);
         return out;
     }
 
     public VerifyOut verify(VerifyIn in) {
+        logger.trace("BoClient :: verify(" + in + ")");
         VerifyOut out = new VerifyOut();
+        logger.debug("BoClient :: verify (" + in + ") return " + out);
         return out;
     }
 
-    public void win(String player, long value) {
-
+    public WinOut win(WinIn in) {
+        logger.trace("BoClient :: win(" + in + ")");
+        WinOut out = new WinOut();
+        logger.debug("BoClient :: win (" + in + ") return " + out);
+        return out;
     }
 
-    public void stake(String playerId, long value) {
+    public StakeOut stake(StakeIn in) {
+        logger.trace("BoClient :: stake(" + in + ")");
+        StakeOut out = new StakeOut();
+        logger.debug("BoClient :: stake (" + in + ") return " + out);
+        return out;
 
     }
 }

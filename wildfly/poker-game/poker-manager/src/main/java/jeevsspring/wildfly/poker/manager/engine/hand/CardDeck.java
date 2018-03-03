@@ -1,5 +1,7 @@
 package jeevsspring.wildfly.poker.manager.engine.hand;
 
+import org.jboss.logging.Logger;
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -10,12 +12,17 @@ import java.util.Stack;
  */
 public class CardDeck {
 
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
+
     public static final int CARD_NUMBER = 52;
     public static final int SUIT_CARD_NUMBER = 13;
 
     private Stack<Card> cards;
 
     public CardDeck() {
+        logger.debug("CardDeck :: Constructor()");
+
         Set<Card> set = new HashSet<>();
         set.add(new Card(CardSuitType.SPADES, CardSymbolType.ACE));
         set.add(new Card(CardSuitType.SPADES, CardSymbolType.TWO));
@@ -78,10 +85,12 @@ public class CardDeck {
     }
 
     public Card getCard() {
+        logger.debug("CardDeck :: getCard()");
         return cards.pop();
     }
 
     public void shuffle() {
+        logger.debug("CardDeck :: shuffle()");
         Random random = new Random();
         int numberOfShuffle = random.nextInt(100) + 30;
         int randStart = random.nextInt(CARD_NUMBER);
@@ -93,6 +102,7 @@ public class CardDeck {
     }
 
     private Card addRemove(Random random, Card card) {
+        logger.debug("CardDeck :: addRemove(" + random + ", " + card + ")");
         int intRand = random.nextInt(CARD_NUMBER - 1);
         Card removed = cards.remove(intRand);
         cards.add(intRand, card);

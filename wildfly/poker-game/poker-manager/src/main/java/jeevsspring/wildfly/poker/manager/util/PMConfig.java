@@ -16,14 +16,18 @@ import java.util.Properties;
 @Startup
 public class PMConfig {
 
+    // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
+
     private Properties properties;
+
     private final String fileName = "poker-manager.properties";
 
     private int numberOfThreads;
 
     @PostConstruct
     public void init() {
+
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("poker-manager.properties");
         properties = new Properties();
         System.out.println("Loading config file: " + fileName + " with stream: " + inputStream);

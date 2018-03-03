@@ -1,5 +1,7 @@
 package jeevsspring.wildfly.poker.manager.engine.player;
 
+import org.jboss.logging.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,9 @@ import java.util.List;
  * @author Marco Romagnolo
  */
 public class Turns {
+
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
     // {index: seat} turns = {2, 3, 7}
     private List<Integer> list;
@@ -19,8 +24,9 @@ public class Turns {
     }
 
     public Turns(List<Integer> orderList, int index) {
-        this.list = new ArrayList<>();
+        logger.debug("Turns :: Constructor(" + orderList + ", " + index + ")");
 
+        this.list = new ArrayList<>();
         list.addAll(orderList);
     }
 

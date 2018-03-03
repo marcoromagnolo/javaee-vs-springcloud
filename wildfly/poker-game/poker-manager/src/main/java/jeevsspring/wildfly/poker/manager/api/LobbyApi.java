@@ -10,6 +10,7 @@ import jeevsspring.wildfly.poker.manager.bo.json.SignoutOut;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
 import jeevsspring.wildfly.poker.manager.engine.game.Games;
 import jeevsspring.wildfly.poker.manager.lobby.LobbyPlayers;
+import org.jboss.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -25,6 +26,9 @@ import java.util.Collection;
 @Produces(MediaType.APPLICATION_JSON)
 public class LobbyApi {
 
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
+
     @EJB
     private BoClient boClient;
 
@@ -37,6 +41,7 @@ public class LobbyApi {
     @GET
     @Path("/test")
     public Status test() {
+        logger.trace("LobbyApi :: test()");
         Status out = new Status();
         out.setMessage("Test completed");
         return out;
@@ -45,6 +50,7 @@ public class LobbyApi {
     @POST
     @Path("/login")
     public LoginOut login(LoginIn in) {
+        logger.trace("LobbyApi :: login(" + in + ")");
         LoginOut out = new LoginOut();
         SigninIn signinIn = new SigninIn();
         signinIn.setUsername(in.getUsername());
@@ -52,24 +58,28 @@ public class LobbyApi {
         SigninOut signinOut = boClient.signin(signinIn);
         String playerId = signinOut.getUser().getId();
         lobbyPlayers.login(signinOut.getSessionId(), playerId);
+        logger.debug("LobbyApi :: login(" + in + ") return " + out);
         return out;
     }
 
     @POST
     @Path("/logout")
     public LogoutOut logout(LogoutIn in) {
+        logger.trace("LobbyApi :: logout(" + in + ")");
         LogoutOut out = new LogoutOut();
         SignoutIn signoutIn = new SignoutIn();
         signoutIn.setSessionId(in.getSessionId());
         signoutIn.setToken(in.getToken());
         SignoutOut signoutOut = boClient.signout(signoutIn);
         lobbyPlayers.logout(signoutIn.getSessionId());
+        logger.debug("LobbyApi :: logout(" + in + ") return " + out);
         return out;
     }
 
     @POST
     @Path("/show")
     public ShowOut show(ShowIn in) {
+        logger.trace("LobbyApi :: show(" + in + ")");
         ShowOut out = new ShowOut();
         Collection<Game> tables = games.getAll();
         for (Game table : tables) {
@@ -80,6 +90,7 @@ public class LobbyApi {
         }
         out.setSessionId(in.getSessionId());
         out.setToken(in.getToken());
+        logger.debug("LobbyApi :: show(" + in + ") return " + out);
         return out;
     }
 

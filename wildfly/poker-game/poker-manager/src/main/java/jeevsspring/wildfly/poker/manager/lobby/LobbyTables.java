@@ -2,6 +2,7 @@ package jeevsspring.wildfly.poker.manager.lobby;
 
 import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.manager.util.IdGenerator;
+import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
@@ -18,6 +19,9 @@ import java.util.Map;
 @LocalBean
 public class LobbyTables {
 
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
+
     private Map<String, TableSettings> created;
 
     private Map<String, TableSettings> updated;
@@ -26,6 +30,7 @@ public class LobbyTables {
 
     @PostConstruct
     public void init() {
+        logger.trace("LobbyTables :: init()");
         this.created = new HashMap<>();
         this.updated = new HashMap<>();
         this.deleted = new ArrayList<>();
@@ -36,6 +41,7 @@ public class LobbyTables {
      * @return
      */
     public Map<String, TableSettings> getCreated() {
+        logger.trace("LobbyTables :: getCreated()");
         return created;
     }
 
@@ -44,6 +50,7 @@ public class LobbyTables {
      * @return
      */
     public Map<String, TableSettings> getUpdated() {
+        logger.trace("LobbyTables :: getUpdated()");
         return updated;
     }
 
@@ -52,6 +59,7 @@ public class LobbyTables {
      * @return
      */
     public List<String> getDeleted() {
+        logger.trace("LobbyTables :: getDeleted()");
         return deleted;
     }
 
@@ -61,6 +69,7 @@ public class LobbyTables {
      * @return
      */
     public String create(TableSettings tableSettings) {
+        logger.trace("LobbyTables :: create(" + tableSettings + ")");
         String tableId = IdGenerator.newTableId();
         created.put(tableId, tableSettings);
         return tableId;
@@ -72,6 +81,7 @@ public class LobbyTables {
      * @param tableSettings
      */
     public void update(String tableId, TableSettings tableSettings) {
+        logger.trace("LobbyTables :: create(" + tableId + ", " + tableSettings + ")");
         updated.put(tableId, tableSettings);
     }
 
@@ -80,6 +90,7 @@ public class LobbyTables {
      * @param tableId
      */
     public void delete(String tableId) {
+        logger.trace("LobbyTables :: create(" + tableId + ")");
         deleted.add(tableId);
     }
 

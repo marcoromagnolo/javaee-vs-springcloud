@@ -1,9 +1,14 @@
 package jeevsspring.wildfly.poker.manager.engine.table;
 
+import org.jboss.logging.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Seats {
+
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
     // List of PlayerId indexed by seat
     private List<String> list;
@@ -16,6 +21,7 @@ public class Seats {
      * @param numberOfSeats
      */
     public Seats(int numberOfSeats) {
+        logger.trace("Seats :: Constructor(" + numberOfSeats + ")");
         list = new ArrayList<>(numberOfSeats);
         numberOfPlayers = 0;
     }
@@ -26,6 +32,7 @@ public class Seats {
      * @return
      */
     public String get(int index) {
+        logger.trace("Seats :: get(" + index + ")");
         return list.get(index);
     }
 
@@ -35,6 +42,7 @@ public class Seats {
      * @return
      */
     public int indexOf(String playerId) {
+        logger.trace("Seats :: indexOf(" + playerId + ")");
         return list.indexOf(playerId);
     }
 
@@ -44,6 +52,7 @@ public class Seats {
      * @param playerId
      */
     public void add(int index, String playerId) {
+        logger.trace("Seats :: add(" + index + ", " + playerId + ")");
         list.add(index, playerId);
         numberOfPlayers++;
     }
@@ -53,6 +62,7 @@ public class Seats {
      * @param index
      */
     public void remove(int index) {
+        logger.trace("Seats :: remove(" + index + ")");
         list.add(index, null);
         numberOfPlayers--;
     }
@@ -62,6 +72,7 @@ public class Seats {
      * @return
      */
     public int size() {
+        logger.trace("Seats :: size()");
         return list.size();
     }
 
@@ -70,6 +81,7 @@ public class Seats {
      * @return
      */
     public int getNumberOfPlayers() {
+        logger.trace("Seats :: getNumberOfPlayers()");
         return numberOfPlayers;
     }
 
@@ -78,6 +90,7 @@ public class Seats {
      * @return
      */
     public String[] toArray() {
+        logger.trace("Seats :: toArray()");
         return list.toArray(new String[list.size()]);
     }
 }

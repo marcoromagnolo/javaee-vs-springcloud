@@ -1,6 +1,7 @@
 package jeevsspring.wildfly.poker.manager.engine.player;
 
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,6 +11,9 @@ import java.util.Objects;
  */
 public class Player {
 
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
+
     private final String id;
     private final String nickname;
     private long balance;
@@ -18,6 +22,7 @@ public class Player {
     private boolean sitOut;
 
     public Player(String id, String nickname, long balance) {
+        logger.debug("Player :: Constructor(" + id + ", " + nickname + ", " + balance + ")");
         this.id = id;
         this.nickname = nickname;
         this.balance = balance;

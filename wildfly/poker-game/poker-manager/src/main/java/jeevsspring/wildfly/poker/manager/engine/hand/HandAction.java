@@ -1,6 +1,11 @@
 package jeevsspring.wildfly.poker.manager.engine.hand;
 
+import org.jboss.logging.Logger;
+
 public class HandAction {
+
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
     private final String tableId;
     private final HandActionType actionType;
@@ -10,6 +15,8 @@ public class HandAction {
     private final long time;
 
     public HandAction(HandActionType actionType, String tabledId,  String handId, String playerId, String option) {
+        logger.debug("HandAction :: Constructor(" + actionType + ", " + tabledId + ", " + handId + ", " + playerId + ", "
+                + option + ")");
         this.actionType = actionType;
         this.tableId = tabledId;
         this.handId = handId;

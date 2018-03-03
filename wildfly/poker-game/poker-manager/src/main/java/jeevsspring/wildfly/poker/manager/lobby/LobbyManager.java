@@ -8,14 +8,12 @@ import jeevsspring.wildfly.poker.manager.engine.game.texasholdem.THGame;
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.ejb.*;
 
 @Singleton
-@Startup
 public class LobbyManager {
 
+    // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
 
     @EJB
@@ -27,44 +25,41 @@ public class LobbyManager {
     @EJB
     private LobbyTables lobbyTables;
 
-    @PostConstruct
-    public void init() {
+    @Schedule(second = "*/10", minute = "*", hour = "*", persistent = false)
+    public void doWork() {
+        logger.trace("LobbyManager :: doWork()");
 
-        // Make this job forever
-        while (true) {
+        // Check and add game instances (async)
+        if (!lobbyTables.getCreated().isEmpty()) {
+            for (String tableId : lobbyTables.getCreated().keySet()) {
+                TableSettings settings = lobbyTables.getCreated().get(tableId);
+                THGame game = null;
+                switch (settings.getGameType()) {
 
-            // Check and add game instances (async)
-            if (!lobbyTables.getCreated().isEmpty()) {
-                for (String tableId : lobbyTables.getCreated().keySet()) {
-                    TableSettings settings = lobbyTables.getCreated().get(tableId);
-                    THGame game = null;
-                    switch (settings.getGameType()) {
+                    case TEXAS_HOLDEM:
+                        game = new THGame(tableId, settings, boClient);
+                        break;
 
-                        case TEXAS_HOLDEM:
-                            game = new THGame(tableId, settings, boClient);
-                            break;
+                    default:
+                        logger.error("Game type unknown:  " + settings.getGameType());
 
-                        default:
-                            logger.error("Game type unknown:  " + settings.getGameType());
-
-                    }
-                    games.add(game);
                 }
+                games.add(game);
             }
+        }
 
-            // Check and update tables games (async)
-            if (!lobbyTables.getUpdated().isEmpty()) {
-                for (String tableId : lobbyTables.getUpdated().keySet()) {
-                    TableSettings settings = lobbyTables.getCreated().get(tableId);
-                    games.get(tableId).update(settings);
-                }
+        // Check and update tables games (async)
+        if (!lobbyTables.getUpdated().isEmpty()) {
+            for (String tableId : lobbyTables.getUpdated().keySet()) {
+                TableSettings settings = lobbyTables.getCreated().get(tableId);
+                games.get(tableId).update(settings);
             }
+        }
 
-            // Check and delete tables games (async)
-            if (!lobbyTables.getDeleted().isEmpty()) {
-                for (String tableId : lobbyTables.getUpdated().keySet()) {
-                    games.get(tableId).delete();
-                }
+        // Check and delete tables games (async)
+        if (!lobbyTables.getDeleted().isEmpty()) {
+            for (String tableId : lobbyTables.getUpdated().keySet()) {
+                games.get(tableId).delete();
             }
         }
     }

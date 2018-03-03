@@ -1,11 +1,17 @@
 package jeevsspring.wildfly.poker.manager.engine.game;
 
+import org.jboss.logging.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class GameTimer {
 
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
+
     private final Map<String, Long> timers;
+
     private final long limit;
 
     public GameTimer(long limit) {

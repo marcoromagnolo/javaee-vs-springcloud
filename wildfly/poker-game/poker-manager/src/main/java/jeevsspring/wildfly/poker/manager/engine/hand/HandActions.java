@@ -1,5 +1,7 @@
 package jeevsspring.wildfly.poker.manager.engine.hand;
 
+import org.jboss.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
@@ -15,6 +17,9 @@ import java.util.Queue;
 @LocalBean
 public class HandActions {
 
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
+
     private Map<String, Map<String, HandAction>> map;
 
     @PostConstruct
@@ -22,11 +27,9 @@ public class HandActions {
         map = new HashMap<>();
     }
 
-    public boolean isEmpty() {
-        return map.isEmpty();
-    }
-
     public void insert(HandActionType actionType, String tableId, String handId, String playerId, String option) {
+        logger.debug("HandActions :: insert(" + actionType + ", " + tableId + ", " + handId + ", " + playerId + ", "
+                + option + ")");
         if (!map.containsKey(tableId)) {
             map.put(tableId, new HashMap<>());
         }

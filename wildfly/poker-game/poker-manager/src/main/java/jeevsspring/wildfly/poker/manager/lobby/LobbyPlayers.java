@@ -1,5 +1,7 @@
 package jeevsspring.wildfly.poker.manager.lobby;
 
+import org.jboss.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
@@ -13,10 +15,14 @@ import java.util.Map;
 @LocalBean
 public class LobbyPlayers {
 
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
+
     private Map<String, String> sessions;
 
     @PostConstruct
     public void init() {
+        logger.trace("LobbyPlayers :: init()");
         this.sessions = new HashMap<>();
     }
 
@@ -26,6 +32,7 @@ public class LobbyPlayers {
      * @return PlayerId
      */
     public String getPlayerId(String sessionId) {
+        logger.trace("LobbyPlayers :: getPlayerId(" + sessionId + ")");
         return sessions.get(sessionId);
     }
 
@@ -36,6 +43,7 @@ public class LobbyPlayers {
      * @return PlayerId
      */
     public String createPlayerSession(String playerId, String sessionId) {
+        logger.trace("LobbyPlayers :: createPlayerSession(" + playerId + ", " + sessionId + ")");
         return sessions.put(playerId, sessionId);
     }
 
@@ -45,6 +53,7 @@ public class LobbyPlayers {
      * @return PlayerId
      */
     public String dropPlayerSession(String sessionId) {
+        logger.trace("LobbyPlayers :: dropPlayerSession(" + sessionId + ")");
         return sessions.remove(sessionId);
     }
 
@@ -55,6 +64,7 @@ public class LobbyPlayers {
      * @return
      */
     public String login(String sessionId, String playerId) {
+        logger.trace("LobbyPlayers :: login(" + sessionId + ", " + playerId + ")");
         return sessions.put(sessionId, playerId);
     }
 
@@ -64,6 +74,7 @@ public class LobbyPlayers {
      * @return
      */
     public String logout(String sessionId) {
+        logger.trace("LobbyPlayers :: logout(" + sessionId + ")");
         return sessions.remove(sessionId);
     }
 

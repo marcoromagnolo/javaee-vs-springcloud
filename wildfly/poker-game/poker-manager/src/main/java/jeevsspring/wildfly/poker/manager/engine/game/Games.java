@@ -1,5 +1,7 @@
 package jeevsspring.wildfly.poker.manager.engine.game;
 
+import org.jboss.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
@@ -14,6 +16,9 @@ import java.util.Map;
 @Singleton
 @LocalBean
 public class Games<E extends Game> {
+
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
     private Map<String, E> instances;
 

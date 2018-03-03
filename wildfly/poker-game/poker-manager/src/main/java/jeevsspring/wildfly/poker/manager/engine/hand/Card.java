@@ -1,5 +1,7 @@
 package jeevsspring.wildfly.poker.manager.engine.hand;
 
+import org.jboss.logging.Logger;
+
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -8,11 +10,16 @@ import java.util.Objects;
  */
 public class Card implements Comparator<Card>{
 
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
+
     private CardSuitType suit;
     private CardSymbolType symbol;
     private CardColorType color;
 
     Card(CardSuitType suit, CardSymbolType symbol) {
+        logger.debug("Card :: Constructor(" + suit + ", " + symbol + ")");
+
         this.suit = suit;
         this.symbol = symbol;
         if (suit.equals(CardSuitType.HEARTS) || suit.equals(CardSuitType.DIAMONDS)) {
@@ -36,6 +43,7 @@ public class Card implements Comparator<Card>{
 
     @Override
     public int compare(Card o1, Card o2) {
+        logger.debug("Card :: compare(" + o1 + ", " + o2 + ")");
         int suitRank = o1.getSuit().getValue().compareTo(o2.getSuit().getValue());
         if (suitRank == 0) {
             return o1.getSymbol().getValue().compareTo(o2.getSymbol().getValue());

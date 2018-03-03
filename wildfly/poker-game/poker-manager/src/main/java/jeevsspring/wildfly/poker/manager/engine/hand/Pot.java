@@ -1,5 +1,7 @@
 package jeevsspring.wildfly.poker.manager.engine.hand;
 
+import org.jboss.logging.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +10,9 @@ import java.util.UUID;
  * @author Marco Romagnolo
  */
 public class Pot {
+
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
     private String id;
     private long value;
@@ -18,6 +23,7 @@ public class Pot {
     }
 
     public Pot(List<String> players) {
+        logger.debug("Pot :: Constructor(" + players + ")");
         this.id = UUID.randomUUID().toString();
         this.players = players;
     }

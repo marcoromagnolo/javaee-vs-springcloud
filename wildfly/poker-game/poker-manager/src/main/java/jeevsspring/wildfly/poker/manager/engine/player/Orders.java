@@ -1,12 +1,16 @@
 package jeevsspring.wildfly.poker.manager.engine.player;
 
 import jeevsspring.wildfly.poker.manager.engine.table.Seats;
+import org.jboss.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Orders {
+
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
     // Number of Players
     private int numberOfPlayers;
@@ -25,6 +29,7 @@ public class Orders {
      * @param seats
      */
     public Orders(Seats seats) {
+        logger.debug("Orders :: Constructor(" + seats + ")");
         update(seats);
     }
 
@@ -33,6 +38,7 @@ public class Orders {
      * @param seats
      */
     public void update(Seats seats) {
+        logger.debug("Orders :: update(" + seats + ")");
         this.numberOfPlayers = seats.getNumberOfPlayers();
         this.numberOfSeats = seats.size();
         this.list = new ArrayList<>();
@@ -52,6 +58,7 @@ public class Orders {
      * @return
      */
     public int indexOf(Integer seat) {
+        logger.debug("Orders :: indexOf(" + seat + ")");
         return list.indexOf(seat);
     }
 
@@ -60,6 +67,7 @@ public class Orders {
      * @return
      */
     public void randomize() {
+        logger.debug("Orders :: randomize()");
         Random r = new Random();
         index = r.nextInt(numberOfPlayers);
     }
@@ -94,6 +102,7 @@ public class Orders {
      * @return
      */
     public void next() {
+        logger.debug("Orders :: next()");
         index = (index + 1) % numberOfPlayers;
     }
 }

@@ -20,6 +20,7 @@ import javax.jms.TextMessage;
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")})
 public class PokerLobbyMDBListener implements MessageListener {
 
+    // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
 
     @EJB
@@ -27,6 +28,7 @@ public class PokerLobbyMDBListener implements MessageListener {
 
     @Override
     public void onMessage(Message message) {
+        logger.trace("PokerLobbyMDBListener :: onMessage(" + message + ")");
         try {
             if (message instanceof TextMessage) {
                 String m = ((TextMessage) message).getText();

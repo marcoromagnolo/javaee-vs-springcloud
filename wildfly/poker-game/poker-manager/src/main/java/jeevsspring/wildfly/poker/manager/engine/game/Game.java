@@ -5,14 +5,18 @@ import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
 import jeevsspring.wildfly.poker.manager.engine.hand.CardDeck;
 import jeevsspring.wildfly.poker.manager.engine.hand.HandAction;
-import jeevsspring.wildfly.poker.manager.engine.hand.Pot;
+import jeevsspring.wildfly.poker.manager.engine.hand.Pots;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
 import jeevsspring.wildfly.poker.manager.engine.table.Seats;
 import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
+import org.jboss.logging.Logger;
 
 import java.util.*;
 
 public abstract class Game<E extends GameAction> {
+
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
     // Table Id
     private final String tableId;
@@ -59,28 +63,33 @@ public abstract class Game<E extends GameAction> {
     private List<Card> communityCards;
 
     // List of Pots
-    private List<Pot> pots;
+    private Pots pots;
 
     // index of the player dealer
     private int dealer;
 
     public Game(String tableId, TableSettings settings, BoClient boClient) {
+        logger.debug("THGame :: Constructor(" + tableId + ", " + settings + ", " + boClient + ")");
+
         this.tableId = tableId;
         this.settings = settings;
         this.boClient = boClient;
         this.players = new HashMap<>();
         this.visitors = new ArrayList<>();
         this.communityCards = new ArrayList<>();
-        this.pots = new ArrayList<>();
+        this.pots = new Pots();
         this.startTime = System.currentTimeMillis();
     }
 
     public void onSettingsApply() {
+        logger.debug("THGame :: onSettingsApply()");
+
         this.cardDeck = new CardDeck();
         this.seats = new Seats(settings.getNumberOfSeats());
     }
 
     public void doActions(Map<String, HandAction> handActions, Queue<TableAction> tableActions) {
+        logger.debug("THGame :: doActions(" + handActions + ", " + tableActions + ")");
 
         // Hand action
         onAction(handActions);
@@ -145,15 +154,20 @@ public abstract class Game<E extends GameAction> {
     }
 
     public void update(TableSettings settings) {
+        logger.debug("THGame :: update(" + settings + ")");
         updateSettings = settings;
     }
 
     public void delete() {
-
+        logger.debug("THGame :: delete()");
     }
 
     public Map<String, Player> getPlayers() {
         return players;
+    }
+
+    public Player getPlayer(String playerId) {
+        return players.get(playerId);
     }
 
     public List<String> getVisitors() {
@@ -172,11 +186,11 @@ public abstract class Game<E extends GameAction> {
         return communityCards;
     }
 
-    public List<Pot> getPots() {
+    public Pots getPots() {
         return pots;
     }
 
-    public void setPots(List<Pot> pots) {
+    public void setPots(Pots pots) {
         this.pots = pots;
     }
 

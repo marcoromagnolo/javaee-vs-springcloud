@@ -31,6 +31,7 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class HandApi<E extends Game> {
 
+    // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
 
     @EJB
@@ -45,6 +46,7 @@ public class HandApi<E extends Game> {
     @GET
     @Path("/test")
     public Status test() {
+        logger.trace("HandApi :: test()");
         Status out = new Status();
         out.setMessage("Test completed");
         return out;
@@ -53,6 +55,7 @@ public class HandApi<E extends Game> {
     @POST
     @Path("/bet")
     public BetOut bet(BetIn in) {
+        logger.trace("HandApi :: bet(" + in + ")");
         BetOut out = new BetOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
@@ -67,12 +70,14 @@ public class HandApi<E extends Game> {
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
         }
+        logger.debug("HandApi :: bet(" + in + ") return " + out);
         return out;
     }
 
     @POST
     @Path("/call")
     public CallOut call(CallIn in) {
+        logger.trace("HandApi :: call(" + in + ")");
         CallOut out = new CallOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
@@ -87,12 +92,14 @@ public class HandApi<E extends Game> {
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
         }
+        logger.debug("HandApi :: call(" + in + ") return " + out);
         return out;
     }
 
     @POST
     @Path("/check")
     public CheckOut check(CheckIn in) {
+        logger.trace("HandApi :: check(" + in + ")");
         CheckOut out = new CheckOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
@@ -107,12 +114,14 @@ public class HandApi<E extends Game> {
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
         }
+        logger.debug("HandApi :: check(" + in + ") return " + out);
         return out;
     }
 
     @POST
     @Path("/raise")
     public RaiseOut raise(RaiseIn in) {
+        logger.trace("HandApi :: raise(" + in + ")");
         RaiseOut out = new RaiseOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
@@ -127,12 +136,14 @@ public class HandApi<E extends Game> {
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
         }
+        logger.debug("HandApi :: raise(" + in + ") return " + out);
         return out;
     }
 
     @POST
     @Path("/fold")
     public FoldOut fold(FoldIn in) {
+        logger.trace("HandApi :: fold(" + in + ")");
         FoldOut out = new FoldOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
@@ -147,22 +158,26 @@ public class HandApi<E extends Game> {
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
         }
+        logger.debug("HandApi :: fold(" + in + ") return " + out);
         return out;
     }
 
     @POST
     @Path("/sync")
     public SyncOut sync(SyncIn in) {
+        logger.trace("HandApi :: sync(" + in + ")");
         SyncOut out = new SyncOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         List<ActionOut> actions = toActions(in.getTableId(), playerId);
         out.setActions(actions);
         out.setSessionId(in.getSessionId());
         out.setToken(in.getToken());
+        logger.debug("HandApi :: sync(" + in + ") return " + out);
         return out;
     }
 
     private List<ActionOut> toActions(String tableId, String playerId) {
+        logger.trace("HandApi :: toActions(" + tableId + ", " + playerId + ")");
         List<ActionOut> out = new ArrayList<>();
         THGame game = (THGame) games.get(tableId);
         for (GameAction action : game.getQueue()) {
@@ -175,6 +190,7 @@ public class HandApi<E extends Game> {
     }
 
     private ActionOut newGameAction(GameAction o, String playerId, boolean isVisitor) {
+        logger.trace("HandApi :: newGameAction(" + o + ", " + playerId + ", " + isVisitor + ")");
         ActionOut actionOut = new ActionOut();
 
         // Set mandatory params

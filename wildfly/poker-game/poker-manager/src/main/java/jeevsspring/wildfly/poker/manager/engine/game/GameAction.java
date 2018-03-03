@@ -3,6 +3,7 @@ package jeevsspring.wildfly.poker.manager.engine.game;
 import jeevsspring.wildfly.poker.manager.engine.hand.Card;
 import jeevsspring.wildfly.poker.manager.engine.hand.Pot;
 import jeevsspring.wildfly.poker.manager.engine.player.Player;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,9 @@ import java.util.Map;
  * @author Marco Romagnolo
  */
 public abstract class GameAction {
+
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
     private long id;
     private String handId;
@@ -22,6 +26,7 @@ public abstract class GameAction {
     private int turn;
 
     public GameAction(String handId) {
+        logger.debug("THGameAction :: Constructor(" + handId + ")");
         this.id = System.nanoTime();
         this.handId = handId;
     }
