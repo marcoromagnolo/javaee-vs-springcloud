@@ -30,7 +30,7 @@ public class PMConfig {
 
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("poker-manager.properties");
         properties = new Properties();
-        System.out.println("Loading config file: " + fileName + " with stream: " + inputStream);
+        System.out.println("Loading config file: " + fileName);
         // Loading the properties
         try {
             properties.load(inputStream);

@@ -5,9 +5,9 @@ import jeevsspring.wildfly.poker.manager.engine.table.TableActionQueue;
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.annotation.Resource;
+import javax.ejb.*;
+import java.util.Calendar;
 
 @Singleton
 @Startup
@@ -15,6 +15,9 @@ public class GameManager {
 
     // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
+
+    @Resource
+    TimerService timerService;
 
     @EJB
     private HandActions handActions;
@@ -26,18 +29,23 @@ public class GameManager {
     private Games<Game> games;
 
     @PostConstruct
-    private void init() {
+    public void init() {
+        timerService.createTimer(0, 1000, "Every seconds");
+    }
 
-        // Make this job forever
-        while (true) {
+    @Timeout
+    public void doWork(Timer timer) {
+        logger.debug("GameManager :: doWork() timer info: " + timer.getInfo().toString());
+        logger.debug("GameManager :: doWork() started at: " + Calendar.getInstance().getTime());
 
-            // Poll Hand and Table actions made from players
-            games.getAll().parallelStream()
-                    .forEach(game -> game.doActions(
-                            handActions.get(game.getTableId()),
-                            tableQueue.poll(game.getTableId())
-                    ));
-        }
+        // Poll Hand and Table actions made from players
+        games.getAll().parallelStream()
+                .forEach(game -> game.doActions(
+                        handActions.get(game.getTableId()),
+                        tableQueue.poll(game.getTableId())
+                ));
+
+        logger.debug("GameManager :: doWork() finished at: " + Calendar.getInstance().getTime());
     }
 
 }

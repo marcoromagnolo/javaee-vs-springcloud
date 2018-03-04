@@ -8,13 +8,19 @@ import jeevsspring.wildfly.poker.manager.engine.game.texasholdem.THGame;
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.ejb.*;
+import java.util.Calendar;
 
 @Singleton
+@Startup
 public class LobbyManager {
 
     // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
+
+    @Resource
+    TimerService timerService;
 
     @EJB
     private BoClient boClient;
@@ -25,9 +31,15 @@ public class LobbyManager {
     @EJB
     private LobbyTables lobbyTables;
 
-    @Schedule(second = "*/10", minute = "*", hour = "*", persistent = false)
-    public void doWork() {
-        logger.trace("LobbyManager :: doWork()");
+    @PostConstruct
+    public void init() {
+        timerService.createTimer(0, 5000, "Every seconds");
+    }
+
+    @Timeout
+    public void doWork(Timer timer) {
+        logger.debug("LobbyManager :: doWork() timer info: " + timer.getInfo().toString());
+        logger.debug("LobbyManager :: doWork() started at: " + Calendar.getInstance().getTime());
 
         // Check and add game instances (async)
         if (!lobbyTables.getCreated().isEmpty()) {
@@ -37,6 +49,7 @@ public class LobbyManager {
                 switch (settings.getGameType()) {
 
                     case TEXAS_HOLDEM:
+                        logger.debug("LobbyManager :: doWork() create texas Holdem Game at: " + Calendar.getInstance().getTime());
                         game = new THGame(tableId, settings, boClient);
                         break;
 
@@ -52,6 +65,7 @@ public class LobbyManager {
         if (!lobbyTables.getUpdated().isEmpty()) {
             for (String tableId : lobbyTables.getUpdated().keySet()) {
                 TableSettings settings = lobbyTables.getCreated().get(tableId);
+                logger.debug("LobbyManager :: doWork() update game at: " + Calendar.getInstance().getTime());
                 games.get(tableId).update(settings);
             }
         }
@@ -59,9 +73,12 @@ public class LobbyManager {
         // Check and delete tables games (async)
         if (!lobbyTables.getDeleted().isEmpty()) {
             for (String tableId : lobbyTables.getUpdated().keySet()) {
+                logger.debug("LobbyManager :: doWork() delete game at: " + Calendar.getInstance().getTime());
                 games.get(tableId).delete();
             }
         }
+
+        logger.debug("LobbyManager :: doWork() finished at: " + Calendar.getInstance().getTime());
     }
 
 }
