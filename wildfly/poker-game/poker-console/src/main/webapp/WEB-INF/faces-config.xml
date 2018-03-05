@@ -5,14 +5,14 @@
     http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
     <managed-bean>
-        <managed-bean-name>operator</managed-bean-name>
-        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.Operator</managed-bean-class>
+        <managed-bean-name>operators</managed-bean-name>
+        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.ListOperatorBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
     <managed-bean>
-        <managed-bean-name>connectedOperators</managed-bean-name>
-        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.ConnectedOperators</managed-bean-class>
+        <managed-bean-name>tableGames</managed-bean-name>
+        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.ListTableGameBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
@@ -22,8 +22,47 @@
         <managed-bean-scope>request</managed-bean-scope>
         <managed-property>
             <property-name>operators</property-name>
-            <property-class>jeevsspring.wildfly.poker.console.bean.ConnectedOperators</property-class>
-            <value>#{connectedOperators}</value>
+            <property-class>jeevsspring.wildfly.poker.console.bean.ListOperatorBean</property-class>
+            <value>#{operators}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>tableGames</property-name>
+            <property-class>jeevsspring.wildfly.poker.console.bean.ListTableGameBean</property-class>
+            <value>#{tableGames}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>credentials</managed-bean-name>
+        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.CredentialsBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>loginCtrl</managed-bean-name>
+        <managed-bean-class>jeevsspring.wildfly.poker.console.controller.LoginCtrl</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>credentials</property-name>
+            <property-class>jeevsspring.wildfly.poker.console.bean.CredentialsBean</property-class>
+            <value>#{credentials}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>tableGame</managed-bean-name>
+        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.TableGameBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>addTableGameCtrl</managed-bean-name>
+        <managed-bean-class>jeevsspring.wildfly.poker.console.controller.AddTableGameCtrl</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>tableGame</property-name>
+            <property-class>jeevsspring.wildfly.poker.console.bean.TableGameBean</property-class>
+            <value>#{tableGame}</value>
         </managed-property>
     </managed-bean>
 

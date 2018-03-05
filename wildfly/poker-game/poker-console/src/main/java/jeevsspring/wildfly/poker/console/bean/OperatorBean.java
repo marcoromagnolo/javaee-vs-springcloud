@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author Marco Romagnolo
  */
-public class Operator implements Serializable {
+public class OperatorBean implements Serializable {
     private String username;
     private String role;
 

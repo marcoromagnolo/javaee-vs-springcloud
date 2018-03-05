@@ -1,18 +1,28 @@
 package jeevsspring.wildfly.poker.console.controller;
 
-import jeevsspring.wildfly.poker.console.bean.ConnectedOperators;
+import jeevsspring.wildfly.poker.console.bean.ListOperatorBean;
+import jeevsspring.wildfly.poker.console.bean.ListTableGameBean;
 
 /**
  * @author Marco Romagnolo
  */
 public class DashboardCtrl {
-    private ConnectedOperators operators;
+    private ListOperatorBean operators;
+    private ListTableGameBean tableGames;
 
-    public void setOperators(ConnectedOperators operators) {
+    public void setOperators(ListOperatorBean operators) {
         this.operators = operators;
     }
 
-    public ConnectedOperators getOperators() {
+    public ListOperatorBean getOperators() {
         return operators;
+    }
+
+    public void setTableGames(ListTableGameBean tableGames) {
+        this.tableGames = tableGames;
+    }
+
+    public ListTableGameBean getTableGames() {
+        return tableGames;
     }
 }

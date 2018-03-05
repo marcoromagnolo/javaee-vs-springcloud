@@ -1,4 +1,4 @@
-package jeevsspring.wildfly.poker.console.message;
+package jeevsspring.wildfly.poker.console.controller;
 
 import jeevsspring.wildfly.poker.common.LobbyMessage;
 
@@ -7,10 +7,7 @@ import javax.inject.Inject;
 import javax.jms.JMSContext;
 import javax.jms.Queue;
 
-/**
- * @author Marco Romagnolo
- */
-public class PokerLobbyMessage {
+public class ListTableGameCtrl {
 
     @Inject
     JMSContext context;
@@ -27,5 +24,4 @@ public class PokerLobbyMessage {
         context.createProducer()
                 .send(queue, message);
     }
-
 }

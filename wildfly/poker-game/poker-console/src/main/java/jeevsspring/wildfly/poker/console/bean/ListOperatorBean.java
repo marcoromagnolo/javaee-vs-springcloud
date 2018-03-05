@@ -8,21 +8,20 @@ import java.util.List;
 /**
  * @author Marco Romagnolo
  */
-@Singleton
-public class ConnectedOperators {
+public class ListOperatorBean {
 
-    private List<Operator> operators;
+    private List<OperatorBean> operators;
 
     @PostConstruct
     public void init() {
         this.operators = new ArrayList<>();
     }
 
-    public List<Operator> getOperators() {
+    public List<OperatorBean> getOperators() {
         return operators;
     }
 
-    public void setOperators(List<Operator> operators) {
+    public void setOperators(List<OperatorBean> operators) {
         this.operators = operators;
     }
 }
