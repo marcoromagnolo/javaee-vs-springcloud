@@ -1,4 +1,4 @@
 -- Configure WildFly
 
-standalone.sh –c standalone-full-ha.xml
+./bin/standalone.sh -Djboss.bind.address=0.0.0.0 -c standalone-full-ha.xml
 jms-queue add --queue-address= jms.queue.PokerLobbyQueue --entries=java:/jms/queue/pokerLobbyQueue

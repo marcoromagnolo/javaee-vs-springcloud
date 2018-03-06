@@ -1,5 +1,6 @@
 package jeevsspring.wildfly.poker.console.controller;
 
+import jeevsspring.wildfly.poker.common.LobbyMessage;
 import jeevsspring.wildfly.poker.console.bean.TableGameBean;
 
 import javax.annotation.Resource;
@@ -23,7 +24,7 @@ public class AddTableGameCtrl implements Serializable {
                 .send(queue, message);
     }
 
-    public void send(jeevsspring.wildfly.poker.common.LobbyMessage message) {
+    public void send(LobbyMessage message) {
         context.createProducer()
                 .send(queue, message);
     }

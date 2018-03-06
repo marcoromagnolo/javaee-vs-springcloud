@@ -39,19 +39,13 @@
     </managed-bean>
 
     <managed-bean>
-        <managed-bean-name>login</managed-bean-name>
-        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.LoginBean</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-
-    <managed-bean>
         <managed-bean-name>loginCtrl</managed-bean-name>
         <managed-bean-class>jeevsspring.wildfly.poker.console.controller.LoginCtrl</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
         <managed-property>
-            <property-name>login</property-name>
-            <property-class>jeevsspring.wildfly.poker.console.bean.LoginBean</property-class>
-            <value>#{login}</value>
+            <property-name>operatorSession</property-name>
+            <property-class>jeevsspring.wildfly.poker.console.bean.OperatorBean</property-class>
+            <value>#{operator}</value>
         </managed-property>
     </managed-bean>
 
@@ -71,5 +65,22 @@
             <value>#{tableGame}</value>
         </managed-property>
     </managed-bean>
+
+    <navigation-rule>
+        <display-name>login.xhtml</display-name>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/admin/dashboard.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <display-name>login.xhtml</display-name>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 
 </faces-config>
