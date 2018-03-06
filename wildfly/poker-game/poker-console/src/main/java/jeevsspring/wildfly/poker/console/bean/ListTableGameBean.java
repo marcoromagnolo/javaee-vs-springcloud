@@ -1,10 +1,11 @@
 package jeevsspring.wildfly.poker.console.bean;
 
 import javax.annotation.PostConstruct;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListTableGameBean {
+public class ListTableGameBean implements Serializable {
 
     private List<TableGameBean> tableGames;
 

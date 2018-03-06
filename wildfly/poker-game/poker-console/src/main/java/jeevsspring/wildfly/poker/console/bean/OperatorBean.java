@@ -6,6 +6,8 @@ import java.io.Serializable;
  * @author Marco Romagnolo
  */
 public class OperatorBean implements Serializable {
+
+    private int id;
     private String username;
     private String role;
 
@@ -24,4 +26,13 @@ public class OperatorBean implements Serializable {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }

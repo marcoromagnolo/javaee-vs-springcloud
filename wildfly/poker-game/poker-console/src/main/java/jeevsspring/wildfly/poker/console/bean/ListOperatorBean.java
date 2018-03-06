@@ -2,13 +2,14 @@ package jeevsspring.wildfly.poker.console.bean;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Marco Romagnolo
  */
-public class ListOperatorBean {
+public class ListOperatorBean implements Serializable {
 
     private List<OperatorBean> operators;
 

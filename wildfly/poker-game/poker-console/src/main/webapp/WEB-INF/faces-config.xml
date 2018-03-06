@@ -5,6 +5,12 @@
     http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
     <managed-bean>
+        <managed-bean-name>operator</managed-bean-name>
+        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.OperatorBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
         <managed-bean-name>operators</managed-bean-name>
         <managed-bean-class>jeevsspring.wildfly.poker.console.bean.ListOperatorBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
@@ -33,8 +39,8 @@
     </managed-bean>
 
     <managed-bean>
-        <managed-bean-name>credentials</managed-bean-name>
-        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.CredentialsBean</managed-bean-class>
+        <managed-bean-name>login</managed-bean-name>
+        <managed-bean-class>jeevsspring.wildfly.poker.console.bean.LoginBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
@@ -43,9 +49,9 @@
         <managed-bean-class>jeevsspring.wildfly.poker.console.controller.LoginCtrl</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
         <managed-property>
-            <property-name>credentials</property-name>
-            <property-class>jeevsspring.wildfly.poker.console.bean.CredentialsBean</property-class>
-            <value>#{credentials}</value>
+            <property-name>login</property-name>
+            <property-class>jeevsspring.wildfly.poker.console.bean.LoginBean</property-class>
+            <value>#{login}</value>
         </managed-property>
     </managed-bean>
 

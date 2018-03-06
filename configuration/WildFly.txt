@@ -1,0 +1,4 @@
+-- Configure WildFly
+
+standalone.sh –c standalone-full-ha.xml
+jms-queue add --queue-address= jms.queue.PokerLobbyQueue --entries=java:/jms/queue/pokerLobbyQueue

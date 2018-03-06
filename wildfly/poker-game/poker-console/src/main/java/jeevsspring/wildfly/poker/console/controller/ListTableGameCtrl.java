@@ -6,8 +6,9 @@ import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
 import javax.jms.Queue;
+import java.io.Serializable;
 
-public class ListTableGameCtrl {
+public class ListTableGameCtrl implements Serializable {
 
     @Inject
     JMSContext context;

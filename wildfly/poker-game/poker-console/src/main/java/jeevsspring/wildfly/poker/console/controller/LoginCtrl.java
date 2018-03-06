@@ -1,15 +1,18 @@
 package jeevsspring.wildfly.poker.console.controller;
 
-import jeevsspring.wildfly.poker.console.bean.CredentialsBean;
+import jeevsspring.wildfly.poker.console.bean.LoginBean;
 
-public class LoginCtrl {
-    private CredentialsBean credentials;
+import java.io.Serializable;
 
-    public void setCredentials(CredentialsBean credentials) {
-        this.credentials = credentials;
+public class LoginCtrl implements Serializable {
+
+    private LoginBean login;
+
+    public void setLogin(LoginBean login) {
+        this.login = login;
     }
 
-    public CredentialsBean getCredentials() {
-        return credentials;
+    public LoginBean getLogin() {
+        return login;
     }
 }

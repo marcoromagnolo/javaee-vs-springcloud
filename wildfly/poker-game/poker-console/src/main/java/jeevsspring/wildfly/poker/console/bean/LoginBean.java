@@ -1,9 +1,10 @@
 package jeevsspring.wildfly.poker.console.bean;
 
-public class CredentialsBean {
+import java.io.Serializable;
+
+public class LoginBean implements Serializable {
 
     private String username;
-
     private String password;
 
     public String getUsername() {
