@@ -3,7 +3,6 @@ package jeevsspring.wildfly.poker.manager.engine.game.texasholdem;
 import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.bo.json.StakeIn;
-import jeevsspring.wildfly.poker.manager.bo.json.StakeOut;
 import jeevsspring.wildfly.poker.manager.bo.json.WinIn;
 import jeevsspring.wildfly.poker.manager.engine.game.Game;
 import jeevsspring.wildfly.poker.manager.engine.game.GameException;
@@ -19,8 +18,6 @@ import jeevsspring.wildfly.poker.manager.engine.table.TableAction;
 import jeevsspring.wildfly.poker.manager.util.IdGenerator;
 import org.jboss.logging.Logger;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 
 public class THGame extends Game<THGameAction> {
@@ -62,7 +59,7 @@ public class THGame extends Game<THGameAction> {
     public void onSettingsApply() {
         logger.debug("THGame :: onSettingsApply()");
         orders = new Orders(getSeats());
-        timer = new GameTimer(getSettings().getActionTimeOut());
+        timer = new GameTimer(getSettings().getActionTimeout());
     }
 
     /**

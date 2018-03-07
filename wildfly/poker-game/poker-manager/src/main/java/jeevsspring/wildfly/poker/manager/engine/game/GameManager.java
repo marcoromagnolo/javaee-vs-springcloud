@@ -35,8 +35,8 @@ public class GameManager {
 
     @Timeout
     public void doWork(Timer timer) {
-        logger.debug("GameManager :: doWork() timer info: " + timer.getInfo().toString());
-        logger.debug("GameManager :: doWork() started at: " + Calendar.getInstance().getTime());
+        logger.trace("GameManager :: doWork() timer info: " + timer.getInfo().toString());
+        logger.trace("GameManager :: doWork() started at: " + Calendar.getInstance().getTime());
 
         // Poll Hand and Table actions made from players
         games.getAll().parallelStream()
@@ -45,7 +45,7 @@ public class GameManager {
                         tableQueue.poll(game.getTableId())
                 ));
 
-        logger.debug("GameManager :: doWork() finished at: " + Calendar.getInstance().getTime());
+        logger.trace("GameManager :: doWork() finished at: " + Calendar.getInstance().getTime());
     }
 
 }

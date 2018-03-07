@@ -1,16 +1,19 @@
 package jeevsspring.wildfly.poker.console.filter;
 
-import jeevsspring.wildfly.poker.console.bean.OperatorBean;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import org.jboss.logging.Logger;
 
 /**
  * @author Marco Romagnolo
  */
 public class LoginFilter implements Filter {
+
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -19,17 +22,21 @@ public class LoginFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // Get the loginBean from session attribute
-        OperatorBean session = (OperatorBean)((HttpServletRequest)request).getSession().getAttribute("operatorBean");
+        // Get the Operator session
+        HttpSession httpSession = ((HttpServletRequest) request).getSession(false);
+        boolean loggedIn = httpSession != null && httpSession.getAttribute("operator") != null;
+        logger.trace("LoginFilter :: doFilter() User is logged: " + loggedIn);
 
         // For the first application request there is no loginBean in the session so user needs to log in
         // For other requests loginBean is present but we need to check if user has logged in successfully
-        if (session == null || session.getId() == null) {
-            String contextPath = ((HttpServletRequest)request).getContextPath();
-            ((HttpServletResponse)response).sendRedirect(contextPath + "/login.xhtml");
+        if (loggedIn) {
+            chain.doFilter(request, response);
+        } else {
+            logger.debug("Operator have no session, redirecting to login page");
+            ((HttpServletResponse)response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/login.xhtml");
         }
 
-        chain.doFilter(request, response);
+
     }
 
     @Override

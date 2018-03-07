@@ -29,6 +29,7 @@
         <h:inputText value="#{loginCtrl.username}" id="inputUsername" class="form-control" placeholder="Username" required="true" autofocus="true" />
         <label for="inputPassword" class="sr-only">Password</label>
         <h:inputSecret value="#{loginCtrl.password}" id="inputPassword" class="form-control" placeholder="Password" required="true"/>
+        <h:messages globalOnly="true" style="color:red;margin:8px;" />
         <div class="checkbox mb-3">
             <label>
                 <input type="checkbox" value="remember-me" /> Remember me

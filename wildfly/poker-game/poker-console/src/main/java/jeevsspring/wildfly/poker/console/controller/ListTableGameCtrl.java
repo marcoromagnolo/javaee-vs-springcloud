@@ -1,28 +1,16 @@
 package jeevsspring.wildfly.poker.console.controller;
 
-import jeevsspring.wildfly.poker.common.LobbyMessage;
+import org.jboss.logging.Logger;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
-import javax.jms.JMSContext;
-import javax.jms.Queue;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import java.io.Serializable;
 
+@Named
+@RequestScoped
 public class ListTableGameCtrl implements Serializable {
 
-    @Inject
-    JMSContext context;
+    // JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
-    @Resource(mappedName = "java:/jms/queue/pokerLobbyQueue")
-    private Queue queue;
-
-    public void send(String message) {
-        context.createProducer()
-                .send(queue, message);
-    }
-
-    public void send(LobbyMessage message) {
-        context.createProducer()
-                .send(queue, message);
-    }
 }

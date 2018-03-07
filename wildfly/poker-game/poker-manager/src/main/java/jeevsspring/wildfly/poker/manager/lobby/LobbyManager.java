@@ -38,8 +38,8 @@ public class LobbyManager {
 
     @Timeout
     public void doWork(Timer timer) {
-        logger.debug("LobbyManager :: doWork() timer info: " + timer.getInfo().toString());
-        logger.debug("LobbyManager :: doWork() started at: " + Calendar.getInstance().getTime());
+        logger.trace("LobbyManager :: doWork() timer info: " + timer.getInfo().toString());
+        logger.trace("LobbyManager :: doWork() started at: " + Calendar.getInstance().getTime());
 
         // Check and add game instances (async)
         if (!lobbyTables.getCreated().isEmpty()) {
@@ -78,7 +78,7 @@ public class LobbyManager {
             }
         }
 
-        logger.debug("LobbyManager :: doWork() finished at: " + Calendar.getInstance().getTime());
+        logger.trace("LobbyManager :: doWork() finished at: " + Calendar.getInstance().getTime());
     }
 
 }

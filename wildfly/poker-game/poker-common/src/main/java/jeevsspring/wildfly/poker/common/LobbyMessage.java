@@ -34,4 +34,13 @@ public class LobbyMessage implements Serializable {
     public void setTableSettings(TableSettings tableSettings) {
         this.tableSettings = tableSettings;
     }
+
+    @Override
+    public String toString() {
+        return "LobbyMessage{" +
+                "tableId='" + tableId + '\'' +
+                ", actionType=" + actionType +
+                ", tableSettings=" + tableSettings +
+                '}';
+    }
 }

@@ -29,13 +29,6 @@
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>admin</web-resource-name>
-            <url-pattern>/admin/*</url-pattern>
-        </web-resource-collection>
-    </security-constraint>
-
     <filter-mapping>
         <filter-name>authenticated</filter-name>
         <url-pattern>/admin/*</url-pattern>

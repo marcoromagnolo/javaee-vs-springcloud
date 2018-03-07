@@ -7,7 +7,7 @@ public class TableSettings {
 
     private String name;
     private int numberOfSeats;
-    private long actionTimeOut;
+    private long actionTimeout;
     private long startTimeout;
     private GameType gameType;
 
@@ -27,12 +27,12 @@ public class TableSettings {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public long getActionTimeOut() {
-        return actionTimeOut;
+    public long getActionTimeout() {
+        return actionTimeout;
     }
 
-    public void setActionTimeOut(long actionTimeOut) {
-        this.actionTimeOut = actionTimeOut;
+    public void setActionTimeout(long actionTimeout) {
+        this.actionTimeout = actionTimeout;
     }
 
     public long getStartTimeout() {
@@ -49,5 +49,16 @@ public class TableSettings {
 
     public void setGameType(GameType gameType) {
         this.gameType = gameType;
+    }
+
+    @Override
+    public String toString() {
+        return "TableSettings{" +
+                "name='" + name + '\'' +
+                ", numberOfSeats=" + numberOfSeats +
+                ", actionTimeout=" + actionTimeout +
+                ", startTimeout=" + startTimeout +
+                ", gameType=" + gameType +
+                '}';
     }
 }

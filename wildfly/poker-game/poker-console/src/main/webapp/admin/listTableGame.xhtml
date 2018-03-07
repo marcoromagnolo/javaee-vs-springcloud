@@ -4,14 +4,17 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<h:head>
-    <title>Title</title>
-</h:head>
+<ui:composition template="/layout/template.xhtml">
 
-<h:body>
-    
-</h:body>
+    <ui:define name="head">
+        <ui:define name="title">List Table Games</ui:define>
+    </ui:define>
+
+    <ui:define name="content">
+        <h1>List Table Games</h1>
+    </ui:define>
+</ui:composition>
 
 </html>

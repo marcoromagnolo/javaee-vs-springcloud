@@ -1,11 +1,11 @@
-package jeevsspring.wildfly.poker.console.bean;
+package jeevsspring.wildfly.poker.console.util;
 
 import java.io.Serializable;
 
 /**
  * @author Marco Romagnolo
  */
-public class OperatorBean implements Serializable {
+public class OperatorSession implements Serializable {
 
     private Integer id;
     private String username;
@@ -35,4 +35,12 @@ public class OperatorBean implements Serializable {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "OperatorBean{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }
