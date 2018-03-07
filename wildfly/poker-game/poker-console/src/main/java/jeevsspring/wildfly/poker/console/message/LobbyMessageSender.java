@@ -5,9 +5,10 @@ import org.jboss.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
+import javax.jms.JMSException;
+import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 
 /**
@@ -27,7 +28,14 @@ public class LobbyMessageSender {
 
     public void send(LobbyMessage message) {
         logger.debug("AddTableGameCtrl :: create(" + message + ")");
-        context.createProducer()
-                .send(queue, message);
+        ObjectMessage om = context.createObjectMessage();
+        try {
+            om.setObject(message);
+            context.createProducer()
+                    .send(queue, om);
+        } catch (JMSException e) {
+            logger.error(e);
+        }
+
     }
 }
