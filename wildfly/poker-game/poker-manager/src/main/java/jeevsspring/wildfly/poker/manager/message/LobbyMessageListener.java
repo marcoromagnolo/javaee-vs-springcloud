@@ -7,7 +7,10 @@ import org.jboss.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
-import javax.jms.*;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.ObjectMessage;
 
 /**
  * @author Marco Romagnolo
@@ -25,9 +28,10 @@ public class LobbyMessageListener implements MessageListener {
 
     @Override
     public void onMessage(Message message) {
-        logger.debug("PokerLobbyMDBListener :: onMessage(" + message + ")");
+        logger.debug("onMessage(" + message + ")");
         try {
             if (message instanceof ObjectMessage) {
+                logger.debug("Message received is a ObjectMessage type");
                 LobbyMessage lobbyMessage = (LobbyMessage) ((ObjectMessage) message).getObject();
                 logger.info("Message received : " + lobbyMessage);
                 switch (lobbyMessage.getActionType()) {

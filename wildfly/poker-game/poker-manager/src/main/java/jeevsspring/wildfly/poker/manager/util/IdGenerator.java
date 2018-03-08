@@ -13,12 +13,12 @@ public class IdGenerator {
     private final static Logger logger = Logger.getLogger(IdGenerator.class);
 
     public static String newHandId() {
-        logger.trace("IdGenerator :: newHandId()");
+        logger.trace("newHandId()");
         return UUID.randomUUID().toString();
     }
 
     public static String newTableId() {
-        logger.trace("IdGenerator :: newTableId()");
+        logger.trace("newTableId()");
         return UUID.randomUUID().toString();
     }
 }

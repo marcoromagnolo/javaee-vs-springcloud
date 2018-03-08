@@ -16,7 +16,7 @@ public class PokerManager extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {
-        logger.trace("PokerManager :: getClasses()");
+        logger.trace("getClasses()");
         Set<Class<?>> classes = new HashSet<>();
         classes.add(LobbyApi.class);
         classes.add(TableApi.class);

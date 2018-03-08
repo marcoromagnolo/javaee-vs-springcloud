@@ -1,7 +1,7 @@
 package jeevsspring.wildfly.poker.manager.bo;
 
 import jeevsspring.wildfly.poker.manager.bo.json.*;
-import jeevsspring.wildfly.poker.manager.engine.player.Player;
+import jeevsspring.wildfly.poker.manager.game.player.Player;
 import org.jboss.logging.Logger;
 
 import javax.ejb.LocalBean;
@@ -23,7 +23,7 @@ public class BoClient {
     }
 
     public SigninOut signin(SigninIn in) {
-        logger.trace("BoClient :: signin(" + in + ")");
+        logger.trace("signin(" + in + ")");
         SigninOut out = new SigninOut();
         out.setSessionId(UUID.randomUUID().toString());
         out.setToken(UUID.randomUUID().toString());
@@ -42,36 +42,36 @@ public class BoClient {
         user.setWallet(wallet);
         out.setUser(user);
 
-        logger.debug("BoClient :: signin (" + in + ") return " + out);
+        logger.debug("signin (" + in + ") return " + out);
         return out;
     }
 
     public SignoutOut signout(SignoutIn in) {
-        logger.trace("BoClient :: signout(" + in + ")");
+        logger.trace("signout(" + in + ")");
         SignoutOut out = new SignoutOut();
         out.setMessage("Bye Bye!");
-        logger.debug("BoClient :: signout (" + in + ") return " + out);
+        logger.debug("signout (" + in + ") return " + out);
         return out;
     }
 
     public VerifyOut verify(VerifyIn in) {
-        logger.trace("BoClient :: verify(" + in + ")");
+        logger.trace("verify(" + in + ")");
         VerifyOut out = new VerifyOut();
-        logger.debug("BoClient :: verify (" + in + ") return " + out);
+        logger.debug("verify (" + in + ") return " + out);
         return out;
     }
 
     public WinOut win(WinIn in) {
-        logger.trace("BoClient :: win(" + in + ")");
+        logger.trace("win(" + in + ")");
         WinOut out = new WinOut();
-        logger.debug("BoClient :: win (" + in + ") return " + out);
+        logger.debug("win (" + in + ") return " + out);
         return out;
     }
 
     public StakeOut stake(StakeIn in) {
-        logger.trace("BoClient :: stake(" + in + ")");
+        logger.trace("stake(" + in + ")");
         StakeOut out = new StakeOut();
-        logger.debug("BoClient :: stake (" + in + ") return " + out);
+        logger.debug("stake (" + in + ") return " + out);
         return out;
 
     }

@@ -37,7 +37,7 @@ public class OperatorSession implements Serializable {
 
     @Override
     public String toString() {
-        return "OperatorBean{" +
+        return "OperatorSession{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", role='" + role + '\'' +

@@ -25,7 +25,7 @@ public class LoginFilter implements Filter {
         // Get the Operator session
         HttpSession httpSession = ((HttpServletRequest) request).getSession(false);
         boolean loggedIn = httpSession != null && httpSession.getAttribute("operator") != null;
-        logger.trace("LoginFilter :: doFilter() User is logged: " + loggedIn);
+        logger.trace("doFilter() User is logged: " + loggedIn);
 
         // For the first application request there is no loginBean in the session so user needs to log in
         // For other requests loginBean is present but we need to check if user has logged in successfully

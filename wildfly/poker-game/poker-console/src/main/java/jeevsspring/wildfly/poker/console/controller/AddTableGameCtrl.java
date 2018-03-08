@@ -2,6 +2,7 @@ package jeevsspring.wildfly.poker.console.controller;
 
 import jeevsspring.wildfly.poker.common.LobbyActionType;
 import jeevsspring.wildfly.poker.common.LobbyMessage;
+import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.console.bean.TableGameBean;
 import jeevsspring.wildfly.poker.console.message.LobbyMessageSender;
 import org.jboss.logging.Logger;
@@ -25,10 +26,18 @@ public class AddTableGameCtrl implements Serializable {
     private LobbyMessageSender sender;
 
     public void create() {
-        logger.debug("AddTableGameCtrl :: create() tableGame: " + tableGame);
+        logger.debug("create() tableGame: " + tableGame);
+
+        TableSettings tableSettings = new TableSettings();
+        tableSettings.setActionTimeout(tableGame.getActionTimeout());
+        tableSettings.setGameType(tableGame.getGameType());
+        tableSettings.setName(tableGame.getName());
+        tableSettings.setNumberOfSeats(tableGame.getNumberOfSeats());
+        tableSettings.setStartTimeout(tableGame.getStartTimeout());
+
         LobbyMessage message = new LobbyMessage();
         message.setActionType(LobbyActionType.CREATE);
-        message.setTableSettings(tableGame);
+        message.setTableSettings(tableSettings);
         sender.send(message);
     }
 }

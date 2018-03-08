@@ -43,14 +43,14 @@ public class LoginCtrl implements Serializable {
      * Login
      */
     public void login() {
-        logger.trace("LoginCtrl :: login() username=" + username + ", password=" + password);
+        logger.trace("login() username=" + username + ", password=" + password);
         if (username.equals("admin") && password.equals("password")) {
             OperatorSession session = new OperatorSession();
             session.setId(1);
             session.setRole("Admin");
             session.setUsername("marcoromagnolo");
             context.getExternalContext().getSessionMap().put("operator", session);
-            logger.debug("LoginCtrl :: login() Authenticated with session=" + session);
+            logger.debug("login() Authenticated with session=" + session);
             try {
                 String contextPath = context.getExternalContext().getRequestContextPath();
                 context.getExternalContext().redirect(contextPath + "/admin/dashboard.xhtml");
@@ -59,7 +59,7 @@ public class LoginCtrl implements Serializable {
             }
         } else {
             context.addMessage(null, new FacesMessage("Authentication Failed. Check username or password!"));
-            logger.debug("LoginCtrl :: login() Authentication failure: username=" + username + ", password=" + password);
+            logger.debug("login() Authentication failure: username=" + username + ", password=" + password);
         }
     }
 
@@ -67,7 +67,7 @@ public class LoginCtrl implements Serializable {
      * Logout
      */
     public void logout() {
-        logger.trace("LoginCtrl :: logout()");
+        logger.trace("logout()");
         context.getExternalContext().invalidateSession();
         try {
             String contextPath = context.getExternalContext().getRequestContextPath();

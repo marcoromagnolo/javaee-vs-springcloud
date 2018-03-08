@@ -27,10 +27,11 @@ public class LobbyMessageSender {
     private Queue queue;
 
     public void send(LobbyMessage message) {
-        logger.debug("AddTableGameCtrl :: create(" + message + ")");
+        logger.debug("send(" + message + ")");
         ObjectMessage om = context.createObjectMessage();
         try {
             om.setObject(message);
+            logger.info("Sending message with ObjectMessage: " + om);
             context.createProducer()
                     .send(queue, om);
         } catch (JMSException e) {

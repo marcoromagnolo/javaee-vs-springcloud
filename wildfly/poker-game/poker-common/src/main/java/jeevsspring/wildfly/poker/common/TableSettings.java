@@ -1,9 +1,11 @@
 package jeevsspring.wildfly.poker.common;
 
+import java.io.Serializable;
+
 /**
  * @author Marco Romagnolo
  */
-public class TableSettings {
+public class TableSettings implements Serializable {
 
     private String name;
     private int numberOfSeats;
