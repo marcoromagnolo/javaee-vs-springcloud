@@ -48,4 +48,16 @@ public class HandAction {
     public long getTime() {
         return time;
     }
+
+    @Override
+    public String toString() {
+        return "HandAction{" +
+                "tableId='" + tableId + '\'' +
+                ", actionType=" + actionType +
+                ", handId='" + handId + '\'' +
+                ", playerId='" + playerId + '\'' +
+                ", option='" + option + '\'' +
+                ", time=" + time +
+                '}';
+    }
 }

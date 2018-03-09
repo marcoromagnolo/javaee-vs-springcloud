@@ -47,4 +47,13 @@ public class Pot {
     public void setPlayers(List<String> players) {
         this.players = players;
     }
+
+    @Override
+    public String toString() {
+        return "Pot{" +
+                "id='" + id + '\'' +
+                ", value=" + value +
+                ", players=" + players +
+                '}';
+    }
 }

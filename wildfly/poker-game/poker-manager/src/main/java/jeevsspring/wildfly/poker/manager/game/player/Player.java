@@ -82,4 +82,16 @@ public class Player {
 
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id='" + id + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", balance=" + balance +
+                ", seat=" + seat +
+                ", cards=" + cards +
+                ", sitOut=" + sitOut +
+                '}';
+    }
 }

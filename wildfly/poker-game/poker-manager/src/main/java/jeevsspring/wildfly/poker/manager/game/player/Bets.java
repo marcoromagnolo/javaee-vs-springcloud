@@ -100,4 +100,14 @@ public class Bets {
     public List<String> getAllin() {
         return allin;
     }
+
+    @Override
+    public String toString() {
+        return "Bets{" +
+                "max=" + max +
+                ", best='" + best + '\'' +
+                ", players=" + players +
+                ", allin=" + allin +
+                '}';
+    }
 }

@@ -8,6 +8,7 @@ import jeevsspring.wildfly.poker.manager.game.hand.Pots;
 import jeevsspring.wildfly.poker.manager.game.player.Player;
 import jeevsspring.wildfly.poker.manager.game.table.Seats;
 import jeevsspring.wildfly.poker.manager.game.table.TableAction;
+import jeevsspring.wildfly.poker.manager.util.IdGenerator;
 import org.jboss.logging.Logger;
 
 import java.util.*;
@@ -64,38 +65,28 @@ public abstract class Game<E extends GameAction> {
     // index of the player dealer
     private int dealer;
 
-    public Game(String tableId, TableSettings settings) {
-        logger.debug("Game(" + tableId + ", " + settings + ")");
+    private Map<String, Long> rewards;
 
-        this.tableId = tableId;
+    public Game(TableSettings settings) {
+        logger.debug("Game(" + settings + ")");
+
+        this.tableId = IdGenerator.newTableId();
         this.settings = settings;
         this.players = new HashMap<>();
         this.visitors = new ArrayList<>();
         this.communityCards = new ArrayList<>();
         this.pots = new Pots();
+        this.seats = new Seats(settings.getNumberOfSeats());
         this.startTime = System.currentTimeMillis();
         logger.debug("Game() apply settings");
         onSettingsApply();
     }
 
-    public void doActions(Map<String, HandAction> handActions, Queue<TableAction> tableActions) {
-        logger.debug("doActions(" + handActions + ", " + tableActions + ")");
-
-        // Hand action
-        onAction(handActions);
-
-        // Table action
-        while (tableActions.peek() != null) {
-            TableAction action = tableActions.poll();
-            onAction(action);
-        }
-    }
-
     public abstract void onSettingsApply();
 
-    protected abstract void onAction(Map<String, HandAction> actions);
+    public abstract void actions(Map<String, HandAction> actions);
 
-    protected abstract void onAction(TableAction action);
+    public abstract void actions(Queue<TableAction> action);
 
     public String getTableId() {
         return tableId;
@@ -163,6 +154,7 @@ public abstract class Game<E extends GameAction> {
     }
 
     public CardDeck getCardDeck() {
+        logger.debug("getCardDeck()");
         if (cardDeck == null) {
             this.cardDeck = new CardDeck();
         }
@@ -170,6 +162,7 @@ public abstract class Game<E extends GameAction> {
     }
 
     public Seats getSeats() {
+        logger.debug("getSeats()");
         if (seats == null) {
             new Seats(settings.getNumberOfSeats());
         }
@@ -195,4 +188,34 @@ public abstract class Game<E extends GameAction> {
     protected void setDealer(int dealer) {
         this.dealer = dealer;
     }
+
+    public Map<String, Long> getRewards() {
+        if (rewards == null) {
+            rewards = new HashMap<>();
+        }
+        return rewards;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "tableId='" + tableId + '\'' +
+                ", handId='" + handId + '\'' +
+                ", settings=" + settings +
+                ", updateSettings=" + updateSettings +
+                ", queue=" + queue +
+                ", handRunning=" + handRunning +
+                ", roundRunning=" + roundRunning +
+                ", running=" + running +
+                ", startTime=" + startTime +
+                ", players=" + players +
+                ", visitors=" + visitors +
+                ", cardDeck=" + cardDeck +
+                ", seats=" + seats +
+                ", communityCards=" + communityCards +
+                ", pots=" + pots +
+                ", dealer=" + dealer +
+                '}';
+    }
+
 }

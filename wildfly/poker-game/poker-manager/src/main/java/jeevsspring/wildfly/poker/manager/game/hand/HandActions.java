@@ -35,8 +35,14 @@ public class HandActions {
         map.get(tableId).put(playerId, hand);
     }
 
-    public Map<String, HandAction> get(String tableId) {
-        return map.get(tableId);
+    public Map<String, HandAction> pop(String tableId) {
+        logger.debug("pop(" + tableId + ")");
+        return map.remove(tableId);
+    }
+
+    public boolean contains(String tableId) {
+        logger.trace("contains(" + tableId + ")");
+        return map.containsKey(tableId);
     }
 
 }

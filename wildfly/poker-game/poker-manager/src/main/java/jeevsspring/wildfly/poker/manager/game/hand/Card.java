@@ -65,4 +65,13 @@ public class Card implements Comparator<Card>{
 
         return Objects.hash(suit, symbol);
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "suit=" + suit +
+                ", symbol=" + symbol +
+                ", color=" + color +
+                '}';
+    }
 }

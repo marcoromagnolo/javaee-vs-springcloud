@@ -1,7 +1,9 @@
 package jeevsspring.wildfly.poker.manager.game;
 
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
+import jeevsspring.wildfly.poker.manager.game.hand.HandAction;
 import jeevsspring.wildfly.poker.manager.game.hand.HandActions;
+import jeevsspring.wildfly.poker.manager.game.table.TableAction;
 import jeevsspring.wildfly.poker.manager.game.table.TableActionQueue;
 import org.jboss.logging.Logger;
 
@@ -9,7 +11,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.*;
 import java.util.Calendar;
-import java.util.function.Consumer;
+import java.util.Map;
+import java.util.Queue;
 
 @Singleton
 @Startup
@@ -45,11 +48,16 @@ public class GameManager {
                 .forEach(game -> {
                     String tableId = game.getTableId();
                     try {
-                        game.doActions(handActions.get(tableId), tableQueue.poll(tableId));
+                        if (handActions.contains(tableId)) {
+                            game.actions(handActions.pop(tableId));
+                        }
+                        if (tableQueue.contains(tableId)) {
+                            game.actions(tableQueue.pop(tableId));
+                        }
                     } catch (Exception e) {
                         logger.warn("Game with tableId: " + tableId + " will be removed from active games");
                         games.remove(tableId);
-                        logger.error(e);
+                        logger.error(e.getMessage(), e);
                     }
                 });
 

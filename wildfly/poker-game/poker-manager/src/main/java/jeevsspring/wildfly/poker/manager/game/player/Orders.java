@@ -103,6 +103,16 @@ public class Orders {
      */
     public void next() {
         logger.debug("next()");
-        index = (index + 1) % numberOfPlayers;
+        index = numberOfPlayers>1 ? (index + 1) % numberOfPlayers : 1;
+    }
+
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "numberOfPlayers=" + numberOfPlayers +
+                ", numberOfSeats=" + numberOfSeats +
+                ", list=" + list +
+                ", index=" + index +
+                '}';
     }
 }

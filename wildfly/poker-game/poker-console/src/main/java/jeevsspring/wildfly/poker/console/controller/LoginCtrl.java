@@ -55,7 +55,7 @@ public class LoginCtrl implements Serializable {
                 String contextPath = context.getExternalContext().getRequestContextPath();
                 context.getExternalContext().redirect(contextPath + "/admin/dashboard.xhtml");
             } catch (IOException e) {
-                logger.error(e);
+                logger.error(e.getMessage(), e);
             }
         } else {
             context.addMessage(null, new FacesMessage("Authentication Failed. Check username or password!"));
@@ -73,7 +73,7 @@ public class LoginCtrl implements Serializable {
             String contextPath = context.getExternalContext().getRequestContextPath();
             context.getExternalContext().redirect(contextPath + "/login.xhtml");
         } catch (IOException e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
         }
     }
 }

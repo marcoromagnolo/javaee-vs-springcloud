@@ -48,7 +48,7 @@ public class LobbyMessageListener implements MessageListener {
                 }
             }
         } catch (JMSException e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
         }
     }
 }

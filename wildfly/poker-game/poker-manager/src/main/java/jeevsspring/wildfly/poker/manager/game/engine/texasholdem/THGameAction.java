@@ -51,4 +51,13 @@ public class THGameAction extends GameAction {
         logger.trace("setRoundPhase(" + roundPhase + ")");
         this.roundPhase = roundPhase;
     }
+
+    @Override
+    public String toString() {
+        return "THGameAction{" +
+                "smallBlind=" + smallBlind +
+                ", bigBlind=" + bigBlind +
+                ", roundPhase=" + roundPhase +
+                "} " + super.toString();
+    }
 }

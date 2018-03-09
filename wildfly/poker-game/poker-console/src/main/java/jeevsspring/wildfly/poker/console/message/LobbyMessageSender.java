@@ -35,7 +35,7 @@ public class LobbyMessageSender {
             context.createProducer()
                     .send(queue, om);
         } catch (JMSException e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
         }
 
     }

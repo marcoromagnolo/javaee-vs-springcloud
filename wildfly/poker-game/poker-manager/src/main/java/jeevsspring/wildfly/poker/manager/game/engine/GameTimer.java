@@ -32,4 +32,12 @@ public class GameTimer {
     public void reset(String playerId) {
         timers.remove(playerId);
     }
+
+    @Override
+    public String toString() {
+        return "GameTimer{" +
+                "timers=" + timers +
+                ", limit=" + limit +
+                '}';
+    }
 }

@@ -26,15 +26,19 @@ public class TableActionQueue {
     }
 
     public boolean insert(TableActionType actionType, String tableId, String playerId, String option) {
-        logger.trace("insert(" + actionType + ", " + tableId + ", " + playerId + ", " + option + ")");
+        logger.debug("insert(" + actionType + ", " + tableId + ", " + playerId + ", " + option + ")");
         if (!map.containsKey(tableId)) map.put(tableId, new ArrayDeque<>());
         TableAction hand = new TableAction(actionType, playerId, option);
         return map.get(tableId).offer(hand);
     }
 
-    public Queue<TableAction> poll(String tableId) {
-        logger.trace("poll(" + tableId + ")");
-        return map.get(tableId);
+    public Queue<TableAction> pop(String tableId) {
+        logger.debug("pop(" + tableId + ")");
+        return map.remove(tableId);
     }
 
+    public boolean contains(String tableId) {
+        logger.trace("contains(" + tableId + ")");
+        return map.containsKey(tableId);
+    }
 }

@@ -49,4 +49,12 @@ public class Turns {
     public void next() {
         index = (index + 1) % list.size();
     }
+
+    @Override
+    public String toString() {
+        return "Turns{" +
+                "list=" + list +
+                ", index=" + index +
+                '}';
+    }
 }

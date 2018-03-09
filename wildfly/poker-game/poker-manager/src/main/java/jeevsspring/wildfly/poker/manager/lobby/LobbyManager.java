@@ -43,46 +43,40 @@ public class LobbyManager {
         logger.trace("process() started at: " + Calendar.getInstance().getTime());
 
         // Check Queue and add game instances
-        if (!lobbyTables.getCreated().isEmpty()) {
-            for (Map.Entry<String, TableSettings> entry : lobbyTables.getCreated().entrySet()) {
-                String tableId = entry.getKey();
-                TableSettings settings = entry.getValue();
-                THGame game = null;
-                try {
-                    switch (settings.getGameType()) {
+        while (lobbyTables.createdExists()) {
+            TableSettings settings = lobbyTables.pollCreated();
+            THGame game = null;
+            try {
+                switch (settings.getGameType()) {
 
-                        case TEXAS_HOLDEM:
-                            logger.debug("process() create Texas Holdem Game at: " + Calendar.getInstance().getTime());
-                            game = new THGame(tableId, settings, boClient);
-                            break;
+                    case TEXAS_HOLDEM:
+                        logger.debug("process() create Texas Holdem Game at: " + Calendar.getInstance().getTime());
+                        game = new THGame(settings);
+                        break;
 
-                        default:
-                            logger.error("Game type unknown:  " + settings.getGameType());
+                    default:
+                        logger.error("Game type unknown:  " + settings.getGameType());
 
-                    }
-                    games.add(game);
-                    logger.debug("process() New Game instance: " + entry);
-                } catch (Exception e) {
-                    logger.error(e);
                 }
+                games.add(game);
+                logger.debug("process() New Game instance: " + game);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
             }
         }
 
         // Check and update tables games (async)
-        if (!lobbyTables.getUpdated().isEmpty()) {
-            for (String tableId : lobbyTables.getUpdated().keySet()) {
-                TableSettings settings = lobbyTables.getCreated().get(tableId);
-                logger.debug("process() update game at: " + Calendar.getInstance().getTime());
-                games.get(tableId).update(settings);
-            }
+        while (lobbyTables.updatedExists()) {
+            UpdatedTable updatedTable = lobbyTables.pollUpdated();
+            logger.debug("process() update game at: " + Calendar.getInstance().getTime());
+            games.get(updatedTable.getId()).update(updatedTable.getSettings());
         }
 
         // Check and delete tables games (async)
-        if (!lobbyTables.getDeleted().isEmpty()) {
-            for (String tableId : lobbyTables.getUpdated().keySet()) {
-                logger.debug("process() delete game at: " + Calendar.getInstance().getTime());
-                games.get(tableId).delete();
-            }
+        while (lobbyTables.deletedExists()) {
+            String tableId = lobbyTables.pollDeleted();
+            logger.debug("process() delete game at: " + Calendar.getInstance().getTime());
+            games.get(tableId).delete();
         }
 
         logger.trace("process() finished at: " + Calendar.getInstance().getTime());

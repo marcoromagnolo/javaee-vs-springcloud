@@ -65,6 +65,11 @@ public class THRank implements Comparable {
         }
     }
 
-
-
+    @Override
+    public String toString() {
+        return "THRank{" +
+                "cards=" + cards +
+                ", rank=" + rank +
+                '}';
+    }
 }

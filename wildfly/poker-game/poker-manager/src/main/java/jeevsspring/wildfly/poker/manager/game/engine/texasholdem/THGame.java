@@ -20,14 +20,12 @@ import org.jboss.logging.Logger;
 
 import javax.ejb.EJB;
 import java.util.Map;
+import java.util.Queue;
 
 public class THGame extends Game<THGameAction> {
 
     // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
-
-    // Back-Office Client
-    private BoClient boClient;
 
     // Seat of Small Blind
     private int smallBlind;
@@ -52,12 +50,11 @@ public class THGame extends Game<THGameAction> {
 
     /**
      * Constructor
-     * @param tableId
+     * @param settings
      */
-    public THGame(String tableId, TableSettings settings, BoClient boClient) {
-       super(tableId, settings);
-        logger.trace("THGame(" + tableId + ", " + settings + ")");
-       this.boClient = boClient;
+    public THGame(TableSettings settings) {
+       super(settings);
+       logger.trace("THGame(" + settings + ")");
     }
 
     @Override
@@ -73,29 +70,30 @@ public class THGame extends Game<THGameAction> {
      *  - buyout
      *  - sitin
      *  - sitout
-     * @param action
+     * @param queue
      */
     @Override
-    public void onAction(TableAction action) {
-        logger.debug("onAction(" + action + ")");
-
-        if (!isRunning()) {
-            switch (action.getActionType()) {
-                case BUY_IN:
-                    buyin(action.getPlayerId(), action.getOption());
-                    break;
-                case BUY_OUT:
-                    buyout(action.getPlayerId());
-                    break;
-                case SIT_IN:
-                    sitin(action.getPlayerId(), action.getOption());
-                    break;
-                case SIT_OUT:
-                    sitout(action.getPlayerId());
-                    break;
+public void actions(Queue<TableAction> queue) {
+        logger.debug("actions(" + queue + ")");
+        while (queue.peek() != null) {
+            TableAction action = queue.poll();
+            if (!isRunning()) {
+                switch (action.getActionType()) {
+                    case BUY_IN:
+                        buyin(action.getPlayerId(), action.getOption());
+                        break;
+                    case BUY_OUT:
+                        buyout(action.getPlayerId());
+                        break;
+                    case SIT_IN:
+                        sitin(action.getPlayerId(), action.getOption());
+                        break;
+                    case SIT_OUT:
+                        sitout(action.getPlayerId());
+                        break;
+                }
             }
         }
-
     }
 
     /**
@@ -103,7 +101,7 @@ public class THGame extends Game<THGameAction> {
      * @param actions
      */
     @Override
-    public void onAction(Map<String, HandAction> actions) {
+    public void actions(Map<String, HandAction> actions) {
         logger.debug("onAction(" + actions + ")");
 
         // On the first time when game is starting
@@ -345,7 +343,7 @@ public class THGame extends Game<THGameAction> {
             WinIn in = new WinIn();
             in.setPlayerId(playerId);
             in.setAmount(mainPot.getValue());
-            boClient.win(in);
+            getRewards().put(playerId, mainPot.getValue());
         }
 
         // Side Pot
@@ -355,10 +353,11 @@ public class THGame extends Game<THGameAction> {
                     WinIn in = new WinIn();
                     in.setPlayerId(playerId);
                     in.setAmount(mainPot.getValue());
-                    boClient.win(in);
+                    getRewards().put(playerId, mainPot.getValue());
                 }
             }
         }
+        addGameAction();
     }
 
     /**
@@ -377,6 +376,7 @@ public class THGame extends Game<THGameAction> {
         gameAction.setBigBlind(bigBlind);
         gameAction.setSmallBlind(smallBlind);
         gameAction.setRoundPhase(roundPhase);
+        gameAction.setReward(getRewards());
         getQueue().offer(gameAction);
         logger.debug("addGameAction(" + gameAction + ")");
     }
@@ -499,7 +499,8 @@ public class THGame extends Game<THGameAction> {
         getSeats().add(s ,playerId);
 
         // Retrieve Player and add to players
-        Player player = boClient.getPlayer(playerId);
+        //TODO Get Player
+        Player player = getPlayers().get(playerId);
         player.setSeat(s);
         getPlayers().put(playerId, player);
 
@@ -540,7 +541,7 @@ public class THGame extends Game<THGameAction> {
         StakeIn in = new StakeIn();
         in.setPlayerId(playerId);
         in.setAmount(Long.parseLong(amount));
-        boClient.stake(in);
+        // TODO add action
     }
 
     /**
@@ -550,5 +551,19 @@ public class THGame extends Game<THGameAction> {
     private void buyout(String playerId) {
         // Not Used
         // Player are payed after each hand
+        // TODO add action
+    }
+
+    @Override
+    public String toString() {
+        return "THGame{" +
+                "smallBlind=" + smallBlind +
+                ", bigBlind=" + bigBlind +
+                ", roundPhase=" + roundPhase +
+                ", bets=" + bets +
+                ", orders=" + orders +
+                ", turns=" + turns +
+                ", timer=" + timer +
+                "} " + super.toString();
     }
 }

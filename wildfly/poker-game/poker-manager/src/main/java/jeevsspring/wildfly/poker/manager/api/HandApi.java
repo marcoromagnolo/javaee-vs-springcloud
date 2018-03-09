@@ -6,7 +6,7 @@ import jeevsspring.wildfly.poker.manager.api.json.hand.*;
 import jeevsspring.wildfly.poker.manager.exception.PMException;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.engine.GameAction;
-import jeevsspring.wildfly.poker.manager.game.Games;
+import jeevsspring.wildfly.poker.manager.game.engine.GameQueue;
 import jeevsspring.wildfly.poker.manager.game.engine.texasholdem.THGame;
 import jeevsspring.wildfly.poker.manager.game.hand.Card;
 import jeevsspring.wildfly.poker.manager.game.hand.HandActionType;
@@ -41,7 +41,7 @@ public class HandApi<E extends Game> {
     private LobbyPlayers lobbyPlayers;
 
     @EJB
-    private Games<E> games;
+    private GameQueue<E> gameQueue;
 
     @GET
     @Path("/test")
@@ -60,7 +60,6 @@ public class HandApi<E extends Game> {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             handQueue.insert(HandActionType.BET, in.getTableId(), in.getHandId(), playerId, in.getAmount());
-            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
@@ -82,7 +81,6 @@ public class HandApi<E extends Game> {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             handQueue.insert(HandActionType.CALL, in.getTableId(), in.getHandId(), playerId, null);
-            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
@@ -104,7 +102,6 @@ public class HandApi<E extends Game> {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             handQueue.insert(HandActionType.CHECK, in.getTableId(), in.getHandId(), playerId, null);
-            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
@@ -126,7 +123,6 @@ public class HandApi<E extends Game> {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             handQueue.insert(HandActionType.RAISE, in.getTableId(), in.getHandId(), playerId, in.getAmount());
-            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
@@ -148,7 +144,6 @@ public class HandApi<E extends Game> {
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
             handQueue.insert(HandActionType.FOLD, in.getTableId(), in.getHandId(), playerId, null);
-            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
@@ -168,18 +163,24 @@ public class HandApi<E extends Game> {
         logger.trace("sync(" + in + ")");
         SyncOut out = new SyncOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        List<ActionOut> actions = toActions(in.getTableId(), playerId);
-        out.setActions(actions);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
+        try {
+            List<ActionOut> actions = toActions(in.getTableId(), playerId);
+            out.setActions(actions);
+            out.setSessionId(in.getSessionId());
+            out.setToken(in.getToken());
+        } catch (PMException e) {
+            logger.error(e.getMessage(), e);
+            out.setError(true);
+            out.setErrorCode("GAME_NOT_STARTED");
+        }
         logger.debug("sync(" + in + ") return " + out);
         return out;
     }
 
-    private List<ActionOut> toActions(String tableId, String playerId) {
+    private List<ActionOut> toActions(String tableId, String playerId) throws PMException {
         logger.trace("toActions(" + tableId + ", " + playerId + ")");
         List<ActionOut> out = new ArrayList<>();
-        THGame game = (THGame) games.get(tableId);
+        THGame game = (THGame) gameQueue.get(tableId);
         for (GameAction action : game.getQueue()) {
             boolean isVisitor = action.getVisitors().contains(playerId);
             ActionOut actionOut = newGameAction(action, playerId, isVisitor);

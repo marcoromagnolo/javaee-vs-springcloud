@@ -35,4 +35,13 @@ public class TableAction {
         logger.trace("getOption()");
         return option;
     }
+
+    @Override
+    public String toString() {
+        return "TableAction{" +
+                "actionType=" + actionType +
+                ", playerId='" + playerId + '\'' +
+                ", option='" + option + '\'' +
+                '}';
+    }
 }

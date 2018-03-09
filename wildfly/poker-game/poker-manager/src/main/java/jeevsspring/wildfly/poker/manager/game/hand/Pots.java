@@ -23,4 +23,12 @@ public class Pots {
     public List<Pot> getSide() {
         return side;
     }
+
+    @Override
+    public String toString() {
+        return "Pots{" +
+                "side=" + side +
+                ", main=" + main +
+                '}';
+    }
 }

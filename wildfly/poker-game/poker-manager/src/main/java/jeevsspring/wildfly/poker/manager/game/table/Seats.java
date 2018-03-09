@@ -93,4 +93,12 @@ public class Seats {
         logger.trace("toArray()");
         return list.toArray(new String[list.size()]);
     }
+
+    @Override
+    public String toString() {
+        return "Seats{" +
+                "list=" + list +
+                ", numberOfPlayers=" + numberOfPlayers +
+                '}';
+    }
 }

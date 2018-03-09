@@ -7,10 +7,7 @@ import org.jboss.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Marco Romagnolo
@@ -22,45 +19,69 @@ public class LobbyTables {
     // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
 
-    private Map<String, TableSettings> created;
+    private Queue<TableSettings> created;
 
-    private Map<String, TableSettings> updated;
+    private Queue<UpdatedTable> updated;
 
-    private List<String> deleted;
+    private Queue<String> deleted;
 
     @PostConstruct
     public void init() {
         logger.trace("init()");
-        this.created = new HashMap<>();
-        this.updated = new HashMap<>();
-        this.deleted = new ArrayList<>();
+        this.created = new ArrayDeque<>();
+        this.updated = new ArrayDeque<>();
+        this.deleted = new ArrayDeque<>();
     }
 
     /**
-     * Get create tables
+     *
      * @return
      */
-    public Map<String, TableSettings> getCreated() {
-        logger.trace("getCreated()");
-        return created;
+    public boolean createdExists() {
+        return !created.isEmpty();
     }
 
     /**
-     * Get update tables
+     *
      * @return
      */
-    public Map<String, TableSettings> getUpdated() {
-        logger.trace("getUpdated()");
-        return updated;
+    public boolean updatedExists() {
+        return !updated.isEmpty();
     }
 
     /**
-     * Get drop tables
+     *
      * @return
      */
-    public List<String> getDeleted() {
-        logger.trace("getDeleted()");
-        return deleted;
+    public boolean deletedExists() {
+        return !deleted.isEmpty();
+    }
+
+    /**
+     * Poll created tables
+     * @return
+     */
+    public TableSettings pollCreated() {
+        logger.debug("pollCreated()");
+        return created.poll();
+    }
+
+    /**
+     * Poll updated tables
+     * @return
+     */
+    public UpdatedTable pollUpdated() {
+        logger.debug("pollUpdated()");
+        return updated.poll();
+    }
+
+    /**
+     * Poll deleted tables
+     * @return
+     */
+    public String pollDeleted() {
+        logger.debug("pollDeleted()");
+        return deleted.poll();
     }
 
     /**
@@ -68,11 +89,9 @@ public class LobbyTables {
      * @param tableSettings
      * @return
      */
-    public String create(TableSettings tableSettings) {
-        logger.trace("create(" + tableSettings + ")");
-        String tableId = IdGenerator.newTableId();
-        created.put(tableId, tableSettings);
-        return tableId;
+    public void create(TableSettings tableSettings) {
+        logger.debug("create(" + tableSettings + ")");
+        created.add(tableSettings);
     }
 
     /**
@@ -81,8 +100,8 @@ public class LobbyTables {
      * @param tableSettings
      */
     public void update(String tableId, TableSettings tableSettings) {
-        logger.trace("create(" + tableId + ", " + tableSettings + ")");
-        updated.put(tableId, tableSettings);
+        logger.debug("create(" + tableId + ", " + tableSettings + ")");
+        updated.add(new UpdatedTable(tableId, tableSettings));
     }
 
     /**
@@ -90,8 +109,9 @@ public class LobbyTables {
      * @param tableId
      */
     public void delete(String tableId) {
-        logger.trace("create(" + tableId + ")");
+        logger.debug("create(" + tableId + ")");
         deleted.add(tableId);
     }
+
 
 }
