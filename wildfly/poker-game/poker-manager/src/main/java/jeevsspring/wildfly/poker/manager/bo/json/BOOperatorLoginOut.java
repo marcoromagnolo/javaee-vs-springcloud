@@ -3,7 +3,7 @@ package jeevsspring.wildfly.poker.manager.bo.json;
 /**
  * @author Marco Romagnolo
  */
-public class BOOperatorOut extends BOSessionOut {
+public class BOOperatorLoginOut extends BOSessionOut {
 
     private String id;
     private String username;

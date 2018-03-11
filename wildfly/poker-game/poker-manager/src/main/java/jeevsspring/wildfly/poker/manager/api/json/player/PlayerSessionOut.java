@@ -5,6 +5,7 @@ import jeevsspring.wildfly.poker.manager.api.json.Status;
 public class PlayerSessionOut extends Status {
 
     private String sessionId;
+
     private String token;
 
     public String getSessionId() {

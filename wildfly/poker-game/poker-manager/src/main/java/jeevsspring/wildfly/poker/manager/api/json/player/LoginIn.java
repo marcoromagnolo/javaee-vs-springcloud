@@ -1,8 +1,6 @@
 package jeevsspring.wildfly.poker.manager.api.json.player;
 
-import jeevsspring.wildfly.poker.manager.api.json.Status;
-
-public class LoginIn extends Status {
+public class LoginIn {
 
     private String username;
     private String password;

@@ -2,11 +2,8 @@ package jeevsspring.wildfly.poker.manager.api;
 
 import jeevsspring.wildfly.poker.manager.api.json.Status;
 import jeevsspring.wildfly.poker.manager.api.json.lobby.*;
-import jeevsspring.wildfly.poker.manager.bo.BoClient;
-import jeevsspring.wildfly.poker.manager.bo.json.*;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.Games;
-import jeevsspring.wildfly.poker.manager.lobby.LobbyPlayers;
 import org.jboss.logging.Logger;
 
 import javax.ejb.EJB;

@@ -1,11 +1,11 @@
 package jeevsspring.wildfly.poker.manager.api;
 
 import jeevsspring.wildfly.poker.manager.api.json.Status;
+import jeevsspring.wildfly.poker.manager.api.json.hand.PlayerOut;
 import jeevsspring.wildfly.poker.manager.api.json.player.*;
 import jeevsspring.wildfly.poker.manager.bo.BOException;
-import jeevsspring.wildfly.poker.manager.bo.BoClient;
 import jeevsspring.wildfly.poker.manager.bo.json.*;
-import jeevsspring.wildfly.poker.manager.lobby.LobbyPlayers;
+import jeevsspring.wildfly.poker.manager.game.player.PlayerManager;
 import org.jboss.logging.Logger;
 
 import javax.ejb.EJB;
@@ -25,10 +25,7 @@ public class PlayerApi {
     private final Logger logger = Logger.getLogger(getClass());
 
     @EJB
-    private BoClient boClient;
-
-    @EJB
-    private LobbyPlayers lobbyPlayers;
+    private PlayerManager playerManager;
 
     @GET
     @Path("/test")
@@ -45,11 +42,8 @@ public class PlayerApi {
         logger.trace("wallet(" + in + ")");
         WalletOut out = new WalletOut();
         try {
-            BOWalletIn walletIn = new BOWalletIn();
-            walletIn.setSessionId(in.getSessionId());
-            walletIn.setToken(in.getToken());
-            BOWalletOut boWalletOut = boClient.wallet(walletIn);
-            out.setBalance(boWalletOut.getBalance());
+            BOWalletOut bo = playerManager.getWallet(in.getSessionId(), in.getToken());
+            out.setBalance(bo.getBalance());
         } catch (BOException e) {
             logger.error(e);
             out.setError(true);
@@ -65,11 +59,9 @@ public class PlayerApi {
         logger.trace("wallet(" + in + ")");
         AccountOut out = new AccountOut();
         try {
-            BOAccountIn accountIn = new BOAccountIn();
-            accountIn.setSessionId(in.getSessionId());
-            accountIn.setToken(in.getToken());
-            BOAccountOut accountOut = boClient.account(accountIn);
-//            out.set
+            BOAccountOut bo = playerManager.getAccount(in.getSessionId(), in.getToken());
+            out.setFirstName(bo.getFirstName());
+            out.setLastName(bo.getLastName());
         } catch (BOException e) {
             logger.error(e);
             out.setError(true);
@@ -85,12 +77,23 @@ public class PlayerApi {
         logger.trace("login(" + in + ")");
         LoginOut out = new LoginOut();
         try {
-            BOLoginIn signinIn = new BOLoginIn();
-            signinIn.setUsername(in.getUsername());
-            signinIn.setPassword(in.getPassword());
-            BOLoginOut signinOut = boClient.login(signinIn);
-            String playerId = signinOut.getUser().getId();
-            lobbyPlayers.login(signinOut.getSessionId(), playerId);
+            BOLoginOut bo = playerManager.login(in.getUsername(), in.getPassword());
+            out.setSessionId(bo.getSessionId());
+            out.setToken(bo.getToken());
+            out.setNickname(bo.getPlayer().getNickname());
+            out.setLife(bo.getLife());
+            out.setTime(bo.getTime());
+
+            // Set Account
+            AccountOut account = new AccountOut();
+            account.setFirstName(bo.getAccount().getFirstName());
+            account.setLastName(bo.getAccount().getLastName());
+            out.setAccount(account);
+
+            // Set Wallet
+            WalletOut wallet = new WalletOut();
+            wallet.setBalance(bo.getWallet().getBalance());
+            out.setWallet(wallet);
         } catch (BOException e) {
             logger.error(e);
             out.setError(true);
@@ -106,11 +109,7 @@ public class PlayerApi {
         logger.trace("logout(" + in + ")");
         LogoutOut out = new LogoutOut();
         try {
-            BOLogoutIn boLogoutIn = new BOLogoutIn();
-            boLogoutIn.setSessionId(in.getSessionId());
-            boLogoutIn.setToken(in.getToken());
-            BOLogoutOut boLogoutOut = boClient.logout(boLogoutIn);
-            lobbyPlayers.logout(boLogoutIn.getSessionId());
+            BOLogoutOut bo = playerManager.logout(in.getSessionId(), in.getToken());
         } catch (BOException e) {
             logger.error(e);
             out.setError(true);

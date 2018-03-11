@@ -19,7 +19,7 @@ public class BoClient {
     private final Logger logger = Logger.getLogger(getClass());
 
     public Player getPlayer(String playerId) {
-        return new Player("1", "Ciccio", 20000 );
+        return new Player("1", "Ciccio", 3, 20000);
     }
 
     public BOLoginOut login(BOLoginIn in) throws BOException {
@@ -27,20 +27,23 @@ public class BoClient {
         BOLoginOut out = new BOLoginOut();
         out.setSessionId(UUID.randomUUID().toString());
         out.setToken(UUID.randomUUID().toString());
-        BOUserOut user = new BOUserOut();
+
+        BOPlayerOut boPlayerOut = new BOPlayerOut();
+        boPlayerOut.setId("1");
+        boPlayerOut.setNickname(in.getUsername());
+        out.setPlayer(boPlayerOut);
+
         BOAccountOut account = new BOAccountOut();
         account.setFirstName("Marco");
         account.setLastName("Romagnolo");
         account.setEmail("romagnolo.marco@gmail.com");
         account.setAge("32");
         account.setSex("M");
+        out.setAccount(account);
+
         BOWalletOut wallet = new BOWalletOut();
-        wallet.setBalance(1900);
-        user.setId("1");
-        user.setUsername(in.getUsername());
-        user.setAccount(account);
-        user.setWallet(wallet);
-        out.setUser(user);
+        wallet.setBalance(2000);
+        out.setWallet(wallet);
 
         logger.debug("signin (" + in + ") return " + out);
         return out;

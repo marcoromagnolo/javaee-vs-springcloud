@@ -53,7 +53,7 @@ public class GameActions<E extends GameAction>  {
         // Set Players
         for (Player player : a.getPlayers().values()) {
 
-            Player p = new Player(player.getId(), player.getNickname(), player.getBalance());
+            Player p = new Player(player.getId(), player.getNickname(), player.getSeat(), player.getBalance());
             p.setSitOut(player.isSitOut());
             p.setSeat(player.getSeat());
 

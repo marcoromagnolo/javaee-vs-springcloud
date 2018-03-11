@@ -1,5 +1,6 @@
 package jeevsspring.wildfly.poker.manager.game.table;
 
+import jeevsspring.wildfly.poker.manager.game.player.Player;
 import org.jboss.logging.Logger;
 
 /**
@@ -12,13 +13,27 @@ public class TableAction {
 
     private TableActionType actionType;
     private String playerId;
-    private String option;
+    private Player player;
+    private Integer seat;
 
-    public TableAction(TableActionType actionType, String playerId, String option) {
-        logger.trace("TableAction(" + actionType + ", " + playerId + ", " + option + ", " + ")");
+    public TableAction(TableActionType actionType, String playerId, Integer seat) {
+        logger.trace("TableAction(" + actionType + ", " + playerId + ")");
         this.actionType = actionType;
         this.playerId = playerId;
-        this.option = option;
+        this.seat = seat;
+    }
+
+    public TableAction(TableActionType actionType, String playerId) {
+        logger.trace("TableAction(" + actionType + ", " + playerId + ")");
+        this.actionType = actionType;
+        this.playerId = playerId;
+    }
+
+    public TableAction(TableActionType actionType, Player player) {
+        logger.trace("TableAction(" + actionType + ", " + player + ")");
+        this.actionType = actionType;
+        this.player = player;
+        this.playerId = player.getId();
     }
 
     public TableActionType getActionType() {
@@ -31,17 +46,12 @@ public class TableAction {
         return playerId;
     }
 
-    public String getOption() {
-        logger.trace("getOption()");
-        return option;
+    public Player getPlayer() {
+        logger.trace("getPlayer()");
+        return player;
     }
 
-    @Override
-    public String toString() {
-        return "TableAction{" +
-                "actionType=" + actionType +
-                ", playerId='" + playerId + '\'' +
-                ", option='" + option + '\'' +
-                '}';
+    public int getSeat() {
+        return seat;
     }
 }

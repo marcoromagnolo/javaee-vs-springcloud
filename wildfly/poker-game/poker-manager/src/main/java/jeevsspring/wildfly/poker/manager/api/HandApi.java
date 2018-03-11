@@ -3,6 +3,7 @@ package jeevsspring.wildfly.poker.manager.api;
 import jeevsspring.wildfly.poker.manager.api.json.hand.ActionOut;
 import jeevsspring.wildfly.poker.manager.api.json.Status;
 import jeevsspring.wildfly.poker.manager.api.json.hand.*;
+import jeevsspring.wildfly.poker.manager.bo.BOException;
 import jeevsspring.wildfly.poker.manager.game.GameException;
 import jeevsspring.wildfly.poker.manager.game.engine.GameAction;
 import jeevsspring.wildfly.poker.manager.game.engine.GameActions;
@@ -11,7 +12,7 @@ import jeevsspring.wildfly.poker.manager.game.hand.HandActionType;
 import jeevsspring.wildfly.poker.manager.game.hand.HandActions;
 import jeevsspring.wildfly.poker.manager.game.hand.Pot;
 import jeevsspring.wildfly.poker.manager.game.player.Player;
-import jeevsspring.wildfly.poker.manager.lobby.LobbyPlayers;
+import jeevsspring.wildfly.poker.manager.game.player.PlayerManager;
 import org.jboss.logging.Logger;
 
 import javax.ejb.EJB;
@@ -36,7 +37,7 @@ public class HandApi<E extends GameAction> {
     private HandActions handQueue;
 
     @EJB
-    private LobbyPlayers lobbyPlayers;
+    private PlayerManager playerManager;
 
     @EJB
     private GameActions<E> gameActions;
@@ -55,14 +56,14 @@ public class HandApi<E extends GameAction> {
     public BetOut bet(BetIn in) {
         logger.trace("bet(" + in + ")");
         BetOut out = new BetOut();
-        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
+            String playerId = playerManager.getPlayerId(in.getSessionId());
             handQueue.insert(HandActionType.BET, in.getTableId(), in.getHandId(), playerId, in.getAmount());
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (GameException e) {
+        } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -76,14 +77,14 @@ public class HandApi<E extends GameAction> {
     public CallOut call(CallIn in) {
         logger.trace("call(" + in + ")");
         CallOut out = new CallOut();
-        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
+            String playerId = playerManager.getPlayerId(in.getSessionId());
             handQueue.insert(HandActionType.CALL, in.getTableId(), in.getHandId(), playerId, null);
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (GameException e) {
+        } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -97,14 +98,14 @@ public class HandApi<E extends GameAction> {
     public CheckOut check(CheckIn in) {
         logger.trace("check(" + in + ")");
         CheckOut out = new CheckOut();
-        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
+            String playerId = playerManager.getPlayerId(in.getSessionId());
             handQueue.insert(HandActionType.CHECK, in.getTableId(), in.getHandId(), playerId, null);
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (GameException e) {
+        } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -118,14 +119,14 @@ public class HandApi<E extends GameAction> {
     public RaiseOut raise(RaiseIn in) {
         logger.trace("raise(" + in + ")");
         RaiseOut out = new RaiseOut();
-        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
+            String playerId = playerManager.getPlayerId(in.getSessionId());
             handQueue.insert(HandActionType.RAISE, in.getTableId(), in.getHandId(), playerId, in.getAmount());
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (GameException e) {
+        } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -139,14 +140,14 @@ public class HandApi<E extends GameAction> {
     public FoldOut fold(FoldIn in) {
         logger.trace("fold(" + in + ")");
         FoldOut out = new FoldOut();
-        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
+            String playerId = playerManager.getPlayerId(in.getSessionId());
             handQueue.insert(HandActionType.FOLD, in.getTableId(), in.getHandId(), playerId, null);
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (GameException e) {
+        } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -160,13 +161,13 @@ public class HandApi<E extends GameAction> {
     public SyncOut sync(SyncIn in) {
         logger.trace("sync(" + in + ")");
         SyncOut out = new SyncOut();
-        String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
+            String playerId = playerManager.getPlayerId(in.getSessionId());
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (GameException e) {
+        } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");

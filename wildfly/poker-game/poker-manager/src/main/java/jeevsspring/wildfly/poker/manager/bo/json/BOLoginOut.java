@@ -5,31 +5,53 @@ package jeevsspring.wildfly.poker.manager.bo.json;
  */
 public class BOLoginOut extends BOSessionOut {
 
-    private String sessionId;
-    private String token;
-    private BOUserOut user;
+    private long time;
 
-    public String getSessionId() {
-        return sessionId;
+    private long life;
+
+    private BOPlayerOut player;
+
+    private BOWalletOut wallet;
+
+    private BOAccountOut account;
+
+    public long getTime() {
+        return time;
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public void setTime(long time) {
+        this.time = time;
     }
 
-    public String getToken() {
-        return token;
+    public long getLife() {
+        return life;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setLife(long life) {
+        this.life = life;
     }
 
-    public BOUserOut getUser() {
-        return user;
+    public BOPlayerOut getPlayer() {
+        return player;
     }
 
-    public void setUser(BOUserOut user) {
-        this.user = user;
+    public void setPlayer(BOPlayerOut player) {
+        this.player = player;
+    }
+
+    public BOWalletOut getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(BOWalletOut wallet) {
+        this.wallet = wallet;
+    }
+
+    public BOAccountOut getAccount() {
+        return account;
+    }
+
+    public void setAccount(BOAccountOut account) {
+        this.account = account;
     }
 }

@@ -1,8 +1,10 @@
 package jeevsspring.wildfly.poker.manager.game.table;
 
+import jeevsspring.wildfly.poker.manager.game.player.PlayerManager;
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 import java.util.ArrayDeque;
@@ -19,17 +21,27 @@ public class TableActionQueue {
 
     private Map<String, Queue<TableAction>> map;
 
+    @EJB
+    private PlayerManager playerManager;
+
     @PostConstruct
     public void init() {
         logger.trace("init()");
         map = new HashMap<>();
     }
 
-    public boolean insert(TableActionType actionType, String tableId, String playerId, String option) {
-        logger.debug("insert(" + actionType + ", " + tableId + ", " + playerId + ", " + option + ")");
+    public boolean sitin(String tableId, String playerId, int seat) {
+        logger.debug("insert(" + tableId + ", " + playerId + ")");
         if (!map.containsKey(tableId)) map.put(tableId, new ArrayDeque<>());
-        TableAction hand = new TableAction(actionType, playerId, option);
-        return map.get(tableId).offer(hand);
+        TableAction tableAction = new TableAction(TableActionType.SIT_IN, playerId, seat);
+        return map.get(tableId).offer(tableAction);
+    }
+
+    public boolean sitout(String tableId, String playerId) {
+        logger.debug("insert(" + tableId + ", " + playerId + ")");
+        if (!map.containsKey(tableId)) map.put(tableId, new ArrayDeque<>());
+        TableAction tableAction = new TableAction(TableActionType.SIT_OUT, playerId);
+        return map.get(tableId).offer(tableAction);
     }
 
     public Queue<TableAction> pop(String tableId) {

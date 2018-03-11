@@ -71,14 +71,14 @@ public class THGame extends Game<THGameAction> {
      * @param queue
      */
     @Override
-public void actions(Queue<TableAction> queue) {
+    public void actions(Queue<TableAction> queue) {
         logger.debug("actions(" + queue + ")");
         while (queue.peek() != null) {
             TableAction action = queue.poll();
             if (!isRunning()) {
                 switch (action.getActionType()) {
                     case SIT_IN:
-                        sitin(action.getPlayerId(), action.getOption());
+                        sitin(action.getPlayerId(), action.getSeat());
                         break;
                     case SIT_OUT:
                         sitout(action.getPlayerId());
@@ -483,18 +483,18 @@ public void actions(Queue<TableAction> queue) {
      * @param playerId
      * @param seat
      */
-    private void sitin(String playerId, String seat) {
+    private void sitin(String playerId, int seat) {
         logger.debug("sitin(" + playerId + ", " + seat + ")");
 
         // Add player to Seats
-        int s = Integer.parseInt(seat);
-        getSeats().add(s ,playerId);
+        getSeats().add(seat ,playerId);
 
         // Retrieve Player and add to players
         //TODO Get Player
-        Player player = getPlayers().get(playerId);
-        player.setSeat(s);
-        getPlayers().put(playerId, player);
+//        Player p = new Player()
+//        Player player = getPlayers().get(playerId);
+//        player.setSeat(s);
+//        getPlayers().put(playerId, player);
 
         // Update Player Index
         orders.update(getSeats());

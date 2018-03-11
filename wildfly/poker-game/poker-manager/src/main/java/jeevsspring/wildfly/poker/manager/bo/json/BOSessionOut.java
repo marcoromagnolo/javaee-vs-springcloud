@@ -5,13 +5,22 @@ package jeevsspring.wildfly.poker.manager.bo.json;
  */
 public class BOSessionOut extends BOStatus {
 
-    private String playerId;
+    private String sessionId;
+    private String token;
 
-    public String getPlayerId() {
-        return playerId;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
