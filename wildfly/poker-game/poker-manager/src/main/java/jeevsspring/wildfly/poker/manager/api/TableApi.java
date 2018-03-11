@@ -5,15 +5,18 @@ import jeevsspring.wildfly.poker.manager.api.json.hand.SitinIn;
 import jeevsspring.wildfly.poker.manager.api.json.hand.SitinOut;
 import jeevsspring.wildfly.poker.manager.api.json.hand.SitoutIn;
 import jeevsspring.wildfly.poker.manager.api.json.hand.SitoutOut;
-import jeevsspring.wildfly.poker.manager.api.json.lobby.EnterIn;
-import jeevsspring.wildfly.poker.manager.api.json.lobby.EnterOut;
-import jeevsspring.wildfly.poker.manager.api.json.lobby.QuitIn;
-import jeevsspring.wildfly.poker.manager.api.json.lobby.QuitOut;
+import jeevsspring.wildfly.poker.manager.api.json.table.EnterIn;
+import jeevsspring.wildfly.poker.manager.api.json.table.EnterOut;
+import jeevsspring.wildfly.poker.manager.api.json.table.QuitIn;
+import jeevsspring.wildfly.poker.manager.api.json.table.QuitOut;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyinIn;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyinOut;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutIn;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutOut;
-import jeevsspring.wildfly.poker.manager.exception.PMException;
+import jeevsspring.wildfly.poker.manager.bo.BoClient;
+import jeevsspring.wildfly.poker.manager.bo.json.BOStakeIn;
+import jeevsspring.wildfly.poker.manager.game.GameException;
+import jeevsspring.wildfly.poker.manager.game.GameTransactionManager;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.Games;
 import jeevsspring.wildfly.poker.manager.game.table.TableActionQueue;
@@ -26,6 +29,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
 
 @Stateless
 @LocalBean
@@ -41,6 +45,9 @@ public class TableApi {
 
     @EJB
     private LobbyPlayers lobbyPlayers;
+
+    @EJB
+    private GameTransactionManager gameTransactionManager;
 
     @EJB
     private Games games;
@@ -60,10 +67,16 @@ public class TableApi {
         logger.trace("join(" + in + ")");
         EnterOut out = new EnterOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        Game game = games.get(in.getTableId());
-        game.getVisitors().add(playerId);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
+        try {
+            Game game = games.get(in.getTableId());
+            game.getVisitors().add(playerId);
+            out.setSessionId(in.getSessionId());
+            out.setToken(in.getToken());
+        } catch (GameException e) {
+            logger.error(e.getMessage());
+            out.setError(true);
+            out.setErrorCode("GAME_NOT_STARTED");
+        }
         logger.debug("join(" + in + ") return " + out);
         return out;
     }
@@ -74,10 +87,16 @@ public class TableApi {
         logger.trace("quit(" + in + ")");
         QuitOut out = new QuitOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
-        Game game = games.get(in.getTableId());
-        game.getVisitors().add(playerId);
-        out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
+        try {
+            Game game = games.get(in.getTableId());
+            game.getVisitors().remove(playerId);
+            out.setSessionId(in.getSessionId());
+            out.setToken(in.getToken());
+        } catch (GameException e) {
+            logger.error(e.getMessage());
+            out.setError(true);
+            out.setErrorCode("GAME_NOT_STARTED");
+        }
         logger.debug("quit(" + in + ") return " + out);
         return out;
     }
@@ -89,11 +108,10 @@ public class TableApi {
         BuyinOut out = new BuyinOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
-            tableQueue.insert(TableActionType.BUY_IN, in.getTableId(), playerId, in.getAmount());
-            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
+            gameTransactionManager.stake(in.getTableId(), playerId, Long.parseLong(in.getAmount()));
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (PMException e) {
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -109,11 +127,11 @@ public class TableApi {
         BuyoutOut out = new BuyoutOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
-            tableQueue.insert(TableActionType.BUY_OUT, in.getTableId(), playerId, null);
-            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
+            long refund = gameTransactionManager.refund(in.getTableId(), playerId);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (PMException e) {
+            out.setAmount(refund);
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -129,11 +147,11 @@ public class TableApi {
         SitinOut out = new SitinOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
+            if (!games.get(in.getTableId()).isRunning()) throw new GameException("Game with tableId: " + in.getTableId() + " is not running");
             tableQueue.insert(TableActionType.SIT_IN, in.getTableId(), playerId, in.getSeat());
-            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (PMException e) {
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -149,11 +167,11 @@ public class TableApi {
         SitoutOut out = new SitoutOut();
         String playerId = lobbyPlayers.getPlayerId(in.getSessionId());
         try {
+            if (!games.get(in.getTableId()).isRunning()) throw new GameException("Game with tableId: " + in.getTableId() + " is not running");
             tableQueue.insert(TableActionType.SIT_OUT, in.getTableId(), playerId, null);
-            if (!games.get(in.getTableId()).isRunning()) throw new PMException();
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (PMException e) {
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");

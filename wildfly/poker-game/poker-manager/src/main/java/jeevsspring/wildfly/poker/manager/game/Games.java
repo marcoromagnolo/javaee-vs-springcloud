@@ -32,7 +32,8 @@ public class Games<E extends Game> {
         instances.put(game.getTableId(), game);
     }
 
-    public void remove(String tableId) {
+    public void remove(String tableId) throws GameException {
+        if (!instances.containsKey(tableId)) throw new GameException("This table doesn't exists: " + tableId);;
         instances.remove(tableId);
     }
 
@@ -41,7 +42,8 @@ public class Games<E extends Game> {
     }
 
 
-    public E get(String tableId) {
+    public E get(String tableId) throws GameException {
+        if (!instances.containsKey(tableId)) throw new GameException("This table doesn't exists: " + tableId);
         return instances.get(tableId);
     }
 }

@@ -2,6 +2,7 @@ package jeevsspring.wildfly.poker.manager.lobby;
 
 import jeevsspring.wildfly.poker.common.TableSettings;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
+import jeevsspring.wildfly.poker.manager.game.GameException;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.Games;
 import jeevsspring.wildfly.poker.manager.game.engine.texasholdem.THGame;
@@ -11,7 +12,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.*;
 import java.util.Calendar;
-import java.util.Map;
 
 @Singleton
 @Startup
@@ -69,14 +69,22 @@ public class LobbyManager {
         while (lobbyTables.updatedExists()) {
             UpdatedTable updatedTable = lobbyTables.pollUpdated();
             logger.debug("process() update game at: " + Calendar.getInstance().getTime());
-            games.get(updatedTable.getId()).update(updatedTable.getSettings());
+            try {
+                games.get(updatedTable.getId()).update(updatedTable.getSettings());
+            } catch (GameException e) {
+                logger.error(e);
+            }
         }
 
         // Check and delete tables games (async)
         while (lobbyTables.deletedExists()) {
             String tableId = lobbyTables.pollDeleted();
             logger.debug("process() delete game at: " + Calendar.getInstance().getTime());
-            games.get(tableId).delete();
+            try {
+                games.get(tableId).delete();
+            } catch (GameException e) {
+                logger.error(e);
+            }
         }
 
         logger.trace("process() finished at: " + Calendar.getInstance().getTime());

@@ -1,9 +1,9 @@
 package jeevsspring.wildfly.poker.manager.game;
 
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
-import jeevsspring.wildfly.poker.manager.game.hand.HandAction;
+import jeevsspring.wildfly.poker.manager.game.engine.GameAction;
+import jeevsspring.wildfly.poker.manager.game.engine.GameActions;
 import jeevsspring.wildfly.poker.manager.game.hand.HandActions;
-import jeevsspring.wildfly.poker.manager.game.table.TableAction;
 import jeevsspring.wildfly.poker.manager.game.table.TableActionQueue;
 import org.jboss.logging.Logger;
 
@@ -11,12 +11,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.*;
 import java.util.Calendar;
-import java.util.Map;
-import java.util.Queue;
 
 @Singleton
 @Startup
-public class GameManager {
+public class GameManager<T extends Game<E>, E extends GameAction> {
 
     // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
@@ -28,10 +26,13 @@ public class GameManager {
     private HandActions handActions;
 
     @EJB
-    private TableActionQueue tableQueue;
+    private TableActionQueue tableActions;
 
     @EJB
-    private Games<Game> games;
+    private Games<T> games;
+
+    @EJB
+    private GameActions<E> gameActions;
 
     @PostConstruct
     public void init() {
@@ -45,23 +46,34 @@ public class GameManager {
 
         // Poll Hand and Table actions made from players
         games.getAll().parallelStream()
-                .forEach(game -> {
+                .forEach((T game) -> {
                     String tableId = game.getTableId();
                     try {
                         if (handActions.contains(tableId)) {
                             game.actions(handActions.pop(tableId));
                         }
-                        if (tableQueue.contains(tableId)) {
-                            game.actions(tableQueue.pop(tableId));
+                        if (tableActions.contains(tableId)) {
+                            game.actions(tableActions.pop(tableId));
+                        }
+                        if (!game.getGameActions().isEmpty()) {
+                            gameActions.add(tableId, game.getGameActions());
                         }
                     } catch (Exception e) {
                         logger.warn("Game with tableId: " + tableId + " will be removed from active games");
-                        games.remove(tableId);
+                        try {
+                            games.remove(tableId);
+                        } catch (GameException e1) {
+                            logger.error(e);
+                        }
                         logger.error(e.getMessage(), e);
                     }
                 });
 
         logger.trace("process() finished at: " + Calendar.getInstance().getTime());
+    }
+
+    public void checkGame(String tableId) {
+
     }
 
 }

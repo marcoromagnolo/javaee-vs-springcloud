@@ -22,19 +22,19 @@ public class BoClient {
         return new Player("1", "Ciccio", 20000 );
     }
 
-    public SigninOut signin(SigninIn in) {
+    public BOLoginOut login(BOLoginIn in) throws BOException {
         logger.trace("signin(" + in + ")");
-        SigninOut out = new SigninOut();
+        BOLoginOut out = new BOLoginOut();
         out.setSessionId(UUID.randomUUID().toString());
         out.setToken(UUID.randomUUID().toString());
-        UserOut user = new UserOut();
-        AccountOut account = new AccountOut();
+        BOUserOut user = new BOUserOut();
+        BOAccountOut account = new BOAccountOut();
         account.setFirstName("Marco");
         account.setLastName("Romagnolo");
         account.setEmail("romagnolo.marco@gmail.com");
         account.setAge("32");
         account.setSex("M");
-        WalletOut wallet = new WalletOut();
+        BOWalletOut wallet = new BOWalletOut();
         wallet.setBalance(1900);
         user.setId("1");
         user.setUsername(in.getUsername());
@@ -46,33 +46,54 @@ public class BoClient {
         return out;
     }
 
-    public SignoutOut signout(SignoutIn in) {
+    public BOLogoutOut logout(BOLogoutIn in) throws BOException {
         logger.trace("signout(" + in + ")");
-        SignoutOut out = new SignoutOut();
+        BOLogoutOut out = new BOLogoutOut();
         out.setMessage("Bye Bye!");
         logger.debug("signout (" + in + ") return " + out);
         return out;
     }
 
-    public VerifyOut verify(VerifyIn in) {
+    public BOVerifyOut verify(BOVerifyIn in) throws BOException {
         logger.trace("verify(" + in + ")");
-        VerifyOut out = new VerifyOut();
+        BOVerifyOut out = new BOVerifyOut();
         logger.debug("verify (" + in + ") return " + out);
         return out;
     }
 
-    public WinOut win(WinIn in) {
+    public BOWinOut win(BOWinIn in) throws BOException {
         logger.trace("win(" + in + ")");
-        WinOut out = new WinOut();
+        BOWinOut out = new BOWinOut();
         logger.debug("win (" + in + ") return " + out);
         return out;
     }
 
-    public StakeOut stake(StakeIn in) {
+    public BOStakeOut stake(BOStakeIn in) throws BOException {
         logger.trace("stake(" + in + ")");
-        StakeOut out = new StakeOut();
+        BOStakeOut out = new BOStakeOut();
         logger.debug("stake (" + in + ") return " + out);
         return out;
 
+    }
+
+    public BORefundOut refund(BORefundIn in) throws BOException {
+        logger.trace("refund(" + in + ")");
+        BORefundOut out = new BORefundOut();
+        logger.debug("refund (" + in + ") return " + out);
+        return out;
+    }
+
+    public BOWalletOut wallet(BOWalletIn in) throws BOException {
+        logger.trace("refund(" + in + ")");
+        BOWalletOut out = new BOWalletOut();
+        logger.debug("refund (" + in + ") return " + out);
+        return out;
+    }
+
+    public BOAccountOut account(BOAccountIn in) throws BOException {
+        logger.trace("account(" + in + ")");
+        BOAccountOut out = new BOAccountOut();
+        logger.debug("account (" + in + ") return " + out);
+        return out;
     }
 }

@@ -30,7 +30,7 @@ public abstract class Game<E extends GameAction> {
     private TableSettings updateSettings;
 
     // List of game actions result to return to players
-    private Queue<E> queue;
+    private Queue<E> gameActions;
 
     // True when hand is running
     private boolean handRunning;
@@ -104,8 +104,8 @@ public abstract class Game<E extends GameAction> {
         this.handId = handId;
     }
 
-    public Queue<E> getQueue() {
-        return queue;
+    public Queue<E> getGameActions() {
+        return gameActions;
     }
 
     public boolean isHandRunning() {
@@ -203,7 +203,7 @@ public abstract class Game<E extends GameAction> {
                 ", handId='" + handId + '\'' +
                 ", settings=" + settings +
                 ", updateSettings=" + updateSettings +
-                ", queue=" + queue +
+                ", queue=" + gameActions +
                 ", handRunning=" + handRunning +
                 ", roundRunning=" + roundRunning +
                 ", running=" + running +

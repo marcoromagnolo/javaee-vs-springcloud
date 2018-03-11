@@ -1,6 +1,6 @@
 package jeevsspring.wildfly.poker.manager.api.json.hand;
 
-import jeevsspring.wildfly.poker.manager.api.json.PlayerSessionIn;
+import jeevsspring.wildfly.poker.manager.api.json.player.PlayerSessionIn;
 
 public class SyncIn extends PlayerSessionIn {
 

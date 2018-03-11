@@ -1,6 +1,6 @@
 package jeevsspring.wildfly.poker.manager.api.json.table;
 
-import jeevsspring.wildfly.poker.manager.api.json.PlayerSessionIn;
+import jeevsspring.wildfly.poker.manager.api.json.player.PlayerSessionIn;
 
 public class BuyinIn extends PlayerSessionIn {
 

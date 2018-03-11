@@ -1,7 +1,6 @@
 package jeevsspring.wildfly.poker.manager.api.json.hand;
 
-import jeevsspring.wildfly.poker.manager.api.json.ActionOut;
-import jeevsspring.wildfly.poker.manager.api.json.PlayerSessionOut;
+import jeevsspring.wildfly.poker.manager.api.json.player.PlayerSessionOut;
 
 import java.util.List;
 

@@ -1,13 +1,11 @@
 package jeevsspring.wildfly.poker.manager.api;
 
-import jeevsspring.wildfly.poker.manager.api.json.ActionOut;
+import jeevsspring.wildfly.poker.manager.api.json.hand.ActionOut;
 import jeevsspring.wildfly.poker.manager.api.json.Status;
 import jeevsspring.wildfly.poker.manager.api.json.hand.*;
-import jeevsspring.wildfly.poker.manager.exception.PMException;
-import jeevsspring.wildfly.poker.manager.game.engine.Game;
+import jeevsspring.wildfly.poker.manager.game.GameException;
 import jeevsspring.wildfly.poker.manager.game.engine.GameAction;
-import jeevsspring.wildfly.poker.manager.game.engine.GameQueue;
-import jeevsspring.wildfly.poker.manager.game.engine.texasholdem.THGame;
+import jeevsspring.wildfly.poker.manager.game.engine.GameActions;
 import jeevsspring.wildfly.poker.manager.game.hand.Card;
 import jeevsspring.wildfly.poker.manager.game.hand.HandActionType;
 import jeevsspring.wildfly.poker.manager.game.hand.HandActions;
@@ -29,7 +27,7 @@ import java.util.List;
 @Path("/hand")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class HandApi<E extends Game> {
+public class HandApi<E extends GameAction> {
 
     // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
@@ -41,7 +39,7 @@ public class HandApi<E extends Game> {
     private LobbyPlayers lobbyPlayers;
 
     @EJB
-    private GameQueue<E> gameQueue;
+    private GameActions<E> gameActions;
 
     @GET
     @Path("/test")
@@ -64,7 +62,7 @@ public class HandApi<E extends Game> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (PMException e) {
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -85,7 +83,7 @@ public class HandApi<E extends Game> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (PMException e) {
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -106,7 +104,7 @@ public class HandApi<E extends Game> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (PMException e) {
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -127,7 +125,7 @@ public class HandApi<E extends Game> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (PMException e) {
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -148,7 +146,7 @@ public class HandApi<E extends Game> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (PMException e) {
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -168,7 +166,7 @@ public class HandApi<E extends Game> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setToken(in.getToken());
-        } catch (PMException e) {
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
             out.setErrorCode("GAME_NOT_STARTED");
@@ -177,24 +175,21 @@ public class HandApi<E extends Game> {
         return out;
     }
 
-    private List<ActionOut> toActions(String tableId, String playerId) throws PMException {
+    private List<ActionOut> toActions(String tableId, String playerId) throws GameException {
         logger.trace("toActions(" + tableId + ", " + playerId + ")");
         List<ActionOut> out = new ArrayList<>();
-        THGame game = (THGame) gameQueue.get(tableId);
-        for (GameAction action : game.getQueue()) {
-            boolean isVisitor = action.getVisitors().contains(playerId);
-            ActionOut actionOut = newGameAction(action, playerId, isVisitor);
+        List<E> list = gameActions.get(tableId, playerId);
+        for (GameAction action : list) {
+            ActionOut actionOut = convert(action, playerId);
             actionOut.setTableId(tableId);
             out.add(actionOut);
         }
         return out;
     }
 
-    private ActionOut newGameAction(GameAction o, String playerId, boolean isVisitor) {
-        logger.trace("newGameAction(" + o + ", " + playerId + ", " + isVisitor + ")");
+    private ActionOut convert(GameAction o, String playerId) {
+        logger.trace("newGameAction(" + o + ", " + playerId  + ")");
         ActionOut actionOut = new ActionOut();
-
-        // Set mandatory params
         actionOut.setActionId(o.getId());
         actionOut.setHandId(o.getHandId());
 
@@ -203,10 +198,11 @@ public class HandApi<E extends Game> {
             PlayerOut playerOut = new PlayerOut();
 
             //Set Player Cards only for current player, only if isn't a visitor
-            if (!isVisitor && playerId.equals(player.getId())) {
-                for (Card card : player.getCards()) {
+            for (Card card : player.getCards()) {
+                CardOut cardOut = null;
+                if (!card.isShadow()) {
                     String c = card.getSuit().getValue() + card.getSymbol().getValue();
-                    CardOut cardOut = CardOut.valueOf(c);
+                    cardOut = CardOut.valueOf(c);
                     playerOut.getCards().add(cardOut);
                 }
             }

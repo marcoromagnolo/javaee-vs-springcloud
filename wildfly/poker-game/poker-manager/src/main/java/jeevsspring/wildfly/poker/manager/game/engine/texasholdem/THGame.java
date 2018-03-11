@@ -1,9 +1,8 @@
 package jeevsspring.wildfly.poker.manager.game.engine.texasholdem;
 
 import jeevsspring.wildfly.poker.common.TableSettings;
-import jeevsspring.wildfly.poker.manager.bo.BoClient;
-import jeevsspring.wildfly.poker.manager.bo.json.StakeIn;
-import jeevsspring.wildfly.poker.manager.bo.json.WinIn;
+import jeevsspring.wildfly.poker.manager.bo.json.BOStakeIn;
+import jeevsspring.wildfly.poker.manager.bo.json.BOWinIn;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.engine.GameException;
 import jeevsspring.wildfly.poker.manager.game.engine.GameTimer;
@@ -18,7 +17,6 @@ import jeevsspring.wildfly.poker.manager.game.table.TableAction;
 import jeevsspring.wildfly.poker.manager.util.IdGenerator;
 import org.jboss.logging.Logger;
 
-import javax.ejb.EJB;
 import java.util.Map;
 import java.util.Queue;
 
@@ -79,12 +77,6 @@ public void actions(Queue<TableAction> queue) {
             TableAction action = queue.poll();
             if (!isRunning()) {
                 switch (action.getActionType()) {
-                    case BUY_IN:
-                        buyin(action.getPlayerId(), action.getOption());
-                        break;
-                    case BUY_OUT:
-                        buyout(action.getPlayerId());
-                        break;
                     case SIT_IN:
                         sitin(action.getPlayerId(), action.getOption());
                         break;
@@ -340,7 +332,7 @@ public void actions(Queue<TableAction> queue) {
         // Main Pot
         Pot mainPot = getPots().getMain();
         for (String playerId : getPots().getMain().getPlayers()) {
-            WinIn in = new WinIn();
+            BOWinIn in = new BOWinIn();
             in.setPlayerId(playerId);
             in.setAmount(mainPot.getValue());
             getRewards().put(playerId, mainPot.getValue());
@@ -350,7 +342,7 @@ public void actions(Queue<TableAction> queue) {
         if (!getPots().getSide().isEmpty()) {
             for (Pot pot : getPots().getSide()) {
                 for (String playerId : pot.getPlayers()) {
-                    WinIn in = new WinIn();
+                    BOWinIn in = new BOWinIn();
                     in.setPlayerId(playerId);
                     in.setAmount(mainPot.getValue());
                     getRewards().put(playerId, mainPot.getValue());
@@ -376,8 +368,8 @@ public void actions(Queue<TableAction> queue) {
         gameAction.setBigBlind(bigBlind);
         gameAction.setSmallBlind(smallBlind);
         gameAction.setRoundPhase(roundPhase);
-        gameAction.setReward(getRewards());
-        getQueue().offer(gameAction);
+        gameAction.setWinnings(getRewards());
+        getGameActions().offer(gameAction);
         logger.debug("addGameAction(" + gameAction + ")");
     }
 
@@ -527,31 +519,6 @@ public void actions(Queue<TableAction> queue) {
 
         // Prepare turns
         orders = new Orders(getSeats());
-    }
-
-    /**
-     * Buy In Table Action
-     * @param playerId
-     * @param amount
-     */
-    private void buyin(String playerId, String amount) {
-        logger.debug("buyin(" + playerId + ", " + amount + ")");
-
-        // Pay stake for buyin
-        StakeIn in = new StakeIn();
-        in.setPlayerId(playerId);
-        in.setAmount(Long.parseLong(amount));
-        // TODO add action
-    }
-
-    /**
-     * Buy Out Table Action
-     * @param playerId
-     */
-    private void buyout(String playerId) {
-        // Not Used
-        // Player are payed after each hand
-        // TODO add action
     }
 
     @Override

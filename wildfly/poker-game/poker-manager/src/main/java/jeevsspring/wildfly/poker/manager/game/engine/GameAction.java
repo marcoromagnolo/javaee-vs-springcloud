@@ -24,7 +24,7 @@ public abstract class GameAction {
     private List<Card> communityCards;
     private List<Pot> pots;
     private int turn;
-    private Map<String, Long> reward;
+    private Map<String, Long> winnings;
 
     public GameAction(String handId) {
         logger.debug("GameAction(" + handId + ")");
@@ -88,11 +88,12 @@ public abstract class GameAction {
         this.turn = turn;
     }
 
-    public Map<String, Long> getReward() {
-        return reward;
+    public Map<String, Long> getWinnings() {
+        return winnings;
     }
 
-    public void setReward(Map<String, Long> reward) {
-        this.reward = reward;
+    public void setWinnings(Map<String, Long> winnings) {
+        this.winnings = winnings;
     }
+
 }

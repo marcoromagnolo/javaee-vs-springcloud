@@ -3,10 +3,7 @@ package jeevsspring.wildfly.poker.manager.api;
 import jeevsspring.wildfly.poker.manager.api.json.Status;
 import jeevsspring.wildfly.poker.manager.api.json.lobby.*;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
-import jeevsspring.wildfly.poker.manager.bo.json.SigninIn;
-import jeevsspring.wildfly.poker.manager.bo.json.SigninOut;
-import jeevsspring.wildfly.poker.manager.bo.json.SignoutIn;
-import jeevsspring.wildfly.poker.manager.bo.json.SignoutOut;
+import jeevsspring.wildfly.poker.manager.bo.json.*;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.Games;
 import jeevsspring.wildfly.poker.manager.lobby.LobbyPlayers;
@@ -30,12 +27,6 @@ public class LobbyApi {
     private final Logger logger = Logger.getLogger(getClass());
 
     @EJB
-    private BoClient boClient;
-
-    @EJB
-    private LobbyPlayers lobbyPlayers;
-
-    @EJB
     private Games games;
 
     @GET
@@ -44,35 +35,6 @@ public class LobbyApi {
         logger.trace("test()");
         Status out = new Status();
         out.setMessage("Test completed");
-        return out;
-    }
-
-    @POST
-    @Path("/login")
-    public LoginOut login(LoginIn in) {
-        logger.trace("login(" + in + ")");
-        LoginOut out = new LoginOut();
-        SigninIn signinIn = new SigninIn();
-        signinIn.setUsername(in.getUsername());
-        signinIn.setPassword(in.getPassword());
-        SigninOut signinOut = boClient.signin(signinIn);
-        String playerId = signinOut.getUser().getId();
-        lobbyPlayers.login(signinOut.getSessionId(), playerId);
-        logger.debug("login(" + in + ") return " + out);
-        return out;
-    }
-
-    @POST
-    @Path("/logout")
-    public LogoutOut logout(LogoutIn in) {
-        logger.trace("logout(" + in + ")");
-        LogoutOut out = new LogoutOut();
-        SignoutIn signoutIn = new SignoutIn();
-        signoutIn.setSessionId(in.getSessionId());
-        signoutIn.setToken(in.getToken());
-        SignoutOut signoutOut = boClient.signout(signoutIn);
-        lobbyPlayers.logout(signoutIn.getSessionId());
-        logger.debug("logout(" + in + ") return " + out);
         return out;
     }
 
