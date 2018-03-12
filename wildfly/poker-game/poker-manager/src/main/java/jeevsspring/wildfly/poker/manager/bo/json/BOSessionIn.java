@@ -6,7 +6,7 @@ package jeevsspring.wildfly.poker.manager.bo.json;
 public class BOSessionIn {
 
     private String sessionId;
-    private String token;
+    private String sessionToken;
 
     public String getSessionId() {
         return sessionId;
@@ -16,11 +16,11 @@ public class BOSessionIn {
         this.sessionId = sessionId;
     }
 
-    public String getToken() {
-        return token;
+    public String getSessionToken() {
+        return sessionToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
     }
 }

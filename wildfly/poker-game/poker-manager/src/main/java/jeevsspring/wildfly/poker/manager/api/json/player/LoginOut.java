@@ -2,31 +2,11 @@ package jeevsspring.wildfly.poker.manager.api.json.player;
 
 public class LoginOut extends PlayerSessionOut {
 
-    private long time;
-
-    private long life;
-
     private String nickname;
 
     private AccountOut account;
 
     private WalletOut wallet;
-
-    public long getTime() {
-        return time;
-    }
-
-    public void setTime(long time) {
-        this.time = time;
-    }
-
-    public long getLife() {
-        return life;
-    }
-
-    public void setLife(long life) {
-        this.life = life;
-    }
 
     public String getNickname() {
         return nickname;

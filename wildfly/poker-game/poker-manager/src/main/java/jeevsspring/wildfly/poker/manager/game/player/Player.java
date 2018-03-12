@@ -21,10 +21,9 @@ public class Player {
     private List<Card> cards;
     private boolean sitOut;
 
-    public Player(String id, String nickname, int seat, long balance) {
-        logger.debug("Player(" + id + ", " + nickname + ", " + seat + ", " + balance + ")");
+    public Player(String id, String nickname, long balance) {
+        logger.debug("Player(" + id + ", " + nickname + ", " + balance + ")");
         this.id = id;
-        this.seat = seat;
         this.nickname = nickname;
         this.balance = balance;
     }

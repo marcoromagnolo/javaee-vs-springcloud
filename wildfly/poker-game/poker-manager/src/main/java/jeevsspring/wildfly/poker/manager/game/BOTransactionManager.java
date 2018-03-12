@@ -2,14 +2,12 @@ package jeevsspring.wildfly.poker.manager.game;
 
 import jeevsspring.wildfly.poker.manager.bo.BOException;
 import jeevsspring.wildfly.poker.manager.bo.BoClient;
-import jeevsspring.wildfly.poker.manager.bo.json.BORefundIn;
-import jeevsspring.wildfly.poker.manager.bo.json.BORefundOut;
-import jeevsspring.wildfly.poker.manager.bo.json.BOStakeIn;
-import jeevsspring.wildfly.poker.manager.bo.json.BOWinIn;
+import jeevsspring.wildfly.poker.manager.bo.json.*;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.engine.GameAction;
 import jeevsspring.wildfly.poker.manager.game.engine.GameActions;
 import jeevsspring.wildfly.poker.manager.game.player.Player;
+import jeevsspring.wildfly.poker.manager.util.PMConfig;
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +19,7 @@ import java.util.Queue;
 
 @Singleton
 @Startup
-public class GameTransactionManager<E extends GameAction> {
+public class BOTransactionManager<E extends GameAction> {
 
     // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
@@ -38,9 +36,16 @@ public class GameTransactionManager<E extends GameAction> {
     @EJB
     private Games games;
 
+    @EJB
+    private SystemSessionManager systemSession;
+
+    @EJB
+    private PMConfig config;
+
     @PostConstruct
     public void init() {
-        timerService.createTimer(0, 5000, "Every 5 seconds");
+        long time = config.getBoTransactionUpdateInterval() * 1000;
+        timerService.createTimer(0, time, "Every " + time + " milliseconds");
     }
 
     @Timeout
@@ -65,6 +70,8 @@ public class GameTransactionManager<E extends GameAction> {
             BOWinIn in = new BOWinIn();
             in.setPlayerId(reward.getKey());
             in.setAmount(reward.getValue());
+            in.setSessionId(systemSession.getSessionId());
+            in.setSessionToken(systemSession.getSessionToken());
             try {
                 boClient.win(in);
             } catch (BOException e) {
@@ -73,35 +80,40 @@ public class GameTransactionManager<E extends GameAction> {
         }
     }
 
-    public void stake(String tableId, String playerId, long amount) throws GameException {
+    public BOStakeOut stake(String tableId, String playerId, long amount) throws GameException, BOException {
         if (!games.get(tableId).isRunning()) throw new GameException("Game with tableId: " + tableId + " is not running");
         BOStakeIn in = new BOStakeIn();
         in.setPlayerId(playerId);
+        in.setSessionId(systemSession.getSessionId());
+        in.setSessionToken(systemSession.getSessionToken());
         in.setAmount(amount);
         try {
-            boClient.stake(in);
+            BOStakeOut out = boClient.stake(in);
+            Game game = games.get(tableId);
+            Player player = new Player(out.getPlayerId(), out.getNickname(), amount);
+            game.getPlayers().put(out.getPlayerId(), player);
+            return out;
         } catch (BOException e) {
             logger.error(e);
             throw new GameException("REFUND_ERROR");
         }
     }
 
-    public long refund(String tableId, String playerId) throws GameException {
+    public BORefundOut refund(String tableId, String playerId) throws GameException, BOException {
         if (!games.get(tableId).isRunning()) throw new GameException("Game with tableId: " + tableId + " is not running");
         Game game = games.get(tableId);
         Player player = game.getPlayer(playerId);
-        if (player.getBalance() > 0) {
-            BORefundIn in = new BORefundIn();
-            in.setPlayerId(playerId);
-            in.setAmount(player.getBalance());
-            try {
-                BORefundOut boRefundOut = boClient.refund(in);
-                return boRefundOut.getAmount();
-            } catch (BOException e) {
-                logger.error(e);
-                throw new GameException("REFUND_ERROR");
-            }
+        BORefundIn in = new BORefundIn();
+        in.setPlayerId(playerId);
+        in.setAmount(player.getBalance());
+        in.setSessionId(systemSession.getSessionId());
+        in.setSessionToken(systemSession.getSessionToken());
+        try {
+            BORefundOut out = boClient.refund(in);
+            return out;
+        } catch (BOException e) {
+            logger.error(e);
+            throw new GameException("REFUND_ERROR");
         }
-        return 0;
     }
 }

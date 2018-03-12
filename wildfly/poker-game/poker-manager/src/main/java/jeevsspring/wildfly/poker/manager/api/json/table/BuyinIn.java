@@ -5,6 +5,7 @@ import jeevsspring.wildfly.poker.manager.api.json.player.PlayerSessionIn;
 public class BuyinIn extends PlayerSessionIn {
 
     private String tableId;
+
     private String amount;
 
     public String getTableId() {

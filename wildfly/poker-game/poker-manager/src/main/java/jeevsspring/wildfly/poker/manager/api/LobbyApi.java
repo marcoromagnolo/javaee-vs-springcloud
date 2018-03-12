@@ -48,7 +48,7 @@ public class LobbyApi {
             out.getTables().add(lobbyTable);
         }
         out.setSessionId(in.getSessionId());
-        out.setToken(in.getToken());
+        out.setSessionToken(in.getToken());
         logger.debug("show(" + in + ") return " + out);
         return out;
     }

@@ -62,7 +62,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
+            out.setSessionToken(in.getToken());
         } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
@@ -83,7 +83,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
+            out.setSessionToken(in.getToken());
         } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
@@ -104,7 +104,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
+            out.setSessionToken(in.getToken());
         } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
@@ -125,7 +125,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
+            out.setSessionToken(in.getToken());
         } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
@@ -146,7 +146,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
+            out.setSessionToken(in.getToken());
         } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
@@ -166,7 +166,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
+            out.setSessionToken(in.getToken());
         } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);

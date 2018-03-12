@@ -14,13 +14,13 @@ import jeevsspring.wildfly.poker.manager.api.json.table.BuyinOut;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutIn;
 import jeevsspring.wildfly.poker.manager.api.json.table.BuyoutOut;
 import jeevsspring.wildfly.poker.manager.bo.BOException;
+import jeevsspring.wildfly.poker.manager.bo.json.BORefundOut;
+import jeevsspring.wildfly.poker.manager.bo.json.BOStakeOut;
 import jeevsspring.wildfly.poker.manager.game.GameException;
-import jeevsspring.wildfly.poker.manager.game.GameTransactionManager;
+import jeevsspring.wildfly.poker.manager.game.BOTransactionManager;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.Games;
-import jeevsspring.wildfly.poker.manager.game.player.Player;
 import jeevsspring.wildfly.poker.manager.game.table.TableActionQueue;
-import jeevsspring.wildfly.poker.manager.game.table.TableActionType;
 import jeevsspring.wildfly.poker.manager.game.player.PlayerManager;
 import org.jboss.logging.Logger;
 
@@ -46,7 +46,7 @@ public class TableApi {
     private PlayerManager playerManager;
 
     @EJB
-    private GameTransactionManager gameTransactionManager;
+    private BOTransactionManager boTransactionManager;
 
     @EJB
     private Games games;
@@ -70,7 +70,7 @@ public class TableApi {
             Game game = games.get(in.getTableId());
             game.getVisitors().add(playerId);
             out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
+            out.setSessionToken(in.getToken());
         } catch (BOException | GameException e) {
             logger.error(e.getMessage());
             out.setError(true);
@@ -90,7 +90,7 @@ public class TableApi {
             Game game = games.get(in.getTableId());
             game.getVisitors().remove(playerId);
             out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
+            out.setSessionToken(in.getToken());
         } catch (BOException | GameException e) {
             logger.error(e.getMessage());
             out.setError(true);
@@ -107,9 +107,11 @@ public class TableApi {
         BuyinOut out = new BuyinOut();
         try {
             String playerId = playerManager.getPlayerId(in.getSessionId());
-            gameTransactionManager.stake(in.getTableId(), playerId, Long.parseLong(in.getAmount()));
-            out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
+            BOStakeOut bo = boTransactionManager.stake(in.getTableId(), playerId, Long.parseLong(in.getAmount()));
+            out.setSessionId(bo.getSessionId());
+            out.setSessionToken(bo.getSessionToken());
+            out.setAmount(bo.getAmount());
+            out.setBalance(bo.getBalance());
         } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
@@ -126,10 +128,13 @@ public class TableApi {
         BuyoutOut out = new BuyoutOut();
         try {
             String playerId = playerManager.getPlayerId(in.getSessionId());
-            long refund = gameTransactionManager.refund(in.getTableId(), playerId);
-            out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
-            out.setAmount(refund);
+            BORefundOut bo = boTransactionManager.refund(in.getTableId(), playerId);
+            if (bo != null) {
+                out.setSessionId(bo.getSessionId());
+                out.setSessionToken(bo.getSessionToken());
+                out.setAmount(bo.getAmount());
+                out.setBalance(bo.getBalance());
+            }
         } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
@@ -149,7 +154,7 @@ public class TableApi {
             String playerId = playerManager.getPlayerId(in.getSessionId());
             tableQueue.sitin(in.getTableId(), playerId, Integer.parseInt(in.getSeat()));
             out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
+            out.setSessionToken(in.getToken());
         } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);
@@ -169,7 +174,7 @@ public class TableApi {
             String playerId = playerManager.getPlayerId(in.getSessionId());
             tableQueue.sitout(in.getTableId(), playerId);
             out.setSessionId(in.getSessionId());
-            out.setToken(in.getToken());
+            out.setSessionToken(in.getToken());
         } catch (BOException | GameException e) {
             logger.error(e.getMessage(), e);
             out.setError(true);

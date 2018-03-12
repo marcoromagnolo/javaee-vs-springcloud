@@ -1,8 +1,9 @@
 package jeevsspring.wildfly.poker.manager.bo.json;
 
-public class BORefundIn {
+public class BORefundIn extends BOSessionIn {
 
     private String playerId;
+
     private long amount;
 
     public String getPlayerId() {

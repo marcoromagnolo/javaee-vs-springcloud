@@ -6,7 +6,11 @@ public class PlayerSessionOut extends Status {
 
     private String sessionId;
 
-    private String token;
+    private String sessionToken;
+
+    private long sessionExpireTime;
+
+    private long sessionCreateTime;
 
     public String getSessionId() {
         return sessionId;
@@ -16,11 +20,27 @@ public class PlayerSessionOut extends Status {
         this.sessionId = sessionId;
     }
 
-    public String getToken() {
-        return token;
+    public String getSessionToken() {
+        return sessionToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
+    }
+
+    public long getSessionExpireTime() {
+        return sessionExpireTime;
+    }
+
+    public void setSessionExpireTime(long sessionExpireTime) {
+        this.sessionExpireTime = sessionExpireTime;
+    }
+
+    public long getSessionCreateTime() {
+        return sessionCreateTime;
+    }
+
+    public void setSessionCreateTime(long sessionCreateTime) {
+        this.sessionCreateTime = sessionCreateTime;
     }
 }

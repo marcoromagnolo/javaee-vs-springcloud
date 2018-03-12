@@ -23,7 +23,17 @@ public class PMConfig {
 
     private final String fileName = "poker-manager.properties";
 
-    private int numberOfThreads;
+    private String boSessionAuthUsername;
+
+    private String boSessionAuthPassword;
+
+    private long boSessionUpdateInterval;
+
+    private long boTransactionUpdateInterval;
+
+    private long lobbyTableUpdateInterval;
+
+    private long gameActionUpdateInterval;
 
     @PostConstruct
     public void init() {
@@ -42,10 +52,35 @@ public class PMConfig {
     }
 
     private void configure() {
-        numberOfThreads = Integer.parseInt(properties.getProperty("numberOfThreads", "1"));
+        boTransactionUpdateInterval = Long.parseLong(properties.getProperty("bo.transaction.update.interval", "10000"));
+        lobbyTableUpdateInterval = Long.parseLong(properties.getProperty("lobby.table.update.interval", "10000"));
+        gameActionUpdateInterval = Long.parseLong(properties.getProperty("game.action.update.interval", "10000"));
+        boSessionUpdateInterval = Long.parseLong(properties.getProperty("bo.session.update.interval", "10000"));
+        boSessionAuthUsername = properties.getProperty("bo.session.auth.username");
+        boSessionAuthPassword = properties.getProperty("bo.session.auth.password");
     }
 
-    public int getNumberOfThreads() {
-        return numberOfThreads;
+    public String getBoSessionAuthUsername() {
+        return boSessionAuthUsername;
+    }
+
+    public String getBoSessionAuthPassword() {
+        return boSessionAuthPassword;
+    }
+
+    public long getBoSessionUpdateInterval() {
+        return boSessionUpdateInterval;
+    }
+
+    public long getLobbyTableUpdateInterval() {
+        return lobbyTableUpdateInterval;
+    }
+
+    public long getBoTransactionUpdateInterval() {
+        return boTransactionUpdateInterval;
+    }
+
+    public long getGameActionUpdateInterval() {
+        return gameActionUpdateInterval;
     }
 }

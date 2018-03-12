@@ -6,6 +6,7 @@ import jeevsspring.wildfly.poker.manager.game.GameException;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.Games;
 import jeevsspring.wildfly.poker.manager.game.engine.texasholdem.THGame;
+import jeevsspring.wildfly.poker.manager.util.PMConfig;
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -32,9 +33,13 @@ public class LobbyManager {
     @EJB
     private LobbyTables lobbyTables;
 
+    @EJB
+    private PMConfig config;
+
     @PostConstruct
     public void init() {
-        timerService.createTimer(0, 5000, "Every seconds");
+        long time = config.getLobbyTableUpdateInterval() * 1000;
+        timerService.createTimer(0, time, "Every " + time + " milliseconds");
     }
 
     @Timeout

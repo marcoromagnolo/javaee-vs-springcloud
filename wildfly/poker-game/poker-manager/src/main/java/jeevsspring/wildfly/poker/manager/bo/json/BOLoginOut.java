@@ -5,53 +5,83 @@ package jeevsspring.wildfly.poker.manager.bo.json;
  */
 public class BOLoginOut extends BOSessionOut {
 
-    private long time;
+    private String playerId;
 
-    private long life;
+    private String nickname;
 
-    private BOPlayerOut player;
+    private long balance;
 
-    private BOWalletOut wallet;
+    private String firstName;
 
-    private BOAccountOut account;
+    private String lastName;
 
-    public long getTime() {
-        return time;
+    private String email;
+
+    private String age;
+
+    private String sex;
+
+    public String getPlayerId() {
+        return playerId;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
     }
 
-    public long getLife() {
-        return life;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setLife(long life) {
-        this.life = life;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public BOPlayerOut getPlayer() {
-        return player;
+    public long getBalance() {
+        return balance;
     }
 
-    public void setPlayer(BOPlayerOut player) {
-        this.player = player;
+    public void setBalance(long balance) {
+        this.balance = balance;
     }
 
-    public BOWalletOut getWallet() {
-        return wallet;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setWallet(BOWalletOut wallet) {
-        this.wallet = wallet;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public BOAccountOut getAccount() {
-        return account;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setAccount(BOAccountOut account) {
-        this.account = account;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 }

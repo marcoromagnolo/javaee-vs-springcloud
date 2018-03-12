@@ -1,7 +1,6 @@
 package jeevsspring.wildfly.poker.manager.api;
 
 import jeevsspring.wildfly.poker.manager.api.json.Status;
-import jeevsspring.wildfly.poker.manager.api.json.hand.PlayerOut;
 import jeevsspring.wildfly.poker.manager.api.json.player.*;
 import jeevsspring.wildfly.poker.manager.bo.BOException;
 import jeevsspring.wildfly.poker.manager.bo.json.*;
@@ -79,20 +78,20 @@ public class PlayerApi {
         try {
             BOLoginOut bo = playerManager.login(in.getUsername(), in.getPassword());
             out.setSessionId(bo.getSessionId());
-            out.setToken(bo.getToken());
-            out.setNickname(bo.getPlayer().getNickname());
-            out.setLife(bo.getLife());
-            out.setTime(bo.getTime());
+            out.setSessionToken(bo.getSessionToken());
+            out.setNickname(bo.getNickname());
+            out.setSessionCreateTime(bo.getSessionCreateTime());
+            out.setSessionExpireTime(bo.getSessionCreateTime());
 
             // Set Account
             AccountOut account = new AccountOut();
-            account.setFirstName(bo.getAccount().getFirstName());
-            account.setLastName(bo.getAccount().getLastName());
+            account.setFirstName(bo.getFirstName());
+            account.setLastName(bo.getLastName());
             out.setAccount(account);
 
             // Set Wallet
             WalletOut wallet = new WalletOut();
-            wallet.setBalance(bo.getWallet().getBalance());
+            wallet.setBalance(bo.getBalance());
             out.setWallet(wallet);
         } catch (BOException e) {
             logger.error(e);

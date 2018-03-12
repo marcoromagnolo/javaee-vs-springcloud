@@ -81,7 +81,7 @@ public class PlayerManager {
         BOLoginOut boLoginOut = boClient.login(boLoginIn);
 
         // Create Player Session
-        String playerId = boLoginOut.getPlayer().getId();
+        String playerId = boLoginOut.getPlayerId();
         String sessionId = boLoginOut.getSessionId();
         createPlayerSession(playerId, sessionId);
 
@@ -99,7 +99,7 @@ public class PlayerManager {
         // Call BO Logout Service
         BOLogoutIn boLogoutIn = new BOLogoutIn();
         boLogoutIn.setSessionId(sessionId);
-        boLogoutIn.setToken(token);
+        boLogoutIn.setSessionToken(token);
         BOLogoutOut boLogoutOut = boClient.logout(boLogoutIn);
 
         // Destroy Player Session
@@ -114,7 +114,7 @@ public class PlayerManager {
         // Call BO Wallet Service
         BOWalletIn boWalletIn = new BOWalletIn();
         boWalletIn.setSessionId(sessionId);
-        boWalletIn.setToken(token);
+        boWalletIn.setSessionToken(token);
         BOWalletOut boWalletOut = boClient.wallet(boWalletIn);
 
         return boWalletOut;
@@ -126,7 +126,7 @@ public class PlayerManager {
         // Call BO Account Service
         BOAccountIn accountIn = new BOAccountIn();
         accountIn.setSessionId(sessionId);
-        accountIn.setToken(token);
+        accountIn.setSessionToken(token);
         BOAccountOut accountOut = boClient.account(accountIn);
 
         return accountOut;

@@ -53,10 +53,9 @@ public class GameActions<E extends GameAction>  {
         // Set Players
         for (Player player : a.getPlayers().values()) {
 
-            Player p = new Player(player.getId(), player.getNickname(), player.getSeat(), player.getBalance());
+            Player p = new Player(player.getId(), player.getNickname(), player.getBalance());
             p.setSitOut(player.isSitOut());
             p.setSeat(player.getSeat());
-
 
             //Set Player Cards only for current player, only if isn't a visitor
             if (!playerId.equals(player.getId()) || isVisitor) {

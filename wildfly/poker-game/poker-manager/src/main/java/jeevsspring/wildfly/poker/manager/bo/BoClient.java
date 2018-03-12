@@ -1,7 +1,6 @@
 package jeevsspring.wildfly.poker.manager.bo;
 
 import jeevsspring.wildfly.poker.manager.bo.json.*;
-import jeevsspring.wildfly.poker.manager.game.player.Player;
 import org.jboss.logging.Logger;
 
 import javax.ejb.LocalBean;
@@ -18,32 +17,23 @@ public class BoClient {
     // Jboss Logger
     private final Logger logger = Logger.getLogger(getClass());
 
-    public Player getPlayer(String playerId) {
-        return new Player("1", "Ciccio", 3, 20000);
-    }
-
     public BOLoginOut login(BOLoginIn in) throws BOException {
         logger.trace("signin(" + in + ")");
+
         BOLoginOut out = new BOLoginOut();
         out.setSessionId(UUID.randomUUID().toString());
-        out.setToken(UUID.randomUUID().toString());
+        out.setSessionToken(UUID.randomUUID().toString());
 
-        BOPlayerOut boPlayerOut = new BOPlayerOut();
-        boPlayerOut.setId("1");
-        boPlayerOut.setNickname(in.getUsername());
-        out.setPlayer(boPlayerOut);
+        out.setPlayerId("1");
+        out.setNickname("Poker Ace");
 
-        BOAccountOut account = new BOAccountOut();
-        account.setFirstName("Marco");
-        account.setLastName("Romagnolo");
-        account.setEmail("romagnolo.marco@gmail.com");
-        account.setAge("32");
-        account.setSex("M");
-        out.setAccount(account);
+        out.setFirstName("Marco");
+        out.setLastName("Romagnolo");
+        out.setEmail("romagnolo.marco@gmail.com");
+        out.setAge("32");
+        out.setSex("M");
 
-        BOWalletOut wallet = new BOWalletOut();
-        wallet.setBalance(2000);
-        out.setWallet(wallet);
+        out.setBalance(2000);
 
         logger.debug("signin (" + in + ") return " + out);
         return out;
@@ -57,7 +47,7 @@ public class BoClient {
         return out;
     }
 
-    public BOVerifyOut verify(BOVerifyIn in) throws BOException {
+    public BOVerifyOut refreshAuth(BOVerifyIn in) throws BOException {
         logger.trace("verify(" + in + ")");
         BOVerifyOut out = new BOVerifyOut();
         logger.debug("verify (" + in + ") return " + out);

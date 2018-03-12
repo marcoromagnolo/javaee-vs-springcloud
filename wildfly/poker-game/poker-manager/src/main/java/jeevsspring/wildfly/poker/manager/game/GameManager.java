@@ -5,6 +5,7 @@ import jeevsspring.wildfly.poker.manager.game.engine.GameAction;
 import jeevsspring.wildfly.poker.manager.game.engine.GameActions;
 import jeevsspring.wildfly.poker.manager.game.hand.HandActions;
 import jeevsspring.wildfly.poker.manager.game.table.TableActionQueue;
+import jeevsspring.wildfly.poker.manager.util.PMConfig;
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -34,9 +35,13 @@ public class GameManager<T extends Game<E>, E extends GameAction> {
     @EJB
     private GameActions<E> gameActions;
 
+    @EJB
+    private PMConfig config;
+
     @PostConstruct
     public void init() {
-        timerService.createTimer(0, 1000, "Every seconds");
+        long time = config.getGameActionUpdateInterval() * 1000;
+        timerService.createTimer(0, time, "Every " + time + " milliseconds");
     }
 
     @Timeout
