@@ -1,9 +1,9 @@
-package jeevsspring.wildfly.poker.manager.bo.json;
+package jeevsspring.wildfly.backoffice.api.json;
 
 /**
  * @author Marco Romagnolo
  */
-public class BOLogoutOut {
+public class LogoutOut {
 
     private String playerId;
 

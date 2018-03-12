@@ -21,7 +21,6 @@ public class GameActions<E extends GameAction>  {
     // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
 
-    @EJB
     private Map<String, Queue<E>> actions;
 
     @PostConstruct

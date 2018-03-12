@@ -1,23 +1,34 @@
-package jeevsspring.wildfly.poker.manager.bo.json;
+package jeevsspring.wildfly.backoffice.api.json;
 
 /**
  * @author Marco Romagnolo
  */
-public class BOAccountOut extends BOSessionOut {
+public class OperatorLoginOut extends SessionOut {
 
-    private String playerId;
+    private String operatorId;
+
+    private String username;
+
     private String firstName;
-    private String lastName;
-    private String email;
-    private String age;
-    private String sex;
 
-    public String getPlayerId() {
-        return playerId;
+    private String lastName;
+
+    private String email;
+
+    public String getOperatorId() {
+        return operatorId;
     }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -42,21 +53,5 @@ public class BOAccountOut extends BOSessionOut {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
     }
 }

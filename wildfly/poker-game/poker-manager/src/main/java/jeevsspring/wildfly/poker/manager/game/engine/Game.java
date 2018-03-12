@@ -72,6 +72,7 @@ public abstract class Game<E extends GameAction> {
 
         this.tableId = IdGenerator.newTableId();
         this.settings = settings;
+        this.gameActions = new ArrayDeque<>();
         this.players = new HashMap<>();
         this.visitors = new ArrayList<>();
         this.communityCards = new ArrayList<>();

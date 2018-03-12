@@ -1,13 +1,20 @@
-package jeevsspring.wildfly.poker.manager.bo.json;
+package jeevsspring.wildfly.backoffice.entity;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
 
 /**
  * @author Marco Romagnolo
  */
-public class BOOperatorLoginOut extends BOSessionOut {
+@Entity
+@Cacheable
+public class OperatorEntity {
 
-    private String operatorId;
+    private String id;
 
     private String username;
+
+    private String password;
 
     private String firstName;
 
@@ -15,12 +22,12 @@ public class BOOperatorLoginOut extends BOSessionOut {
 
     private String email;
 
-    public String getOperatorId() {
-        return operatorId;
+    public String getId() {
+        return id;
     }
 
-    public void setOperatorId(String operatorId) {
-        this.operatorId = operatorId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -29,6 +36,14 @@ public class BOOperatorLoginOut extends BOSessionOut {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {

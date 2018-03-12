@@ -3,18 +3,18 @@ package jeevsspring.wildfly.poker.manager.bo.json;
 /**
  * @author Marco Romagnolo
  */
-public class BOLogoutOut {
+public class BOOperatorLogoutOut {
 
-    private String playerId;
+    private String operatorId;
 
     private String message;
 
-    public String getPlayerId() {
-        return playerId;
+    public String getOperatorId() {
+        return operatorId;
     }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
     }
 
     public String getMessage() {

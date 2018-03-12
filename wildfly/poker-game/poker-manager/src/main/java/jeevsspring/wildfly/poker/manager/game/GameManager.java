@@ -49,36 +49,38 @@ public class GameManager<T extends Game<E>, E extends GameAction> {
         logger.trace("process() timer info: " + timer.getInfo().toString());
         logger.trace("process() started at: " + Calendar.getInstance().getTime());
 
-        // Poll Hand and Table actions made from players
+        // Poll Hand, Table & Game actions
         games.getAll().parallelStream()
                 .forEach((T game) -> {
                     String tableId = game.getTableId();
                     try {
+
+                        // Process Hand Actions (input)
                         if (handActions.contains(tableId)) {
                             game.actions(handActions.pop(tableId));
                         }
+
+                        // Process Table Actions (input)
                         if (tableActions.contains(tableId)) {
                             game.actions(tableActions.pop(tableId));
                         }
+
+                        // Process Game Actions (output)
                         if (!game.getGameActions().isEmpty()) {
                             gameActions.add(tableId, game.getGameActions());
                         }
                     } catch (Exception e) {
+                        logger.error(e.getMessage(), e);
                         logger.warn("Game with tableId: " + tableId + " will be removed from active games");
                         try {
                             games.remove(tableId);
                         } catch (GameException e1) {
                             logger.error(e);
                         }
-                        logger.error(e.getMessage(), e);
                     }
                 });
 
         logger.trace("process() finished at: " + Calendar.getInstance().getTime());
-    }
-
-    public void checkGame(String tableId) {
-
     }
 
 }

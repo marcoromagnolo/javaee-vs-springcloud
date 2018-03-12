@@ -1,9 +1,9 @@
-package jeevsspring.wildfly.poker.manager.bo.json;
+package jeevsspring.wildfly.backoffice.api.json;
 
 /**
  * @author Marco Romagnolo
  */
-public class BOAccountOut extends BOSessionOut {
+public class AccountOut extends SessionOut {
 
     private String playerId;
     private String firstName;

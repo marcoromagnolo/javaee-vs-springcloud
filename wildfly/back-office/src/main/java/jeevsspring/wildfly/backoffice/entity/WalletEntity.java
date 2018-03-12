@@ -1,9 +1,14 @@
-package jeevsspring.wildfly.poker.manager.bo.json;
+package jeevsspring.wildfly.backoffice.entity;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
 
 /**
  * @author Marco Romagnolo
  */
-public class BOWalletOut extends BOSessionOut {
+@Entity
+@Cacheable
+public class WalletEntity {
 
     private String playerId;
 

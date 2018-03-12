@@ -1,9 +1,9 @@
-package jeevsspring.wildfly.poker.manager.bo.json;
+package jeevsspring.wildfly.backoffice.api.json;
 
 /**
  * @author Marco Romagnolo
  */
-public class BOWalletIn extends BOSessionIn {
+public class WalletIn extends SessionIn {
 
     private String playerId;
 
