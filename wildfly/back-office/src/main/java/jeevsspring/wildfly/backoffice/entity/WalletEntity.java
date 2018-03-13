@@ -1,25 +1,40 @@
 package jeevsspring.wildfly.backoffice.entity;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Marco Romagnolo
  */
 @Entity
 @Cacheable
-public class WalletEntity {
+@Table(name="WALLET")
+public class WalletEntity implements Serializable {
 
-    private String playerId;
+    @Id
+    private String id;
 
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="PLAYER_ID")
+    private PlayerEntity player;
+
+    @Column("BALANCE")
     private long balance;
 
-    public String getPlayerId() {
-        return playerId;
+    public String getId() {
+        return id;
     }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public PlayerEntity getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(PlayerEntity player) {
+        this.player = player;
     }
 
     public long getBalance() {

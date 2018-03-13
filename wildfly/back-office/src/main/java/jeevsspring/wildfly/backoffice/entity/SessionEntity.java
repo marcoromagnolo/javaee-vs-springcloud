@@ -1,19 +1,24 @@
 package jeevsspring.wildfly.backoffice.entity;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Marco Romagnolo
  */
 @Entity
 @Cacheable
-public class SessionEntity {
+@Table(name="SESSION")
+public class SessionEntity implements Serializable {
 
+    @Id
     private String id;
 
-    private String playerId;
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="PLAYER_ID")
+    private PlayerEntity player;
 
+    @Column("TOKEN")
     private String token;
 
     public String getId() {
@@ -24,12 +29,12 @@ public class SessionEntity {
         this.id = id;
     }
 
-    public String getPlayerId() {
-        return playerId;
+    public PlayerEntity getPlayer() {
+        return player;
     }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+    public void setPlayer(PlayerEntity playerId) {
+        this.player = playerId;
     }
 
     public String getToken() {

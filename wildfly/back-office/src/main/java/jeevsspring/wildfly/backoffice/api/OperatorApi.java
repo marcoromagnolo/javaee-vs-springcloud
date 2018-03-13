@@ -39,7 +39,7 @@ public class OperatorApi {
         } catch (ServiceException e) {
             logger.error(e);
             out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setErrorCode(e.getErrorCode());
         }
         logger.debug("login(" + in + ") return " + out);
         return out;
@@ -55,7 +55,7 @@ public class OperatorApi {
         } catch (ServiceException e) {
             logger.error(e);
             out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setErrorCode(e.getErrorCode());
         }
         logger.debug("logout(" + in + ") return " + out);
         return out;

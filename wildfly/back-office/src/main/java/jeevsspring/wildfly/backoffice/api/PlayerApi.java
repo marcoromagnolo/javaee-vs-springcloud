@@ -1,10 +1,8 @@
 package jeevsspring.wildfly.backoffice.api;
 
 import jeevsspring.wildfly.backoffice.api.json.*;
-import jeevsspring.wildfly.backoffice.service.ServiceException;
 import jeevsspring.wildfly.backoffice.service.PlayerService;
-import jeevsspring.wildfly.poker.manager.api.json.Status;
-import jeevsspring.wildfly.poker.manager.bo.PlayerException;
+import jeevsspring.wildfly.backoffice.service.ServiceException;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
@@ -37,12 +35,11 @@ public class PlayerApi {
         logger.trace("wallet(" + in + ")");
         WalletOut out = new WalletOut();
         try {
-            playerService.wallet();
-            out.setBalance(bo.getBalance());
+            out = playerService.wallet(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
         } catch (ServiceException e) {
             logger.error(e);
             out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setErrorCode(e.getErrorCode());
         }
         logger.debug("wallet(" + in + ") return " + out);
         return out;
@@ -51,18 +48,16 @@ public class PlayerApi {
     @POST
     @Path("/account")
     public AccountOut account(AccountIn in) {
-        logger.trace("wallet(" + in + ")");
+        logger.trace("account(" + in + ")");
         AccountOut out = new AccountOut();
         try {
-            playerService.account();
-            out.setFirstName(bo.getFirstName());
-            out.setLastName(bo.getLastName());
+            out = playerService.account(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
         } catch (ServiceException e) {
             logger.error(e);
             out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setErrorCode(e.getErrorCode());
         }
-        logger.debug("login(" + in + ") return " + out);
+        logger.debug("account(" + in + ") return " + out);
         return out;
     }
 
@@ -72,28 +67,11 @@ public class PlayerApi {
         logger.trace("login(" + in + ")");
         LoginOut out = new LoginOut();
         try {
-            playerService.login();
-            
-            out.setSessionId(bo.getSessionId());
-            out.setSessionToken(bo.getSessionToken());
-            out.setNickname(bo.getNickname());
-            out.setSessionCreateTime(bo.getSessionCreateTime());
-            out.setSessionExpireTime(bo.getSessionCreateTime());
-
-            // Set Account
-            AccountOut account = new AccountOut();
-            account.setFirstName(bo.getFirstName());
-            account.setLastName(bo.getLastName());
-            out.setAccount(account);
-
-            // Set Wallet
-            WalletOut wallet = new WalletOut();
-            wallet.setBalance(bo.getBalance());
-            out.setWallet(wallet);
+            out = playerService.login(in.getUsername(), in.getPassword());
         } catch (ServiceException e) {
             logger.error(e);
             out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setErrorCode(e.getErrorCode());
         }
         logger.debug("login(" + in + ") return " + out);
         return out;
@@ -105,11 +83,11 @@ public class PlayerApi {
         logger.trace("logout(" + in + ")");
         LogoutOut out = new LogoutOut();
         try {
-            playerService.logout();
+            out = playerService.logout(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
         } catch (ServiceException e) {
             logger.error(e);
             out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setErrorCode(e.getErrorCode());
         }
         logger.debug("logout(" + in + ") return " + out);
         return out;
@@ -117,15 +95,15 @@ public class PlayerApi {
 
     @POST
     @Path("/stake")
-    public WalletOut stake(WalletIn in) {
+    public StakeOut stake(StakeIn in) {
         logger.trace("stake(" + in + ")");
-        WalletOut out = new WalletOut();
+        StakeOut out = new StakeOut();
         try {
-            out.setBalance(bo.getBalance());
+            out = playerService.stake(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
         } catch (ServiceException e) {
             logger.error(e);
             out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setErrorCode(e.getErrorCode());
         }
         logger.debug("stake(" + in + ") return " + out);
         return out;
@@ -133,15 +111,15 @@ public class PlayerApi {
 
     @POST
     @Path("/win")
-    public WalletOut win(WalletIn in) {
+    public WinOut win(WinIn in) {
         logger.trace("win(" + in + ")");
-        WalletOut out = new WalletOut();
+        WinOut out = new WinOut();
         try {
-            out.setBalance(bo.getBalance());
+            out = playerService.win(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
         } catch (ServiceException e) {
             logger.error(e);
             out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setErrorCode(e.getErrorCode());
         }
         logger.debug("win(" + in + ") return " + out);
         return out;
@@ -149,15 +127,15 @@ public class PlayerApi {
 
     @POST
     @Path("/refund")
-    public WalletOut refund(WalletIn in) {
+    public RefundOut refund(RefundIn in) {
         logger.trace("refund(" + in + ")");
-        WalletOut out = new WalletOut();
+        RefundOut out = new RefundOut();
         try {
-            out.setBalance(bo.getBalance());
+            out = playerService.refund(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
         } catch (ServiceException e) {
             logger.error(e);
             out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setErrorCode(e.getErrorCode());
         }
         logger.debug("refund(" + in + ") return " + out);
         return out;

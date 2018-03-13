@@ -3,7 +3,7 @@ package jeevsspring.wildfly.backoffice.api.json;
 /**
  * @author Marco Romagnolo
  */
-public class LogoutOut {
+public class LogoutOut extends Status {
 
     private String playerId;
 

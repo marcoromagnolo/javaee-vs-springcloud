@@ -1,25 +1,32 @@
 package jeevsspring.wildfly.backoffice.entity;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Marco Romagnolo
  */
 @Entity
 @Cacheable
-public class OperatorEntity {
+@Table(name="OPERATOR")
+public class OperatorEntity implements Serializable {
 
+    @Id
     private String id;
 
+    @Column("USERNAME")
     private String username;
 
+    @Column("PASSWORD")
     private String password;
 
+    @Column("FIRST_NAME")
     private String firstName;
 
+    @Column("LAST_NAME")
     private String lastName;
 
+    @Column("EMAIL")
     private String email;
 
     public String getId() {

@@ -1,29 +1,43 @@
 package jeevsspring.wildfly.backoffice.entity;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Marco Romagnolo
  */
 @Entity
 @Cacheable
-public class PlayerEntity {
+@Table(name="PLAYER")
+public class PlayerEntity implements Serializable {
 
-    private String playerId;
+    @Id
+    private String id;
 
+    @Column("NICKNAME")
     private String nickname;
 
+    @Column("USERNAME")
     private String username;
 
+    @Column("PASSWORD")
     private String password;
 
-    public String getPlayerId() {
-        return playerId;
+    @OneToOne(fetch=FetchType.LAZY, mappedBy = "player")
+    private AccountEntity account;
+
+    @OneToOne(fetch=FetchType.LAZY, mappedBy = "player")
+    private WalletEntity wallet;
+
+    @OneToOne(fetch=FetchType.LAZY, mappedBy = "player")
+    private SessionEntity session;
+
+    public String getId() {
+        return id;
     }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNickname() {
@@ -48,5 +62,29 @@ public class PlayerEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public AccountEntity getAccount() {
+        return account;
+    }
+
+    public void setAccount(AccountEntity account) {
+        this.account = account;
+    }
+
+    public WalletEntity getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(WalletEntity wallet) {
+        this.wallet = wallet;
+    }
+
+    public SessionEntity getSession() {
+        return session;
+    }
+
+    public void setSession(SessionEntity session) {
+        this.session = session;
     }
 }
