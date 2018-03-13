@@ -18,4 +18,8 @@ public class OperatorDAO {
     public OperatorEntity getByUsernameAndPassword(String username, String password) {
         return null;
     }
+
+    public void delete(String sessionId) {
+
+    }
 }

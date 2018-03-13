@@ -1,5 +1,6 @@
 package jeevsspring.wildfly.backoffice.dao;
 
+import jeevsspring.wildfly.backoffice.entity.OperatorSessionEntity;
 import jeevsspring.wildfly.backoffice.entity.SessionEntity;
 
 import javax.inject.Singleton;
@@ -10,12 +11,12 @@ import javax.persistence.PersistenceContext;
  * @author Marco Romagnolo
  */
 @Singleton
-public class SessionDAO {
+public class OperatorSessionDAO {
 
     @PersistenceContext
     EntityManager em;
 
-    public SessionEntity getByPlayerId(String playerId) {
+    public SessionEntity getByOperatorId(String operatorId) {
         return null;
     }
 
@@ -23,11 +24,7 @@ public class SessionDAO {
         return null;
     }
 
-    public void save(SessionEntity session) {
-
-    }
-
-    public void delete(String sessionId) {
+    public void save(OperatorSessionEntity session) {
 
     }
 }

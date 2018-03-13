@@ -8,15 +8,15 @@ import java.io.Serializable;
  */
 @Entity
 @Cacheable
-@Table(name="SESSION")
-public class SessionEntity implements Serializable {
+@Table(name="OPERATOR_SESSION")
+public class OperatorSessionEntity implements Serializable {
 
     @Id
     private String id;
 
     @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="PLAYER_ID")
-    private PlayerEntity player;
+    @JoinColumn(name="OPERATOR_ID")
+    private OperatorEntity operator;
 
     @Column("TOKEN")
     private String token;
@@ -35,12 +35,12 @@ public class SessionEntity implements Serializable {
         this.id = id;
     }
 
-    public PlayerEntity getPlayer() {
-        return player;
+    public OperatorEntity getOperator() {
+        return operator;
     }
 
-    public void setPlayer(PlayerEntity playerId) {
-        this.player = playerId;
+    public void setOperator(OperatorEntity playerId) {
+        this.operator = playerId;
     }
 
     public String getToken() {

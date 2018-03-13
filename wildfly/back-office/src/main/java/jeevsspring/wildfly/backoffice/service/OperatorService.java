@@ -1,16 +1,19 @@
 package jeevsspring.wildfly.backoffice.service;
 
-import jeevsspring.wildfly.backoffice.api.json.*;
+import jeevsspring.wildfly.backoffice.api.json.OperatorLoginOut;
+import jeevsspring.wildfly.backoffice.api.json.OperatorLogoutOut;
 import jeevsspring.wildfly.backoffice.dao.OperatorDAO;
+import jeevsspring.wildfly.backoffice.dao.OperatorSessionDAO;
 import jeevsspring.wildfly.backoffice.dao.SessionDAO;
 import jeevsspring.wildfly.backoffice.entity.OperatorEntity;
-import jeevsspring.wildfly.backoffice.entity.PlayerEntity;
+import jeevsspring.wildfly.backoffice.entity.OperatorSessionEntity;
 import jeevsspring.wildfly.backoffice.entity.SessionEntity;
-import jeevsspring.wildfly.backoffice.entity.WalletEntity;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.PersistenceException;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author Marco Romagnolo
@@ -22,24 +25,33 @@ public class OperatorService {
     private OperatorDAO operatorDAO;
 
     @Inject
-    private SessionDAO sessionDAO;
+    private OperatorSessionDAO sessionDAO;
 
     public OperatorLoginOut login(String username, String password) throws ServiceException {
         try {
-            OperatorEntity entity = operatorDAO.getByUsernameAndPassword(username, password);
-            OperatorLoginOut out = new OperatorLoginOut();
+            OperatorEntity operator = operatorDAO.getByUsernameAndPassword(username, password);
 
-            out.setOperatorId(entity.getId());
-            out.setUsername(entity.getUsername());
-            // Only for refresh session
-//            out.setSessionId(entity.getSessionId());
-//            out.setSessionToken(entity.getSessionToken());
-//            out.setSessionCreateTime(entity.getSessionCreateTime());
-//            out.setSessionExpireTime(entity.getSessionCreateTime());
+            OperatorSessionEntity session = new OperatorSessionEntity();
+            session.setId(UUID.randomUUID().toString());
+            session.setToken(UUID.randomUUID().toString());
+            session.setOperator(operator);
+            long now = System.currentTimeMillis();
+            session.setCreateTime(now);
+            session.setExpireTime(now + 3600_000);
+            sessionDAO.save(session);
+
+            OperatorLoginOut out = new OperatorLoginOut();
+            out.setOperatorId(operator.getId());
+            out.setUsername(operator.getUsername());
+            out.setSessionId(session.getId());
+            out.setSessionToken(session.getToken());
+            out.setSessionCreateTime(session.getCreateTime());
+            out.setSessionExpireTime(session.getCreateTime());
 
             // Set Account
-            out.setFirstName(entity.getFirstName());
-            out.setLastName(entity.getLastName());
+            out.setFirstName(operator.getFirstName());
+            out.setLastName(operator.getLastName());
+            out.setEmail(operator.getEmail());
 
             return out;
         } catch (PersistenceException e) {
@@ -50,7 +62,10 @@ public class OperatorService {
     public OperatorLogoutOut logout(String operatorId, String sessionId, String sessionToken) throws ServiceException {
         sessionCheck(operatorId, sessionId, sessionToken);
         try {
+            operatorDAO.delete(sessionId);
             OperatorLogoutOut out = new OperatorLogoutOut();
+            out.setOperatorId(operatorId);
+            out.setMessage("Logged Out");
             return out;
         } catch (PersistenceException e) {
             throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);

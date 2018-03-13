@@ -14,6 +14,9 @@ public class OperatorEntity implements Serializable {
     @Id
     private String id;
 
+    @OneToOne(fetch=FetchType.LAZY, mappedBy = "operator")
+    private OperatorSessionEntity session;
+
     @Column("USERNAME")
     private String username;
 
@@ -35,6 +38,14 @@ public class OperatorEntity implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public OperatorSessionEntity getSession() {
+        return session;
+    }
+
+    public void setSession(OperatorSessionEntity session) {
+        this.session = session;
     }
 
     public String getUsername() {

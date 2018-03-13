@@ -18,4 +18,5 @@ public class PlayerDAO {
     public PlayerEntity getByUsernameAndPassword(String username, String password) {
         return null;
     }
+
 }
