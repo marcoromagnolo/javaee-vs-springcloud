@@ -15,16 +15,16 @@ public class OperatorSessionEntity implements Serializable {
     private String id;
 
     @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="OPERATOR_ID")
+    @JoinColumn(name="operator_id")
     private OperatorEntity operator;
 
-    @Column("TOKEN")
+    @Column(name = "token")
     private String token;
 
-    @Column("CREATE_TIME")
+    @Column(name = "create_time")
     private long createTime;
 
-    @Column("EXPIRE_TIME")
+    @Column(name = "expire_time")
     private long expireTime;
 
     public String getId() {

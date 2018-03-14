@@ -10,10 +10,10 @@
 jms-queue add --queue-address= jms.queue.PokerLobbyQueue --entries=java:/jms/queue/pokerLobbyQueue
 
 # Add PostgreSQL Module
-module add --name=org.postgresql --resources=/home/wildfly/Downloads/mysql-connector-java-5.1.26-bin.jar --dependencies=javax.api,javax.transaction.api
+module add --name=org.postgresql --resources=postgresql-42.2.1.jar --dependencies=javax.api,javax.transaction.api
 
 # Add PostgreSQL Driver
 /subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql)
 
 # Add Datasource
-data-source add --jndi-name=java:/datasources/pokerboDS --name=PockerBoPool --connection-url=jdbc:mysql://localhost:3306/pokerbo --driver-name=postgresql --user-name=pokerbo --password=pokerbo
+data-source add --jndi-name=java:/datasources/pokerboDS --name=pokerboDS --connection-url=jdbc:postgresql://localhost:5432/pokerbo --driver-name=postgresql --user-name=pokerbo --password=pokerbo

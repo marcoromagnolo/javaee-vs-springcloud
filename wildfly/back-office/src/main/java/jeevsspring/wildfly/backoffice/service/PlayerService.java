@@ -5,17 +5,23 @@ import jeevsspring.wildfly.backoffice.dao.AccountDAO;
 import jeevsspring.wildfly.backoffice.dao.PlayerDAO;
 import jeevsspring.wildfly.backoffice.dao.SessionDAO;
 import jeevsspring.wildfly.backoffice.dao.WalletDAO;
-import jeevsspring.wildfly.backoffice.entity.*;
+import jeevsspring.wildfly.backoffice.entity.AccountEntity;
+import jeevsspring.wildfly.backoffice.entity.PlayerEntity;
+import jeevsspring.wildfly.backoffice.entity.SessionEntity;
+import jeevsspring.wildfly.backoffice.entity.WalletEntity;
+import jeevsspring.wildfly.backoffice.util.BOConfig;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.persistence.PersistenceException;
+import javax.transaction.Transactional;
 import java.util.UUID;
 
 /**
  * @author Marco Romagnolo
  */
-@Singleton
+@ApplicationScoped
+@Transactional
 public class PlayerService {
 
     @Inject
@@ -30,6 +36,9 @@ public class PlayerService {
     @Inject
     private SessionDAO sessionDAO;
 
+    @Inject
+    private BOConfig config;
+
     public LoginOut login(String username, String password) throws ServiceException {
         try {
             PlayerEntity player = playerDAO.getByUsernameAndPassword(username, password);
@@ -40,7 +49,8 @@ public class PlayerService {
             session.setPlayer(player);
             long now = System.currentTimeMillis();
             session.setCreateTime(now);
-            session.setExpireTime(now + 3600_000);
+            int duration = config.getPlayerSessionDuration() * 1000;
+            session.setExpireTime(now + duration);
             sessionDAO.save(session);
             LoginOut out = new LoginOut();
 
@@ -59,7 +69,7 @@ public class PlayerService {
             out.setBalance(player.getWallet().getBalance());
             return out;
         } catch (PersistenceException e) {
-            throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 
@@ -72,7 +82,7 @@ public class PlayerService {
             out.setMessage("Logged Out");
             return out;
         } catch (PersistenceException e) {
-            throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 
@@ -85,7 +95,7 @@ public class PlayerService {
             out.setLastName(entity.getLastName());
             return out;
         } catch (PersistenceException e) {
-            throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 
@@ -98,52 +108,68 @@ public class PlayerService {
             out.setBalance(entity.getBalance());
             return out;
         } catch (PersistenceException e) {
-            throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 
     public StakeOut stake(String playerId, String sessionId, String sessionToken, long amount) throws ServiceException {
         sessionCheck(playerId, sessionId, sessionToken);
         try {
-            WalletEntity entity = walletDAO.sub(playerId, amount);
+            WalletEntity wallet = walletDAO.getByPlayerId(playerId);
+            long balance = wallet.getBalance() - amount;
+            if (amount <= 0) throw new ServiceException(ErrorType.INVALID_AMOUNT);
+            if (balance < 0) throw new ServiceException(ErrorType.INSUFFICIENT_FUNDS);
+            wallet.setBalance(balance);
+            walletDAO.save(wallet);
+
             StakeOut out = new StakeOut();
             out.setPlayerId(playerId);
-            out.setNickname(entity.getPlayer().getNickname());
-            out.setBalance(entity.getBalance());
+            out.setNickname(wallet.getPlayer().getNickname());
+            out.setBalance(wallet.getBalance());
             out.setAmount(amount);
             return out;
         } catch (PersistenceException e) {
-            throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 
     public WinOut win(String playerId, String sessionId, String sessionToken, long amount) throws ServiceException {
         sessionCheck(playerId, sessionId, sessionToken);
         try {
-            WalletEntity entity = walletDAO.add(playerId, amount);
+            WalletEntity wallet = walletDAO.getByPlayerId(playerId);
+            long balance = wallet.getBalance() + amount;
+            if (amount <= 0) throw new ServiceException(ErrorType.INVALID_AMOUNT);
+            wallet.setBalance(balance);
+            walletDAO.save(wallet);
+
             WinOut out = new WinOut();
             out.setPlayerId(playerId);
-            out.setNickname(entity.getPlayer().getNickname());
-            out.setBalance(entity.getBalance());
+            out.setNickname(wallet.getPlayer().getNickname());
+            out.setBalance(wallet.getBalance());
             out.setAmount(amount);
             return out;
         } catch (PersistenceException e) {
-            throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 
     public RefundOut refund(String playerId, String sessionId, String sessionToken, long amount) throws ServiceException {
         sessionCheck(playerId, sessionId, sessionToken);
         try {
-            WalletEntity entity = walletDAO.add(playerId, amount);
+            WalletEntity wallet = walletDAO.getByPlayerId(playerId);
+            long balance = wallet.getBalance() + amount;
+            if (amount <= 0) throw new ServiceException(ErrorType.INVALID_AMOUNT);
+            wallet.setBalance(balance);
+            walletDAO.save(wallet);
+
             RefundOut out = new RefundOut();
             out.setPlayerId(playerId);
-            out.setNickname(entity.getPlayer().getNickname());
-            out.setBalance(entity.getBalance());
+            out.setNickname(wallet.getPlayer().getNickname());
+            out.setBalance(wallet.getBalance());
             out.setAmount(amount);
             return out;
         } catch (PersistenceException e) {
-            throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 
@@ -151,7 +177,7 @@ public class PlayerService {
         try {
             SessionEntity entity = sessionDAO.getByIdAndToken(sessionId, sessionToken);
         } catch (PersistenceException e) {
-            throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 }

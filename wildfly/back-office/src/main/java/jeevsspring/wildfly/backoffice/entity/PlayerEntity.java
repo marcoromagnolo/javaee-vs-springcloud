@@ -14,13 +14,13 @@ public class PlayerEntity implements Serializable {
     @Id
     private String id;
 
-    @Column("NICKNAME")
+    @Column(name = "nickname")
     private String nickname;
 
-    @Column("USERNAME")
+    @Column(name = "username")
     private String username;
 
-    @Column("PASSWORD")
+    @Column(name = "password")
     private String password;
 
     @OneToOne(fetch=FetchType.LAZY, mappedBy = "player")
@@ -29,7 +29,7 @@ public class PlayerEntity implements Serializable {
     @OneToOne(fetch=FetchType.LAZY, mappedBy = "player")
     private WalletEntity wallet;
 
-    @OneToOne(fetch=FetchType.LAZY, mappedBy = "player")
+    @OneToOne(fetch=FetchType.LAZY, mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
     private SessionEntity session;
 
     public String getId() {

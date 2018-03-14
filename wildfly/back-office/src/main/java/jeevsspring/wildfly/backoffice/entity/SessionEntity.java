@@ -15,16 +15,16 @@ public class SessionEntity implements Serializable {
     private String id;
 
     @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="PLAYER_ID")
+    @JoinColumn(name="player_id")
     private PlayerEntity player;
 
-    @Column("TOKEN")
+    @Column(name = "token")
     private String token;
 
-    @Column("CREATE_TIME")
+    @Column(name = "create_time")
     private long createTime;
 
-    @Column("EXPIRE_TIME")
+    @Column(name = "expire_time")
     private long expireTime;
 
     public String getId() {

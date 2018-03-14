@@ -1,0 +1,3 @@
+<jboss-web>
+    <context-root>back-office</context-root>
+</jboss-web>

@@ -5,10 +5,12 @@ import jeevsspring.wildfly.backoffice.service.OperatorService;
 import jeevsspring.wildfly.backoffice.service.ServiceException;
 import org.jboss.logging.Logger;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+@RequestScoped
 @Path("/operator")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)

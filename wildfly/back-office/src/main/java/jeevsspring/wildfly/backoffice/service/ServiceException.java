@@ -7,8 +7,8 @@ public class ServiceException extends Exception {
 
     private String errorCode;
 
-    public ServiceException(String message, ErrorType errorCode) {
-        super(message);
+    public ServiceException(ErrorType errorCode) {
+        super(errorCode.getMessage());
         this.errorCode = errorCode.name();
     }
 

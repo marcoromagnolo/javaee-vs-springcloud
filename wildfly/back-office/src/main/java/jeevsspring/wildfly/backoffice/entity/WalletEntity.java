@@ -15,10 +15,10 @@ public class WalletEntity implements Serializable {
     private String id;
 
     @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="PLAYER_ID")
+    @JoinColumn(name="player_id")
     private PlayerEntity player;
 
-    @Column("BALANCE")
+    @Column(name = "balance")
     private long balance;
 
     public String getId() {

@@ -2,28 +2,28 @@ package jeevsspring.wildfly.backoffice.dao;
 
 import jeevsspring.wildfly.backoffice.entity.WalletEntity;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  * @author Marco Romagnolo
  */
-@Singleton
+@ApplicationScoped
 public class WalletDAO {
 
-    @PersistenceContext
-    EntityManager em;
+    @PersistenceContext(unitName = "primary")
+    private EntityManager em;
 
     public WalletEntity getByPlayerId(String playerId) {
-        return null;
+        Query query = em.createQuery("FROM WalletEntity WHERE player.id = :playerId");
+        query.setParameter("playerId", playerId);
+        return (WalletEntity) query.getSingleResult();
     }
 
-    public WalletEntity sub(String playerId, long amount) {
-        return null;
-    }
-
-    public WalletEntity add(String playerId, long amount) {
-        return null;
+    public void save(WalletEntity entity) {
+        em.persist(entity);
     }
 }

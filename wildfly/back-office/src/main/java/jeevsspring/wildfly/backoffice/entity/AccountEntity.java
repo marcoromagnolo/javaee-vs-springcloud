@@ -15,22 +15,22 @@ public class AccountEntity implements Serializable {
     private String id;
 
     @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="PLAYER_ID")
+    @JoinColumn(name="player_id")
     private PlayerEntity player;
 
-    @Column("FIRST_NAME")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column("LAST_NAME")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column("EMAIL")
+    @Column(name = "email")
     private String email;
 
-    @Column("AGE")
+    @Column(name = "age")
     private String age;
 
-    @Column("SEX")
+    @Column(name = "sex")
     private String sex;
 
     public String getId() {

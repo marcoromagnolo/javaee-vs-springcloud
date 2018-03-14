@@ -14,22 +14,22 @@ public class OperatorEntity implements Serializable {
     @Id
     private String id;
 
-    @OneToOne(fetch=FetchType.LAZY, mappedBy = "operator")
+    @OneToOne(fetch=FetchType.LAZY, mappedBy = "operator", cascade = CascadeType.ALL, orphanRemoval = true)
     private OperatorSessionEntity session;
 
-    @Column("USERNAME")
+    @Column(name = "username")
     private String username;
 
-    @Column("PASSWORD")
+    @Column(name = "password")
     private String password;
 
-    @Column("FIRST_NAME")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column("LAST_NAME")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column("EMAIL")
+    @Column(name = "email")
     private String email;
 
     public String getId() {

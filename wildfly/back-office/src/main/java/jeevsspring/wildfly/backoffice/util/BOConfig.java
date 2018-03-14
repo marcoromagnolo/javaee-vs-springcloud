@@ -3,6 +3,7 @@ package jeevsspring.wildfly.backoffice.util;
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +12,7 @@ import java.util.Properties;
 /**
  * @author Marco Romagnolo
  */
-@Singleton
+@ApplicationScoped
 public class BOConfig {
 
     // JBoss Logger
@@ -21,7 +22,9 @@ public class BOConfig {
 
     private final String fileName = "back-office.properties";
 
-    private String boSessionAuthUsername;
+    private int playerSessionDuration;
+
+    private int operatorSessionDuration;
 
     @PostConstruct
     public void init() {
@@ -40,11 +43,15 @@ public class BOConfig {
     }
 
     private void configure() {
-        boSessionAuthUsername = properties.getProperty("bo.session.auth.username");
+        playerSessionDuration = Integer.parseInt(properties.getProperty("player.session.duration", "3600"));
+        operatorSessionDuration = Integer.parseInt(properties.getProperty("operator.session.duration", "3600"));
     }
 
-    public String getBoSessionAuthUsername() {
-        return boSessionAuthUsername;
+    public int getPlayerSessionDuration() {
+        return playerSessionDuration;
     }
 
+    public int getOperatorSessionDuration() {
+        return operatorSessionDuration;
+    }
 }

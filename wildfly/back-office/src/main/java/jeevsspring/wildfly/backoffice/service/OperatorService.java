@@ -4,21 +4,21 @@ import jeevsspring.wildfly.backoffice.api.json.OperatorLoginOut;
 import jeevsspring.wildfly.backoffice.api.json.OperatorLogoutOut;
 import jeevsspring.wildfly.backoffice.dao.OperatorDAO;
 import jeevsspring.wildfly.backoffice.dao.OperatorSessionDAO;
-import jeevsspring.wildfly.backoffice.dao.SessionDAO;
 import jeevsspring.wildfly.backoffice.entity.OperatorEntity;
 import jeevsspring.wildfly.backoffice.entity.OperatorSessionEntity;
-import jeevsspring.wildfly.backoffice.entity.SessionEntity;
+import jeevsspring.wildfly.backoffice.util.BOConfig;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.persistence.PersistenceException;
-import java.util.Date;
+import javax.transaction.Transactional;
 import java.util.UUID;
 
 /**
  * @author Marco Romagnolo
  */
-@Singleton
+@ApplicationScoped
+@Transactional
 public class OperatorService {
 
     @Inject
@@ -26,6 +26,9 @@ public class OperatorService {
 
     @Inject
     private OperatorSessionDAO sessionDAO;
+
+    @Inject
+    private BOConfig config;
 
     public OperatorLoginOut login(String username, String password) throws ServiceException {
         try {
@@ -37,7 +40,8 @@ public class OperatorService {
             session.setOperator(operator);
             long now = System.currentTimeMillis();
             session.setCreateTime(now);
-            session.setExpireTime(now + 3600_000);
+            int duration = config.getPlayerSessionDuration() * 1000;
+            session.setExpireTime(now + duration);
             sessionDAO.save(session);
 
             OperatorLoginOut out = new OperatorLoginOut();
@@ -55,28 +59,31 @@ public class OperatorService {
 
             return out;
         } catch (PersistenceException e) {
-            throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 
     public OperatorLogoutOut logout(String operatorId, String sessionId, String sessionToken) throws ServiceException {
         sessionCheck(operatorId, sessionId, sessionToken);
         try {
-            operatorDAO.delete(sessionId);
+            sessionDAO.delete(sessionId);
             OperatorLogoutOut out = new OperatorLogoutOut();
             out.setOperatorId(operatorId);
             out.setMessage("Logged Out");
             return out;
         } catch (PersistenceException e) {
-            throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 
-    private void sessionCheck(String playerId, String sessionId, String sessionToken) throws ServiceException {
+    private void sessionCheck(String operatorId, String sessionId, String sessionToken) throws ServiceException {
         try {
-            SessionEntity entity = sessionDAO.getByIdAndToken(sessionId, sessionToken);
+            OperatorSessionEntity entity = sessionDAO.getByIdAndToken(sessionId, sessionToken);
+            if (!entity.getOperator().getId().equals(operatorId)) {
+                throw new ServiceException(ErrorType.AUTH_ERROR);
+            }
         } catch (PersistenceException e) {
-            throw new ServiceException("Database Error", ErrorType.DATABASE_ERROR);
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 
