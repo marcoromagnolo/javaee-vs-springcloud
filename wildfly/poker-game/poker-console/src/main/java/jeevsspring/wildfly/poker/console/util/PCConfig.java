@@ -1,10 +1,9 @@
-package jeevsspring.wildfly.backoffice.util;
+package jeevsspring.wildfly.poker.console.util;
 
 import org.jboss.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -13,18 +12,16 @@ import java.util.Properties;
  * @author Marco Romagnolo
  */
 @ApplicationScoped
-public class BOConfig {
+public class PCConfig {
 
     // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());
 
     private Properties properties;
 
-    private final String fileName = "back-office.properties";
+    private final String fileName = "poker-console.properties";
 
-    private int playerSessionDuration;
-
-    private int operatorSessionDuration;
+    private String boTargetUrl;
 
     @PostConstruct
     public void init() {
@@ -43,15 +40,10 @@ public class BOConfig {
     }
 
     private void configure() {
-        playerSessionDuration = Integer.parseInt(properties.getProperty("player.session.duration", "3600"));
-        operatorSessionDuration = Integer.parseInt(properties.getProperty("operator.session.duration", "3600"));
+        boTargetUrl = properties.getProperty("bo.target.url", "http://localhost:8080/back-office/api");
     }
 
-    public int getPlayerSessionDuration() {
-        return playerSessionDuration;
-    }
-
-    public int getOperatorSessionDuration() {
-        return operatorSessionDuration;
+    public String getBoTargetUrl() {
+        return boTargetUrl;
     }
 }

@@ -15,6 +15,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 /**
@@ -39,9 +41,18 @@ public class PlayerService {
     @Inject
     private BOConfig config;
 
+    /**
+     * Player Login Service
+     * @param username
+     * @param password
+     * @return
+     * @throws ServiceException
+     */
     public LoginOut login(String username, String password) throws ServiceException {
         try {
-            PlayerEntity player = playerDAO.getByUsernameAndPassword(username, password);
+            // MD5 Hash of Password
+            String hash = MessageDigest.getInstance("MD5").toString();
+            PlayerEntity player = playerDAO.getByUsernameAndPassword(username, hash);
 
             SessionEntity session = new SessionEntity();
             session.setId(UUID.randomUUID().toString());
@@ -51,10 +62,10 @@ public class PlayerService {
             session.setCreateTime(now);
             int duration = config.getPlayerSessionDuration() * 1000;
             session.setExpireTime(now + duration);
-            sessionDAO.save(session);
+            sessionDAO.insert(session);
             LoginOut out = new LoginOut();
 
-            out.setPlayerId(player.getId());
+            out.setPlayerId(player.getId().toString());
             out.setNickname(player.getNickname());
             out.setSessionId(session.getId());
             out.setSessionToken(session.getToken());
@@ -70,9 +81,19 @@ public class PlayerService {
             return out;
         } catch (PersistenceException e) {
             throw new ServiceException(ErrorType.DATABASE_ERROR);
+        } catch (NoSuchAlgorithmException e) {
+            throw new ServiceException(ErrorType.PASSWORD_ENCRYPTION_ERROR);
         }
     }
 
+    /**
+     * Player Logout Service
+     * @param playerId
+     * @param sessionId
+     * @param sessionToken
+     * @return
+     * @throws ServiceException
+     */
     public LogoutOut logout(String playerId, String sessionId, String sessionToken) throws ServiceException {
         sessionCheck(playerId, sessionId, sessionToken);
         try {
@@ -86,6 +107,14 @@ public class PlayerService {
         }
     }
 
+    /**
+     * Player Account Service
+     * @param playerId
+     * @param sessionId
+     * @param sessionToken
+     * @return
+     * @throws ServiceException
+     */
     public AccountOut account(String playerId, String sessionId, String sessionToken) throws ServiceException {
         sessionCheck(playerId, sessionId, sessionToken);
         try {
@@ -99,19 +128,44 @@ public class PlayerService {
         }
     }
 
+    /**
+     * Player Wallet Service
+     * @param playerId
+     * @param sessionId
+     * @param sessionToken
+     * @return
+     * @throws ServiceException
+     */
     public WalletOut wallet(String playerId, String sessionId, String sessionToken) throws ServiceException {
         sessionCheck(playerId, sessionId, sessionToken);
         try {
-            WalletEntity entity = walletDAO.getByPlayerId(playerId);
+            PlayerEntity player = playerDAO.get(playerId);
+
+            // Create a wallet if not exists
+            if (player.getWallet() == null) {
+                WalletEntity wallet = new WalletEntity();
+                wallet.setBalance(0);
+                wallet.setPlayer(player);
+                player.setWallet(wallet);
+            }
             WalletOut out = new WalletOut();
             out.setPlayerId(playerId);
-            out.setBalance(entity.getBalance());
+            out.setBalance(player.getWallet().getBalance());
             return out;
         } catch (PersistenceException e) {
             throw new ServiceException(ErrorType.DATABASE_ERROR);
         }
     }
 
+    /**
+     * Player Wallet Stake Service
+     * @param playerId
+     * @param sessionId
+     * @param sessionToken
+     * @param amount
+     * @return
+     * @throws ServiceException
+     */
     public StakeOut stake(String playerId, String sessionId, String sessionToken, long amount) throws ServiceException {
         sessionCheck(playerId, sessionId, sessionToken);
         try {
@@ -120,7 +174,7 @@ public class PlayerService {
             if (amount <= 0) throw new ServiceException(ErrorType.INVALID_AMOUNT);
             if (balance < 0) throw new ServiceException(ErrorType.INSUFFICIENT_FUNDS);
             wallet.setBalance(balance);
-            walletDAO.save(wallet);
+            walletDAO.insert(wallet);
 
             StakeOut out = new StakeOut();
             out.setPlayerId(playerId);
@@ -133,6 +187,15 @@ public class PlayerService {
         }
     }
 
+    /**
+     * Player Wallet Win Service
+     * @param playerId
+     * @param sessionId
+     * @param sessionToken
+     * @param amount
+     * @return
+     * @throws ServiceException
+     */
     public WinOut win(String playerId, String sessionId, String sessionToken, long amount) throws ServiceException {
         sessionCheck(playerId, sessionId, sessionToken);
         try {
@@ -140,7 +203,7 @@ public class PlayerService {
             long balance = wallet.getBalance() + amount;
             if (amount <= 0) throw new ServiceException(ErrorType.INVALID_AMOUNT);
             wallet.setBalance(balance);
-            walletDAO.save(wallet);
+            walletDAO.insert(wallet);
 
             WinOut out = new WinOut();
             out.setPlayerId(playerId);
@@ -153,6 +216,15 @@ public class PlayerService {
         }
     }
 
+    /**
+     * Player Wallet Refund Service
+     * @param playerId
+     * @param sessionId
+     * @param sessionToken
+     * @param amount
+     * @return
+     * @throws ServiceException
+     */
     public RefundOut refund(String playerId, String sessionId, String sessionToken, long amount) throws ServiceException {
         sessionCheck(playerId, sessionId, sessionToken);
         try {
@@ -160,7 +232,7 @@ public class PlayerService {
             long balance = wallet.getBalance() + amount;
             if (amount <= 0) throw new ServiceException(ErrorType.INVALID_AMOUNT);
             wallet.setBalance(balance);
-            walletDAO.save(wallet);
+            walletDAO.insert(wallet);
 
             RefundOut out = new RefundOut();
             out.setPlayerId(playerId);
@@ -173,9 +245,39 @@ public class PlayerService {
         }
     }
 
+    /**
+     * Player Session Check
+     * @param playerId
+     * @param sessionId
+     * @param sessionToken
+     * @throws ServiceException
+     */
     private void sessionCheck(String playerId, String sessionId, String sessionToken) throws ServiceException {
         try {
+            SessionEntity session = sessionDAO.getByIdAndToken(sessionId, sessionToken);
+        } catch (PersistenceException e) {
+            throw new ServiceException(ErrorType.DATABASE_ERROR);
+        }
+    }
+
+    public SessionRefreshOut sessionRefresh(String playerId, String sessionId, String sessionToken) throws ServiceException {
+        try {
             SessionEntity entity = sessionDAO.getByIdAndToken(sessionId, sessionToken);
+            entity.setId(UUID.randomUUID().toString());
+            entity.setToken(UUID.randomUUID().toString());
+            long now = System.currentTimeMillis();
+            entity.setCreateTime(now);
+            int duration = config.getPlayerSessionDuration() * 1000;
+            entity.setExpireTime(now + duration);
+
+            SessionRefreshOut out = new SessionRefreshOut();
+            out.setPlayerId(playerId);
+            out.setSessionId(entity.getId());
+            out.setSessionToken(entity.getToken());
+            out.setSessionCreateTime(entity.getCreateTime());
+            out.setSessionExpireTime(entity.getExpireTime());
+
+            return out;
         } catch (PersistenceException e) {
             throw new ServiceException(ErrorType.DATABASE_ERROR);
         }

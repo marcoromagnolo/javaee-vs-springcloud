@@ -1,11 +1,11 @@
 package jeevsspring.wildfly.poker.manager.game;
 
 import jeevsspring.wildfly.poker.manager.bo.BOException;
-import jeevsspring.wildfly.poker.manager.bo.BoClient;
+import jeevsspring.wildfly.poker.manager.bo.BOClient;
 import jeevsspring.wildfly.poker.manager.bo.json.BOLoginIn;
 import jeevsspring.wildfly.poker.manager.bo.json.BOLoginOut;
-import jeevsspring.wildfly.poker.manager.bo.json.BOVerifyIn;
-import jeevsspring.wildfly.poker.manager.bo.json.BOVerifyOut;
+import jeevsspring.wildfly.poker.manager.bo.json.BOSessionRefreshIn;
+import jeevsspring.wildfly.poker.manager.bo.json.BOSessionRefreshOut;
 import jeevsspring.wildfly.poker.manager.util.PMConfig;
 import org.jboss.logging.Logger;
 
@@ -26,7 +26,7 @@ public class SystemSessionManager {
     TimerService timerService;
 
     @EJB
-    private BoClient boClient;
+    private BOClient boClient;
 
     @EJB
     private PMConfig config;
@@ -67,11 +67,11 @@ public class SystemSessionManager {
                 logger.debug("System Login Error");
             }
         } else {
-            BOVerifyIn in = new BOVerifyIn();
+            BOSessionRefreshIn in = new BOSessionRefreshIn();
             in.setSessionId(sessionId);
             in.setSessionToken(sessionToken);
             try {
-                BOVerifyOut bo = boClient.refreshAuth(in);
+                BOSessionRefreshOut bo = boClient.sessionRefresh(in);
                 sessionId = bo.getSessionId();
                 sessionToken = bo.getSessionToken();
                 sessionCreateTime = bo.getSessionCreateTime();

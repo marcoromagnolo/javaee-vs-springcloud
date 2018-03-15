@@ -25,7 +25,7 @@ public class SessionDAO {
         return (SessionEntity) query.getSingleResult();
     }
 
-    public void save(SessionEntity session) {
+    public void insert(SessionEntity session) {
         em.persist(session);
     }
 

@@ -35,10 +35,12 @@ public class PMConfig {
 
     private long gameActionUpdateInterval;
 
+    private String boTargetUrl;
+
     @PostConstruct
     public void init() {
 
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("poker-manager.properties");
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
         properties = new Properties();
         System.out.println("Loading config file: " + fileName);
         // Loading the properties
@@ -56,6 +58,7 @@ public class PMConfig {
         lobbyTableUpdateInterval = Long.parseLong(properties.getProperty("lobby.table.update.interval", "10000"));
         gameActionUpdateInterval = Long.parseLong(properties.getProperty("game.action.update.interval", "10000"));
         boSessionUpdateInterval = Long.parseLong(properties.getProperty("bo.session.update.interval", "10000"));
+        boTargetUrl = properties.getProperty("bo.target.url", "http://localhost:8080/back-office/api");
         boSessionAuthUsername = properties.getProperty("bo.session.auth.username");
         boSessionAuthPassword = properties.getProperty("bo.session.auth.password");
     }
@@ -82,5 +85,9 @@ public class PMConfig {
 
     public long getGameActionUpdateInterval() {
         return gameActionUpdateInterval;
+    }
+
+    public String getBoTargetUrl() {
+        return boTargetUrl;
     }
 }

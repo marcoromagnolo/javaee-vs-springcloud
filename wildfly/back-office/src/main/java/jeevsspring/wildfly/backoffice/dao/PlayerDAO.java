@@ -3,7 +3,6 @@ package jeevsspring.wildfly.backoffice.dao;
 import jeevsspring.wildfly.backoffice.entity.PlayerEntity;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -24,4 +23,11 @@ public class PlayerDAO {
         return (PlayerEntity) query.getSingleResult();
     }
 
+    public PlayerEntity get(String id) {
+        return em.find(PlayerEntity.class, id);
+    }
+
+    public void insert(PlayerEntity player) {
+        em.persist(player);
+    }
 }

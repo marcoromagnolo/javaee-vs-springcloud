@@ -1,4 +1,4 @@
-package jeevsspring.wildfly.poker.manager.bo;
+package jeevsspring.wildfly.poker.console.bo;
 
 public class BOException extends Exception {
 

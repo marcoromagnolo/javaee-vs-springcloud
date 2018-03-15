@@ -7,9 +7,10 @@ import java.io.Serializable;
  */
 public class OperatorSession implements Serializable {
 
-    private Integer id;
+    private String id;
     private String username;
-    private String role;
+    private String sessionId;
+    private String sessionToken;
 
     public String getUsername() {
         return username;
@@ -19,28 +20,37 @@ public class OperatorSession implements Serializable {
         this.username = username;
     }
 
-    public String getRole() {
-        return role;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
-    public Integer getId() {
+    public String getSessionToken() {
+        return sessionToken;
+    }
+
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     @Override
     public String toString() {
         return "OperatorSession{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", username='" + username + '\'' +
-                ", role='" + role + '\'' +
+                ", sessionId='" + sessionId + '\'' +
+                ", sessionToken='" + sessionToken + '\'' +
                 '}';
     }
 }

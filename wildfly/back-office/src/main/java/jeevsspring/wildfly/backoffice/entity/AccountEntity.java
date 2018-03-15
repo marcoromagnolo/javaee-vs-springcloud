@@ -12,7 +12,8 @@ import java.io.Serializable;
 public class AccountEntity implements Serializable {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
 
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="player_id")
@@ -33,11 +34,11 @@ public class AccountEntity implements Serializable {
     @Column(name = "sex")
     private String sex;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

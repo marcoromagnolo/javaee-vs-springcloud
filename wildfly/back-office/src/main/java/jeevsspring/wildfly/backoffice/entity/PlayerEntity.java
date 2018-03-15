@@ -12,7 +12,8 @@ import java.io.Serializable;
 public class PlayerEntity implements Serializable {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "nickname")
     private String nickname;
@@ -32,11 +33,11 @@ public class PlayerEntity implements Serializable {
     @OneToOne(fetch=FetchType.LAZY, mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
     private SessionEntity session;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

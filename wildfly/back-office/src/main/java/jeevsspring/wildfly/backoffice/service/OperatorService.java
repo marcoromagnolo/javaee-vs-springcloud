@@ -30,10 +30,18 @@ public class OperatorService {
     @Inject
     private BOConfig config;
 
-    public OperatorLoginOut login(String username, String password) throws ServiceException {
+    /**
+     * Operator Login Service
+     * @param username
+     * @param password
+     * @return
+     * @throws ServiceException
+     */
+    public OperatorLoginOut login(String username, String password) throws ServiceException, AuthenticationException {
         try {
             OperatorEntity operator = operatorDAO.getByUsernameAndPassword(username, password);
 
+            if (operator == null) throw new AuthenticationException();
             OperatorSessionEntity session = new OperatorSessionEntity();
             session.setId(UUID.randomUUID().toString());
             session.setToken(UUID.randomUUID().toString());
@@ -42,10 +50,10 @@ public class OperatorService {
             session.setCreateTime(now);
             int duration = config.getPlayerSessionDuration() * 1000;
             session.setExpireTime(now + duration);
-            sessionDAO.save(session);
+            sessionDAO.insert(session);
 
             OperatorLoginOut out = new OperatorLoginOut();
-            out.setOperatorId(operator.getId());
+            out.setOperatorId(operator.getId().toString());
             out.setUsername(operator.getUsername());
             out.setSessionId(session.getId());
             out.setSessionToken(session.getToken());
@@ -63,6 +71,14 @@ public class OperatorService {
         }
     }
 
+    /**
+     * Operator Logout Service
+     * @param operatorId
+     * @param sessionId
+     * @param sessionToken
+     * @return
+     * @throws ServiceException
+     */
     public OperatorLogoutOut logout(String operatorId, String sessionId, String sessionToken) throws ServiceException {
         sessionCheck(operatorId, sessionId, sessionToken);
         try {
@@ -76,6 +92,13 @@ public class OperatorService {
         }
     }
 
+    /**
+     * Operator Session Check
+     * @param operatorId
+     * @param sessionId
+     * @param sessionToken
+     * @throws ServiceException
+     */
     private void sessionCheck(String operatorId, String sessionId, String sessionToken) throws ServiceException {
         try {
             OperatorSessionEntity entity = sessionDAO.getByIdAndToken(sessionId, sessionToken);

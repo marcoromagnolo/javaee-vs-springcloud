@@ -9,7 +9,7 @@ import javax.ws.rs.core.Application;
 import java.util.HashSet;
 import java.util.Set;
 
-public class PokerManager extends Application {
+public class PMRestActivator extends Application {
 
     // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());

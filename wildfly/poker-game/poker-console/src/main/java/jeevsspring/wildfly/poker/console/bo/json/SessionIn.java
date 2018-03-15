@@ -1,4 +1,4 @@
-package jeevsspring.wildfly.backoffice.api.json;
+package jeevsspring.wildfly.poker.console.bo.json;
 
 /**
  * @author Marco Romagnolo

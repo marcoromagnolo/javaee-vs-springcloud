@@ -8,7 +8,7 @@ import javax.ws.rs.core.Application;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BackOfficeApi extends Application {
+public class BORestActivator extends Application {
 
     // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass());

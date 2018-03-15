@@ -23,7 +23,7 @@ public class WalletDAO {
         return (WalletEntity) query.getSingleResult();
     }
 
-    public void save(WalletEntity entity) {
+    public void insert(WalletEntity entity) {
         em.persist(entity);
     }
 }

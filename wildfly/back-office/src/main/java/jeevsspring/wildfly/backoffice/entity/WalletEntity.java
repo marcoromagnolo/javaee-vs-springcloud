@@ -12,7 +12,8 @@ import java.io.Serializable;
 public class WalletEntity implements Serializable {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
 
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="player_id")
@@ -21,11 +22,11 @@ public class WalletEntity implements Serializable {
     @Column(name = "balance")
     private long balance;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

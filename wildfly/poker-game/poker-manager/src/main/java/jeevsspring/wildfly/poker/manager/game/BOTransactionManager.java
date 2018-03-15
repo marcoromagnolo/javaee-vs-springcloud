@@ -1,7 +1,7 @@
 package jeevsspring.wildfly.poker.manager.game;
 
 import jeevsspring.wildfly.poker.manager.bo.BOException;
-import jeevsspring.wildfly.poker.manager.bo.BoClient;
+import jeevsspring.wildfly.poker.manager.bo.BOClient;
 import jeevsspring.wildfly.poker.manager.bo.json.*;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.engine.GameAction;
@@ -28,7 +28,7 @@ public class BOTransactionManager<E extends GameAction> {
     TimerService timerService;
 
     @EJB
-    private BoClient boClient;
+    private BOClient boClient;
 
     @EJB
     private GameActions<E> gameActions;
@@ -48,6 +48,7 @@ public class BOTransactionManager<E extends GameAction> {
         timerService.createTimer(0, time, "Every " + time + " milliseconds");
     }
 
+    @Lock(value = LockType.READ)
     @Timeout
     public void process(Timer timer) {
         logger.trace("process() timer info: " + timer.getInfo().toString());
@@ -66,16 +67,18 @@ public class BOTransactionManager<E extends GameAction> {
     }
 
     private void reward(Map<String, Long> rewards) {
-        for (Map.Entry<String, Long> reward : rewards.entrySet()) {
-            BOWinIn in = new BOWinIn();
-            in.setPlayerId(reward.getKey());
-            in.setAmount(reward.getValue());
-            in.setSessionId(systemSession.getSessionId());
-            in.setSessionToken(systemSession.getSessionToken());
-            try {
-                boClient.win(in);
-            } catch (BOException e) {
-                logger.error(e);
+        if (rewards != null) {
+            for (Map.Entry<String, Long> reward : rewards.entrySet()) {
+                BOWinIn in = new BOWinIn();
+                in.setPlayerId(reward.getKey());
+                in.setAmount(reward.getValue());
+                in.setSessionId(systemSession.getSessionId());
+                in.setSessionToken(systemSession.getSessionToken());
+                try {
+                    boClient.win(in);
+                } catch (BOException e) {
+                    logger.error(e);
+                }
             }
         }
     }

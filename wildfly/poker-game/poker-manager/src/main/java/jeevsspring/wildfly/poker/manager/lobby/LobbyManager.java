@@ -1,7 +1,7 @@
 package jeevsspring.wildfly.poker.manager.lobby;
 
 import jeevsspring.wildfly.poker.common.TableSettings;
-import jeevsspring.wildfly.poker.manager.bo.BoClient;
+import jeevsspring.wildfly.poker.manager.bo.BOClient;
 import jeevsspring.wildfly.poker.manager.game.GameException;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.Games;
@@ -25,7 +25,7 @@ public class LobbyManager {
     TimerService timerService;
 
     @EJB
-    private BoClient boClient;
+    private BOClient boClient;
 
     @EJB
     private Games<Game> games;

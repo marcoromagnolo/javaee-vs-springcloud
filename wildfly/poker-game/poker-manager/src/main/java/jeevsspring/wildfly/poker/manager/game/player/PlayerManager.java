@@ -1,7 +1,7 @@
 package jeevsspring.wildfly.poker.manager.game.player;
 
 import jeevsspring.wildfly.poker.manager.bo.BOException;
-import jeevsspring.wildfly.poker.manager.bo.BoClient;
+import jeevsspring.wildfly.poker.manager.bo.BOClient;
 import jeevsspring.wildfly.poker.manager.bo.json.*;
 import org.jboss.logging.Logger;
 
@@ -25,7 +25,7 @@ public class PlayerManager {
     private Map<String, String> sessions;
 
     @EJB
-    private BoClient boClient;
+    private BOClient boClient;
 
     @PostConstruct
     public void init() {
@@ -40,7 +40,10 @@ public class PlayerManager {
      */
     public String getPlayerId(String sessionId) throws BOException {
         logger.trace("getPlayerId(" + sessionId + ")");
-        if (!sessions.containsKey(sessionId)) throw new BOException("getPlayerId() Cannot find sessionId: " + sessionId);
+        if (!sessions.containsKey(sessionId)) {
+            logger.error("getPlayerId() Cannot find sessionId: " + sessionId);
+            throw new BOException();
+        }
         return sessions.get(sessionId);
     }
 

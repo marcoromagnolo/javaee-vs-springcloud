@@ -24,7 +24,7 @@ public class OperatorSessionDAO {
         return (OperatorSessionEntity) query.getSingleResult();
     }
 
-    public void save(OperatorSessionEntity session) {
+    public void insert(OperatorSessionEntity session) {
         em.persist(session);
     }
 
