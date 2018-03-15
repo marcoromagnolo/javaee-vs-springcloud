@@ -6,6 +6,11 @@
 # Enter in interactive WildFly command line
 ./jboss-cli.sh –c
 
+#Add Handlers
+/subsystem=logging/logger=jeevsspring.wildfly.backoffice/:add(handlers=["FILE"],level=INFO,use-parenthandlers=false)
+/subsystem=logging/logger=jeevsspring.wildfly.poker.console/:add(handlers=["FILE"],level=INFO,use-parenthandlers=false)
+/subsystem=logging/logger=jeevsspring.wildfly.poker.manager/:add(handlers=["FILE"],level=INFO,use-parenthandlers=false)
+
 # Add JMS Queue
 jms-queue add --queue-address= jms.queue.PokerLobbyQueue --entries=java:/jms/queue/pokerLobbyQueue
 
