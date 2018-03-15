@@ -12,6 +12,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -44,7 +45,7 @@ public class BOClient {
                 .path("player/login")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(in), Response.class);
-        BOLoginOut out = rs.readEntity(BOLoginOut.class);
+        BOLoginOut out = rs.readEntity(new GenericType<BOLoginOut>(){});
         if (rs.getStatus() != 200) {
             throw new BOException();
         }
