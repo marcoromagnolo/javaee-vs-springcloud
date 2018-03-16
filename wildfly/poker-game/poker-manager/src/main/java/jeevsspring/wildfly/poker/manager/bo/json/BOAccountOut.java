@@ -59,4 +59,16 @@ public class BOAccountOut extends BOSessionOut {
     public void setSex(String sex) {
         this.sex = sex;
     }
+
+    @Override
+    public String toString() {
+        return "BOAccountOut{" +
+                "playerId='" + playerId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", age='" + age + '\'' +
+                ", sex='" + sex + '\'' +
+                "} " + super.toString();
+    }
 }

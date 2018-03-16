@@ -24,4 +24,12 @@ public class BOLogoutOut {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "BOLogoutOut{" +
+                "playerId='" + playerId + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

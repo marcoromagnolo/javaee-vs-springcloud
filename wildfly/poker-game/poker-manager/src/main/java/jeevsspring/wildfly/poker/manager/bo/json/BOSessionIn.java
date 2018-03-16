@@ -24,4 +24,12 @@ public class BOSessionIn {
     public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
     }
+
+    @Override
+    public String toString() {
+        return "BOSessionIn{" +
+                "sessionId='" + sessionId + '\'' +
+                ", sessionToken='" + sessionToken + '\'' +
+                '}';
+    }
 }

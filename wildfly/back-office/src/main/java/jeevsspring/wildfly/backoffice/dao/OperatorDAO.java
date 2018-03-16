@@ -1,6 +1,7 @@
 package jeevsspring.wildfly.backoffice.dao;
 
 import jeevsspring.wildfly.backoffice.entity.OperatorEntity;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Singleton;
@@ -14,6 +15,9 @@ import javax.persistence.Query;
 @ApplicationScoped
 public class OperatorDAO {
 
+    //JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
+
     @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
@@ -21,6 +25,8 @@ public class OperatorDAO {
         Query query = em.createQuery("FROM OperatorEntity WHERE username = :username AND password = :password");
         query.setParameter("username", username);
         query.setParameter("password", password);
-        return (OperatorEntity) query.getSingleResult();
+        OperatorEntity entity = (OperatorEntity) query.getSingleResult();
+        logger.debug("getByUsernameAndPassword(" + username + ", " + password + ") return " + entity);
+        return entity;
     }
 }

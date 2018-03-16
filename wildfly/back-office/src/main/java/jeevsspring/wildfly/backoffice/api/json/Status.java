@@ -1,5 +1,7 @@
 package jeevsspring.wildfly.backoffice.api.json;
 
+import jeevsspring.wildfly.backoffice.service.ErrorCode;
+
 /**
  * @author Marco Romagnolo
  */
@@ -10,6 +12,15 @@ public class Status {
     private String errorCode;
 
     private String message;
+
+    public Status() {
+    }
+
+    public Status(ErrorCode errorCode) {
+        this.errorCode = errorCode.name();
+        this.error = true;
+        this.message = errorCode.getMessage();
+    }
 
     public boolean isError() {
         return error;
@@ -33,5 +44,14 @@ public class Status {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "Status{" +
+                "error=" + error +
+                ", errorCode='" + errorCode + '\'' +
+                ", message='" + message + '\'' +
+                '}';
     }
 }

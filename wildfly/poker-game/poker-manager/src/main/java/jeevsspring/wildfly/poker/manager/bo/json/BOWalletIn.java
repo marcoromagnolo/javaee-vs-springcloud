@@ -14,4 +14,11 @@ public class BOWalletIn extends BOSessionIn {
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
+
+    @Override
+    public String toString() {
+        return "BOWalletIn{" +
+                "playerId='" + playerId + '\'' +
+                "} " + super.toString();
+    }
 }

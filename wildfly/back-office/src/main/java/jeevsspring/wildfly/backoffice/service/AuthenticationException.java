@@ -5,13 +5,13 @@ package jeevsspring.wildfly.backoffice.service;
  */
 public class AuthenticationException extends Exception {
 
-    private String errorCode = ErrorType.INVALID_CREDENTIALS.name();
+    private ErrorCode errorCode = ErrorCode.INVALID_CREDENTIALS;
 
     public AuthenticationException() {
-        super(ErrorType.INVALID_CREDENTIALS.getMessage());
+        super(ErrorCode.INVALID_CREDENTIALS.getMessage());
     }
 
-    public String getErrorCode() {
+    public ErrorCode getErrorCode() {
         return errorCode;
     }
 }

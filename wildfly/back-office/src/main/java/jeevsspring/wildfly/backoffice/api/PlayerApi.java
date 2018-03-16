@@ -1,8 +1,9 @@
 package jeevsspring.wildfly.backoffice.api;
 
 import jeevsspring.wildfly.backoffice.api.json.*;
+import jeevsspring.wildfly.backoffice.service.AuthenticationException;
 import jeevsspring.wildfly.backoffice.service.PlayerService;
-import jeevsspring.wildfly.backoffice.service.ServiceException;
+import jeevsspring.wildfly.backoffice.service.BackOfficeException;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
@@ -27,9 +28,7 @@ public class PlayerApi {
     @Path("/test")
     public Response test() {
         logger.trace("test()");
-        Status out = new Status();
-        out.setMessage("Test completed");
-        return Response.ok(out).build();
+        return Response.ok("Test completed").build();
     }
 
     @POST
@@ -38,17 +37,16 @@ public class PlayerApi {
         logger.trace("wallet(" + in + ")");
 
         Response response;
-        WalletOut out = new WalletOut();
         try {
-            out = playerService.wallet(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
+            WalletOut out = playerService.wallet(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
             response = Response.ok(out).build();
-        } catch (ServiceException e) {
-            logger.error(e);
-            out.setError(true);
-            out.setErrorCode(e.getErrorCode());
-            response = Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } catch (BackOfficeException e) {
+            logger.error(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        logger.debug("wallet(" + in + ") return " + out);
+        logger.debug("wallet(" + in + ") return " + response);
         return response;
     }
 
@@ -58,17 +56,16 @@ public class PlayerApi {
         logger.trace("account(" + in + ")");
 
         Response response;
-        AccountOut out = new AccountOut();
         try {
-            out = playerService.account(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
+            AccountOut out = playerService.account(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
             response = Response.ok(out).build();
-        } catch (ServiceException e) {
-            logger.error(e);
-            out.setError(true);
-            out.setErrorCode(e.getErrorCode());
-            response = Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } catch (BackOfficeException e) {
+            logger.error(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        logger.debug("account(" + in + ") return " + out);
+        logger.debug("account(" + in + ") return " + response);
         return response;
     }
 
@@ -78,17 +75,21 @@ public class PlayerApi {
         logger.trace("login(" + in + ")");
 
         Response response;
-        LoginOut out = new LoginOut();
         try {
-            out = playerService.login(in.getUsername(), in.getPassword());
+            LoginOut out = playerService.login(in.getUsername(), in.getPassword());
             response = Response.ok(out).build();
-        } catch (ServiceException e) {
-            logger.error(e);
-            out.setError(true);
-            out.setErrorCode(e.getErrorCode());
-            response = Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } catch (BackOfficeException e) {
+            logger.error(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } catch (AuthenticationException e) {
+            logger.warn(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.FORBIDDEN).build();
         }
-        logger.debug("login(" + in + ") return " + out);
+        logger.debug("login(" + in + ") return " + response);
         return response;
     }
 
@@ -98,17 +99,16 @@ public class PlayerApi {
         logger.trace("logout(" + in + ")");
 
         Response response;
-        LogoutOut out = new LogoutOut();
         try {
-            out = playerService.logout(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
+            LogoutOut out = playerService.logout(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
             response = Response.ok(out).build();
-        } catch (ServiceException e) {
-            logger.error(e);
-            out.setError(true);
-            out.setErrorCode(e.getErrorCode());
-            response = Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } catch (BackOfficeException e) {
+            logger.error(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        logger.debug("logout(" + in + ") return " + out);
+        logger.debug("logout(" + in + ") return " + response);
         return response;
     }
 
@@ -118,17 +118,16 @@ public class PlayerApi {
         logger.trace("sessionRefresh(" + in + ")");
 
         Response response;
-        SessionRefreshOut out = new SessionRefreshOut();
         try {
-            out = playerService.sessionRefresh(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
+            SessionRefreshOut out = playerService.sessionRefresh(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
             response = Response.ok(out).build();
-        } catch (ServiceException e) {
-            logger.error(e);
-            out.setError(true);
-            out.setErrorCode(e.getErrorCode());
-            response = Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } catch (BackOfficeException e) {
+            logger.error(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        logger.debug("sessionRefresh(" + in + ") return " + out);
+        logger.debug("sessionRefresh(" + in + ") return " + response);
         return response;
     }
 
@@ -138,17 +137,16 @@ public class PlayerApi {
         logger.trace("stake(" + in + ")");
 
         Response response;
-        StakeOut out = new StakeOut();
         try {
-            out = playerService.stake(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
+            StakeOut out = playerService.stake(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
             response = Response.ok(out).build();
-        } catch (ServiceException e) {
-            logger.error(e);
-            out.setError(true);
-            out.setErrorCode(e.getErrorCode());
-            response = Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } catch (BackOfficeException e) {
+            logger.error(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        logger.debug("stake(" + in + ") return " + out);
+        logger.debug("stake(" + in + ") return " + response);
         return response;
     }
 
@@ -158,17 +156,16 @@ public class PlayerApi {
         logger.trace("win(" + in + ")");
 
         Response response;
-        WinOut out = new WinOut();
         try {
-            out = playerService.win(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
+            WinOut out = playerService.win(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
             response = Response.ok(out).build();
-        } catch (ServiceException e) {
-            logger.error(e);
-            out.setError(true);
-            out.setErrorCode(e.getErrorCode());
-            response = Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } catch (BackOfficeException e) {
+            logger.error(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        logger.debug("win(" + in + ") return " + out);
+        logger.debug("win(" + in + ") return " + response);
         return response;
     }
 
@@ -178,17 +175,16 @@ public class PlayerApi {
         logger.trace("refund(" + in + ")");
 
         Response response;
-        RefundOut out = new RefundOut();
         try {
-            out = playerService.refund(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
+            RefundOut out = playerService.refund(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
             response = Response.ok(out).build();
-        } catch (ServiceException e) {
-            logger.error(e);
-            out.setError(true);
-            out.setErrorCode(e.getErrorCode());
-            response = Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } catch (BackOfficeException e) {
+            logger.error(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        logger.debug("refund(" + in + ") return " + out);
+        logger.debug("refund(" + in + ") return " + response);
         return response;
     }
 }

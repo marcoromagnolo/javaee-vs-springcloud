@@ -34,4 +34,13 @@ public class BOStatus {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "BOStatus{" +
+                "error=" + error +
+                ", errorCode='" + errorCode + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

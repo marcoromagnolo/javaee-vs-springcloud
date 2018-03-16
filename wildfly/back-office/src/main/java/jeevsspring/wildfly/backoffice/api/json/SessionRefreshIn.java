@@ -14,4 +14,11 @@ public class SessionRefreshIn extends SessionIn {
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
+
+    @Override
+    public String toString() {
+        return "SessionRefreshIn{" +
+                "playerId='" + playerId + '\'' +
+                "} " + super.toString();
+    }
 }

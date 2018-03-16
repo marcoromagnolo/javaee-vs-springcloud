@@ -24,4 +24,12 @@ public class OperatorLogoutOut extends Status {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "OperatorLogoutOut{" +
+                "operatorId='" + operatorId + '\'' +
+                ", message='" + message + '\'' +
+                "} " + super.toString();
+    }
 }

@@ -23,4 +23,12 @@ public class BOOperatorLoginIn {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return "BOOperatorLoginIn{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

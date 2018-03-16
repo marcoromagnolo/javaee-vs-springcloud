@@ -24,4 +24,12 @@ public class BOOperatorLogoutOut {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "BOOperatorLogoutOut{" +
+                "operatorId='" + operatorId + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

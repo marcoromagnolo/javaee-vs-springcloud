@@ -14,4 +14,11 @@ public class SessionRefreshOut extends SessionOut {
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
+
+    @Override
+    public String toString() {
+        return "SessionRefreshOut{" +
+                "playerId='" + playerId + '\'' +
+                "} " + super.toString();
+    }
 }

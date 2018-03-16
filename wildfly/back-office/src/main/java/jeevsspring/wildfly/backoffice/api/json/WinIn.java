@@ -21,4 +21,12 @@ public class WinIn extends SessionIn {
     public void setAmount(long amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "WinIn{" +
+                "playerId='" + playerId + '\'' +
+                ", amount=" + amount +
+                "} " + super.toString();
+    }
 }

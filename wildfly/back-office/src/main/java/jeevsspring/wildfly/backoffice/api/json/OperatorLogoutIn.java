@@ -14,4 +14,11 @@ public class OperatorLogoutIn extends SessionIn {
     public void setOperatorId(String operatorId) {
         this.operatorId = operatorId;
     }
+
+    @Override
+    public String toString() {
+        return "OperatorLogoutIn{" +
+                "operatorId='" + operatorId + '\'' +
+                "} " + super.toString();
+    }
 }

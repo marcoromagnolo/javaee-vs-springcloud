@@ -1,9 +1,9 @@
 package jeevsspring.wildfly.backoffice.dao;
 
 import jeevsspring.wildfly.backoffice.entity.OperatorSessionEntity;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -14,6 +14,9 @@ import javax.persistence.Query;
 @ApplicationScoped
 public class OperatorSessionDAO {
 
+    //JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
+
     @PersistenceContext(unitName = "primary")
     private EntityManager em;
 
@@ -21,15 +24,19 @@ public class OperatorSessionDAO {
         Query query = em.createQuery("FROM OperatorSessionEntity WHERE id = :id AND token = :token");
         query.setParameter("id", id);
         query.setParameter("token", token);
-        return (OperatorSessionEntity) query.getSingleResult();
+        OperatorSessionEntity entity = (OperatorSessionEntity) query.getSingleResult();
+        logger.debug("getByIdAndToken(" + id + ", " + token + ") return " + entity);
+        return entity;
     }
 
-    public void insert(OperatorSessionEntity session) {
-        em.persist(session);
+    public void insert(OperatorSessionEntity entity) {
+        em.persist(entity);
+        logger.debug("insert(" + entity + ")");
     }
 
     public void delete(String sessionId) {
-        OperatorSessionEntity session = em.find(OperatorSessionEntity.class, sessionId);
-        em.remove(session);
+        OperatorSessionEntity entity = em.find(OperatorSessionEntity.class, sessionId);
+        em.remove(entity);
+        logger.debug("delete(" + entity + ")");
     }
 }

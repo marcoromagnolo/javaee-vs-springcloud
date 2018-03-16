@@ -43,15 +43,16 @@ public class BOClient {
 
         Response rs = target
                 .path("player/login")
-                .request(MediaType.APPLICATION_JSON)
+                .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.json(in), Response.class);
-        BOLoginOut out = rs.readEntity(new GenericType<BOLoginOut>(){});
+        BOLoginOut out = rs.readEntity(BOLoginOut.class);
+        logger.debug("JSON REST response: " + out);
         if (rs.getStatus() != 200) {
             throw new BOException();
         }
 
         logger.debug("login(" + in + ") return " + out);
-        return out;
+        return new BOLoginOut();
     }
 
     public BOLogoutOut logout(BOLogoutIn in) throws BOException {

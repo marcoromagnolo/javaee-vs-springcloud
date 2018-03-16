@@ -24,4 +24,12 @@ public class LogoutOut extends Status {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "LogoutOut{" +
+                "playerId='" + playerId + '\'' +
+                ", message='" + message + '\'' +
+                "} " + super.toString();
+    }
 }

@@ -41,4 +41,14 @@ public class RefundOut extends SessionOut {
     public void setAmount(long amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "RefundOut{" +
+                "playerId='" + playerId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", balance=" + balance +
+                ", amount=" + amount +
+                "} " + super.toString();
+    }
 }

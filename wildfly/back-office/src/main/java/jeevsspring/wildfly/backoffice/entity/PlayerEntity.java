@@ -24,13 +24,13 @@ public class PlayerEntity implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(fetch=FetchType.LAZY, mappedBy = "player")
+    @OneToOne(fetch=FetchType.EAGER, mappedBy = "player")
     private AccountEntity account;
 
-    @OneToOne(fetch=FetchType.LAZY, mappedBy = "player")
+    @OneToOne(fetch=FetchType.EAGER, mappedBy = "player")
     private WalletEntity wallet;
 
-    @OneToOne(fetch=FetchType.LAZY, mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch=FetchType.EAGER, mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
     private SessionEntity session;
 
     public Long getId() {

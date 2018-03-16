@@ -41,4 +41,14 @@ public class BOWinOut extends BOSessionOut {
     public void setAmount(long amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "BOWinOut{" +
+                "playerId='" + playerId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", balance=" + balance +
+                ", amount=" + amount +
+                "} " + super.toString();
+    }
 }

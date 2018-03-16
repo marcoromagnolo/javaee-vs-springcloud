@@ -41,4 +41,14 @@ public class BORefundOut extends BOSessionOut {
     public void setAmount(long amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "BORefundOut{" +
+                "playerId='" + playerId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", balance=" + balance +
+                ", amount=" + amount +
+                "} " + super.toString();
+    }
 }

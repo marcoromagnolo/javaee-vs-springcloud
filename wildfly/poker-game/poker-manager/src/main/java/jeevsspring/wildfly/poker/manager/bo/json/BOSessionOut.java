@@ -44,4 +44,14 @@ public class BOSessionOut extends BOStatus {
     public void setSessionCreateTime(long sessionCreateTime) {
         this.sessionCreateTime = sessionCreateTime;
     }
+
+    @Override
+    public String toString() {
+        return "BOSessionOut{" +
+                "sessionId='" + sessionId + '\'' +
+                ", sessionToken='" + sessionToken + '\'' +
+                ", sessionExpireTime=" + sessionExpireTime +
+                ", sessionCreateTime=" + sessionCreateTime +
+                "} " + super.toString();
+    }
 }

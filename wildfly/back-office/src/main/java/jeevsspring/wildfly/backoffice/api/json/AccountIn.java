@@ -14,4 +14,11 @@ public class AccountIn extends SessionIn {
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
+
+    @Override
+    public String toString() {
+        return "AccountIn{" +
+                "playerId='" + playerId + '\'' +
+                "} " + super.toString();
+    }
 }

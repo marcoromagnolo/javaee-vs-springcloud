@@ -54,4 +54,15 @@ public class BOOperatorLoginOut extends BOSessionOut {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "BOOperatorLoginOut{" +
+                "operatorId='" + operatorId + '\'' +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                "} " + super.toString();
+    }
 }

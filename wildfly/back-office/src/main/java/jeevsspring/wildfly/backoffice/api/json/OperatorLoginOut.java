@@ -54,4 +54,15 @@ public class OperatorLoginOut extends SessionOut {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "OperatorLoginOut{" +
+                "operatorId='" + operatorId + '\'' +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                "} " + super.toString();
+    }
 }

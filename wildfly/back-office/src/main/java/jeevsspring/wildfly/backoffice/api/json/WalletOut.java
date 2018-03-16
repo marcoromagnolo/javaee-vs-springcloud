@@ -24,4 +24,12 @@ public class WalletOut extends SessionOut {
     public void setBalance(long balance) {
         this.balance = balance;
     }
+
+    @Override
+    public String toString() {
+        return "WalletOut{" +
+                "playerId='" + playerId + '\'' +
+                ", balance=" + balance +
+                "} " + super.toString();
+    }
 }

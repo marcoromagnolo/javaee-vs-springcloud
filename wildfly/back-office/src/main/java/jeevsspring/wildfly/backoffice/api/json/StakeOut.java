@@ -41,4 +41,14 @@ public class StakeOut extends SessionOut {
     public void setAmount(long amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "StakeOut{" +
+                "playerId='" + playerId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", balance=" + balance +
+                ", amount=" + amount +
+                "} " + super.toString();
+    }
 }

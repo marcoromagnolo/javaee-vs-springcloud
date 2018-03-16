@@ -14,4 +14,11 @@ public class BOOperatorLogoutIn extends BOSessionIn {
     public void setOperatorId(String operatorId) {
         this.operatorId = operatorId;
     }
+
+    @Override
+    public String toString() {
+        return "BOOperatorLogoutIn{" +
+                "operatorId='" + operatorId + '\'' +
+                "} " + super.toString();
+    }
 }

@@ -1,5 +1,11 @@
 package jeevsspring.wildfly.poker.manager.bo.json;
 
+import jeevsspring.wildfly.poker.manager.util.JsonString;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+
 /**
  * @author Marco Romagnolo
  */
@@ -83,5 +89,19 @@ public class BOLoginOut extends BOSessionOut {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    @Override
+    public String toString() {
+        return "BOLoginOut{" +
+                "playerId='" + playerId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", balance=" + balance +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", age='" + age + '\'' +
+                ", sex='" + sex + '\'' +
+                "} " + super.toString();
     }
 }

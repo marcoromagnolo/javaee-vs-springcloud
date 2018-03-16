@@ -14,4 +14,11 @@ public class LogoutIn extends SessionIn {
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
+
+    @Override
+    public String toString() {
+        return "LogoutIn{" +
+                "playerId='" + playerId + '\'' +
+                "} " + super.toString();
+    }
 }

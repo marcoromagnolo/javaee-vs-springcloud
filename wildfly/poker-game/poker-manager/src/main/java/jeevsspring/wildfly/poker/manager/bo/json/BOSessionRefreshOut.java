@@ -14,4 +14,11 @@ public class BOSessionRefreshOut extends BOSessionOut {
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
+
+    @Override
+    public String toString() {
+        return "BOSessionRefreshOut{" +
+                "playerId='" + playerId + '\'' +
+                "} " + super.toString();
+    }
 }

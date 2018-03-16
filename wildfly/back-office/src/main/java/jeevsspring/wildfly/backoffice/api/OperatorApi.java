@@ -3,7 +3,7 @@ package jeevsspring.wildfly.backoffice.api;
 import jeevsspring.wildfly.backoffice.api.json.*;
 import jeevsspring.wildfly.backoffice.service.AuthenticationException;
 import jeevsspring.wildfly.backoffice.service.OperatorService;
-import jeevsspring.wildfly.backoffice.service.ServiceException;
+import jeevsspring.wildfly.backoffice.service.BackOfficeException;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
@@ -28,9 +28,7 @@ public class OperatorApi {
     @Path("/test")
     public Response test() {
         logger.trace("test()");
-        Status out = new Status();
-        out.setMessage("Test completed");
-        return Response.ok(out).build();
+        return Response.ok("Test completed").build();
     }
 
     @POST
@@ -39,22 +37,19 @@ public class OperatorApi {
         logger.trace("login(" + in + ")");
 
         Response response;
-        OperatorLoginOut out = new OperatorLoginOut();
         try {
-            out = operatorService.login(in.getUsername(), in.getPassword());
+            OperatorLoginOut out = operatorService.login(in.getUsername(), in.getPassword());
             response = Response.ok(out, MediaType.APPLICATION_JSON).build();
-        } catch (ServiceException e) {
+        } catch (BackOfficeException e) {
             logger.error(e);
-            out.setError(true);
-            out.setErrorCode(e.getErrorCode());
             response = Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
         } catch (AuthenticationException e) {
             logger.warn(e);
-            out.setError(true);
-            out.setErrorCode(e.getErrorCode());
-            response = Response.serverError().status(Response.Status.FORBIDDEN).build();
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.FORBIDDEN).build();
         }
-        logger.debug("login(" + in + ") return " + out);
+        logger.debug("login(" + in + ") return " + response);
         return response;
     }
 
@@ -64,17 +59,16 @@ public class OperatorApi {
         logger.trace("logout(" + in + ")");
 
         Response response;
-        OperatorLogoutOut out = new OperatorLogoutOut();
         try {
-            out = operatorService.logout(in.getOperatorId(), in.getSessionId(), in.getSessionToken());
+            OperatorLogoutOut out = operatorService.logout(in.getOperatorId(), in.getSessionId(), in.getSessionToken());
             response = Response.ok(out, MediaType.APPLICATION_JSON).build();
-        } catch (ServiceException e) {
+        } catch (BackOfficeException e) {
             logger.error(e);
-            out.setError(true);
-            out.setErrorCode(e.getErrorCode());
-            response = Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        logger.debug("logout(" + in + ") return " + out);
+        logger.debug("logout(" + in + ") return " + response);
         return response;
     }
 }

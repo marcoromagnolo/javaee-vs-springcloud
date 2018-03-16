@@ -24,4 +24,12 @@ public class SessionIn extends Status {
     public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
     }
+
+    @Override
+    public String toString() {
+        return "SessionIn{" +
+                "sessionId='" + sessionId + '\'' +
+                ", sessionToken='" + sessionToken + '\'' +
+                "} " + super.toString();
+    }
 }

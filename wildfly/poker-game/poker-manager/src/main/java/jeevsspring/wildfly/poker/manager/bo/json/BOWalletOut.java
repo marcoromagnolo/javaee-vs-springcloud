@@ -24,4 +24,12 @@ public class BOWalletOut extends BOSessionOut {
     public void setBalance(long balance) {
         this.balance = balance;
     }
+
+    @Override
+    public String toString() {
+        return "BOWalletOut{" +
+                "playerId='" + playerId + '\'' +
+                ", balance=" + balance +
+                "} " + super.toString();
+    }
 }

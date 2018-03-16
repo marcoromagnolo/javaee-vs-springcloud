@@ -3,10 +3,10 @@ package jeevsspring.wildfly.backoffice.service;
 /**
  * @author Marco Romagnolo
  */
-public enum ErrorType {
+public enum ErrorCode {
 
     AUTH_ERROR("Authentication Error"),
-    DATABASE_ERROR("Database Error"),
+    BACKOFFICE_ERROR("Back Office Server Error"),
     INSUFFICIENT_FUNDS("Fondo insufficiente"),
     INVALID_AMOUNT("Invalid amount"),
     PASSWORD_ENCRYPTION_ERROR("Password Encryption Error"),
@@ -14,7 +14,7 @@ public enum ErrorType {
 
     private final String message;
 
-    ErrorType(String s) {
+    ErrorCode(String s) {
         this.message = s;
     }
 

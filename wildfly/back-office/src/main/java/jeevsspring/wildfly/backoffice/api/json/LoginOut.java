@@ -84,4 +84,18 @@ public class LoginOut extends SessionOut {
     public void setSex(String sex) {
         this.sex = sex;
     }
+
+    @Override
+    public String toString() {
+        return "LoginOut{" +
+                "playerId='" + playerId + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", balance=" + balance +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", age='" + age + '\'' +
+                ", sex='" + sex + '\'' +
+                "} " + super.toString();
+    }
 }

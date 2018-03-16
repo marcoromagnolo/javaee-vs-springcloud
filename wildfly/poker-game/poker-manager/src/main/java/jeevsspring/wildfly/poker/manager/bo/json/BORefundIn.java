@@ -21,4 +21,12 @@ public class BORefundIn extends BOSessionIn {
     public void setAmount(long amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "BORefundIn{" +
+                "playerId='" + playerId + '\'' +
+                ", amount=" + amount +
+                "} " + super.toString();
+    }
 }

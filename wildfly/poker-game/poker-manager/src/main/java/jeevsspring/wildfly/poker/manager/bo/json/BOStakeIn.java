@@ -21,4 +21,12 @@ public class BOStakeIn extends BOSessionIn {
     public void setAmount(long amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "BOStakeIn{" +
+                "playerId='" + playerId + '\'' +
+                ", amount=" + amount +
+                "} " + super.toString();
+    }
 }

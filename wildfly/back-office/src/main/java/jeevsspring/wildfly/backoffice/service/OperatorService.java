@@ -7,6 +7,7 @@ import jeevsspring.wildfly.backoffice.dao.OperatorSessionDAO;
 import jeevsspring.wildfly.backoffice.entity.OperatorEntity;
 import jeevsspring.wildfly.backoffice.entity.OperatorSessionEntity;
 import jeevsspring.wildfly.backoffice.util.BOConfig;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -20,6 +21,9 @@ import java.util.UUID;
 @ApplicationScoped
 @Transactional
 public class OperatorService {
+
+    //JBoss Logger
+    private final Logger logger = Logger.getLogger(getClass());
 
     @Inject
     private OperatorDAO operatorDAO;
@@ -35,9 +39,9 @@ public class OperatorService {
      * @param username
      * @param password
      * @return
-     * @throws ServiceException
+     * @throws BackOfficeException
      */
-    public OperatorLoginOut login(String username, String password) throws ServiceException, AuthenticationException {
+    public OperatorLoginOut login(String username, String password) throws BackOfficeException, AuthenticationException {
         try {
             OperatorEntity operator = operatorDAO.getByUsernameAndPassword(username, password);
 
@@ -66,8 +70,9 @@ public class OperatorService {
             out.setEmail(operator.getEmail());
 
             return out;
-        } catch (PersistenceException e) {
-            throw new ServiceException(ErrorType.DATABASE_ERROR);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new BackOfficeException();
         }
     }
 
@@ -77,9 +82,9 @@ public class OperatorService {
      * @param sessionId
      * @param sessionToken
      * @return
-     * @throws ServiceException
+     * @throws BackOfficeException
      */
-    public OperatorLogoutOut logout(String operatorId, String sessionId, String sessionToken) throws ServiceException {
+    public OperatorLogoutOut logout(String operatorId, String sessionId, String sessionToken) throws BackOfficeException {
         sessionCheck(operatorId, sessionId, sessionToken);
         try {
             sessionDAO.delete(sessionId);
@@ -87,8 +92,9 @@ public class OperatorService {
             out.setOperatorId(operatorId);
             out.setMessage("Logged Out");
             return out;
-        } catch (PersistenceException e) {
-            throw new ServiceException(ErrorType.DATABASE_ERROR);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new BackOfficeException();
         }
     }
 
@@ -97,16 +103,17 @@ public class OperatorService {
      * @param operatorId
      * @param sessionId
      * @param sessionToken
-     * @throws ServiceException
+     * @throws BackOfficeException
      */
-    private void sessionCheck(String operatorId, String sessionId, String sessionToken) throws ServiceException {
+    private void sessionCheck(String operatorId, String sessionId, String sessionToken) throws BackOfficeException {
         try {
             OperatorSessionEntity entity = sessionDAO.getByIdAndToken(sessionId, sessionToken);
             if (!entity.getOperator().getId().equals(operatorId)) {
-                throw new ServiceException(ErrorType.AUTH_ERROR);
+                throw new BackOfficeException();
             }
-        } catch (PersistenceException e) {
-            throw new ServiceException(ErrorType.DATABASE_ERROR);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new BackOfficeException();
         }
     }
 
