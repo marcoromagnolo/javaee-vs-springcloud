@@ -1,0 +1,102 @@
+body {
+	background: #E0E0E0;
+	margin:0px;
+	padding:0px;
+	text-align:center;
+}
+
+/** Vertical Replay **/
+
+table#vertical {
+	width:800px;
+	border:1px solid #AAA;
+	border-collapse:collapse;
+	margin:auto;
+	text-align:left;
+	font:12px Arial;
+}
+
+#vertical td {
+	padding:10px;
+	border:1px solid #506870;
+}
+
+#vertical td.noBorder {
+	white-space:nowrap;
+	padding:10px;
+	border:0px;
+}
+
+#vertical .showDownResult  {
+	background:#DBE2E2;
+}
+
+#vertical td.title {
+	background:#9DB6B8;
+}
+
+#vertical td.board {
+	background:#506870;
+	color:#fff;
+}
+
+#vertical td.content {
+	background:#DBE2E2;
+}
+
+#vertical td.details {
+	background:#FFF;
+}
+
+#vertical img.backCard {
+	background-image:url('../images/b.png');
+	background-repeat:no-repeat;
+	margin:2px;
+	height:58px;
+	width:41px;
+	float:left;
+}
+
+#vertical img.card {
+	background-image:url('../images/poker_cards.png');
+	background-repeat:no-repeat;
+	margin:2px;
+	height:54px;
+	width:40px;
+	float:left;
+}
+
+#vertical table#potTable {
+	display: inline-table;
+	vertical-align: sub;
+}
+
+#vertical table#potTable tr td {
+	padding: 0px;
+}
+
+#vertical table#potTable tr td.separator {
+	padding-right: 13px;
+}
+
+/** Text Replay **/
+
+p#text {
+	border:1px solid #AAA;
+	border-collapse: collapse;
+	margin: auto;
+	text-align: center;
+	font: 12px Arial;
+}
+
+p#text table#potTable {
+	margin: 0 auto;
+}
+
+p#text table#potTable tr td {
+	text-align: left;
+}
+
+p#text table#potTable tr td.label {
+	text-align: right;
+}
