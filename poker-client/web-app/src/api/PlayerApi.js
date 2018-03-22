@@ -18,12 +18,6 @@ class PlayerApi extends Component {
         return fetch(API_URL + '/login', {
             method: "post",
             body: {username: username, password: password}
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.json().errorCode);
-            }
         });
     }
 
@@ -31,12 +25,6 @@ class PlayerApi extends Component {
         return fetch(API_URL + '/logout', {
             method: "post",
             body: {sessionId: sessionId, sessionToken: sessionToken}
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.json().errorCode);
-            }
         });
     }
 
@@ -44,12 +32,6 @@ class PlayerApi extends Component {
         return fetch(API_URL + '/account', {
             method: "post",
             body: {sessionId: sessionId, sessionToken: sessionToken}
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.json().errorCode);
-            }
         });
     }
 
@@ -57,12 +39,6 @@ class PlayerApi extends Component {
         return fetch(API_URL + '/wallet', {
             method: "post",
             body: {sessionId: sessionId, sessionToken: sessionToken}
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.json().errorCode);
-            }
         });
     }
 

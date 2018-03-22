@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ApiClient from './api/PlayerApi';
-import { FormGroup, FormControl, Button, Image } from 'react-bootstrap';
+import { FormGroup, FormControl, Button, Image, Alert } from 'react-bootstrap';
 
 class Login extends Component {
 
@@ -9,9 +9,12 @@ class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            error: ''
+            error: false,
+            errorMessage: '',
+            loading: false
         };
-        this.handleChange = this.handleChange.bind(this);
+        this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -24,18 +27,33 @@ class Login extends Component {
         }
     }
 
+    handleUsernameChange(event) {
+        this.setState({ username: event.target.value, error: false, errorMessage: '' });
+    }
+
+    handlePasswordChange(event) {
+        this.setState({ password: event.target.value, error: false, errorMessage: '' });
+    }
+
     handleSubmit(event) {
         event.preventDefault();
-
-        try {
-            this.validateForm();
-            let playerApi = new ApiClient();
-            playerApi.login(this.state.username, this.state.password);
-        } catch (error) {
-            this.setState(error.message);
-            console.error(error);
-        }
-
+        this.setState({loading: true});
+        console.debug(this.state);
+        this.validateForm();
+        let playerApi = new ApiClient();
+        playerApi.login(this.state.username, this.state.password).then(response => {
+                if (response.ok) {
+                    this.setState({error: false, errorMessage: '', loading: false});
+                    return response.json();
+                } else {
+                    let errorMessage = response.json().errorCode;
+                    console.warn(errorMessage);
+                    this.setState({error: true, errorMessage: errorMessage, loading: false});
+                }
+            }).catch(error => {
+                console.error(error);
+                this.setState({error: true, errorMessage: error.message, loading: false});
+            });
     }
 
     imgStyle = {width: '90px', height:'90px', marginBottom: '10px'};
@@ -47,22 +65,24 @@ class Login extends Component {
                     <Image src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" circle responsive className="center-block" style={this.imgStyle}/>
 
                     <FormGroup>
-                        <FormControl type="text" placeholder="Username"/>
+                        <FormControl type="text" placeholder="Username" value={this.state.username} onChange={this.handleUsernameChange}/>
                     </FormGroup>
 
                     <FormGroup>
-                        <FormControl type="password" placeholder="Password"/>
+                        <FormControl type="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}/>
                     </FormGroup>
 
-                    <Button bsStyle="primary" bsSize="large" block type="submit">Login</Button>
+                    <Button bsStyle="primary" bsSize="large" block type="submit">
+                        {this.state.loading ? (<i className="fa fa-circle-o-notch fa-spin"></i>) : (null)} Login</Button>
                 </form>
+                <br/>
+                {this.state.error ? (<Alert bsStyle="danger">
+                    <strong>Error!</strong> {this.state.errorMessage}
+                </Alert>) : (null)}
             </div>
         );
     }
 
-    login() {
-
-    }
 }
 
 export default Login;
