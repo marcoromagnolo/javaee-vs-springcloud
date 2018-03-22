@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ApiClient from './ApiClient';
+import ApiClient from './api/PlayerApi';
 import { FormGroup, FormControl, Button, Image } from 'react-bootstrap';
 
 class Login extends Component {
@@ -9,22 +9,32 @@ class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            submit: false
+            error: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
-
+    validateForm() {
+        if (this.state.username.length === 0) {
+            throw new Error("Username cannot be empty")
+        }
+        if (this.state.password.length === 0) {
+            throw new Error("Password cannot be empty")
+        }
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
-        this.setState({ submitted: true });
-        let apiClient = new ApiClient();
-        apiClient.test();
+        try {
+            this.validateForm();
+            let playerApi = new ApiClient();
+            playerApi.login(this.state.username, this.state.password);
+        } catch (error) {
+            this.setState(error.message);
+            console.error(error);
+        }
 
     }
 
