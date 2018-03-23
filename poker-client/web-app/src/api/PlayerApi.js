@@ -1,6 +1,7 @@
 import { Component } from 'react';
+import config from './Config';
 
-const API_URL = 'http://localhost:8080/poker-manager/player';
+const API_URL = config.apiUrl + '/player';
 
 class PlayerApi extends Component {
 

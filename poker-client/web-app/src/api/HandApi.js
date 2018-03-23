@@ -1,6 +1,7 @@
 import { Component } from 'react';
+import config from './Config';
 
-const API_URL = 'http://localhost:8080/poker-manager/hand';
+const API_URL = config.apiUrl + '/hand';
 
 class HandApi extends Component {
 

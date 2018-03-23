@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ApiClient from './api/PlayerApi';
+import Session from './util/Session';
 import { FormGroup, FormControl, Button, Image, Alert } from 'react-bootstrap';
 
 class Login extends Component {
@@ -41,6 +42,8 @@ class Login extends Component {
         this.setState({ password: event.target.value, error: false, errorMessage: '' });
     }
 
+
+
     handleSubmit(event) {
         event.preventDefault();
         this.setState({loading: true});
@@ -50,7 +53,12 @@ class Login extends Component {
             playerApi.login(this.state.username, this.state.password).then(response => {
                 if (response.ok) {
                     this.setState({error: false, errorMessage: '', loading: false});
-                    return response.json();
+                    let json = response.json();
+                    Session.setSessionId(json.sessionId, json.sessionExpireTime);
+                    localStorage.setItem('sessionToken', json.sessionToken);
+                    localStorage.setItem('nickname', json.nickname);
+                    localStorage.setItem('account', json.account);
+                    localStorage.setItem('wallet', json.wallet);
                 } else {
                     let errorMessage = response.json().errorCode;
                     console.warn(errorMessage);
@@ -67,7 +75,7 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="Login">
+            <div className="Login container">
                 <form onSubmit={this.handleSubmit}>
                     <Image src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" circle responsive className="center-block" style={this.imgStyle}/>
 
