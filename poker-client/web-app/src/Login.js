@@ -19,12 +19,18 @@ class Login extends Component {
     }
 
     validateForm() {
+        let error = false;
+        let errorMessages = '';
         if (this.state.username.length === 0) {
-            throw new Error("Username cannot be empty")
+            error = true;
+            errorMessages += "Username cannot be empty ";
         }
         if (this.state.password.length === 0) {
-            throw new Error("Password cannot be empty")
+            error = true;
+            errorMessages += "Password cannot be empty ";
         }
+        this.setState({error: error, errorMessage: errorMessages, loading: !error});
+        return !error;
     }
 
     handleUsernameChange(event) {
@@ -39,9 +45,9 @@ class Login extends Component {
         event.preventDefault();
         this.setState({loading: true});
         console.debug(this.state);
-        this.validateForm();
-        let playerApi = new ApiClient();
-        playerApi.login(this.state.username, this.state.password).then(response => {
+        if (this.validateForm()) {
+            let playerApi = new ApiClient();
+            playerApi.login(this.state.username, this.state.password).then(response => {
                 if (response.ok) {
                     this.setState({error: false, errorMessage: '', loading: false});
                     return response.json();
@@ -54,6 +60,7 @@ class Login extends Component {
                 console.error(error);
                 this.setState({error: true, errorMessage: error.message, loading: false});
             });
+        }
     }
 
     imgStyle = {width: '90px', height:'90px', marginBottom: '10px'};
