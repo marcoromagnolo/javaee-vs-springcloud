@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
-@Named
+@Named("addTableGameCtrl")
 @RequestScoped
 public class AddTableGameCtrl implements Serializable {
 

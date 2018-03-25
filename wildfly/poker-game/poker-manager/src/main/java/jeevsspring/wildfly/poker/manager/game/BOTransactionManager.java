@@ -83,7 +83,7 @@ public class BOTransactionManager<E extends GameAction> {
         }
     }
 
-    public BOStakeOut stake(String tableId, String playerId, long amount) throws GameException, BOException {
+    public BOStakeOut stake(String tableId, String playerId, long amount) throws GameException {
         if (!games.get(tableId).isRunning()) throw new GameException("Game with tableId: " + tableId + " is not running");
         BOStakeIn in = new BOStakeIn();
         in.setPlayerId(playerId);
@@ -102,7 +102,7 @@ public class BOTransactionManager<E extends GameAction> {
         }
     }
 
-    public BORefundOut refund(String tableId, String playerId) throws GameException, BOException {
+    public BORefundOut refund(String tableId, String playerId) throws GameException {
         if (!games.get(tableId).isRunning()) throw new GameException("Game with tableId: " + tableId + " is not running");
         Game game = games.get(tableId);
         Player player = game.getPlayer(playerId);

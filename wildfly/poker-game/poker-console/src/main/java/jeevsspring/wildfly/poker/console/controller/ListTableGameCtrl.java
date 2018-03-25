@@ -6,7 +6,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 
-@Named
+@Named("listTableCtrl")
 @RequestScoped
 public class ListTableGameCtrl implements Serializable {
 

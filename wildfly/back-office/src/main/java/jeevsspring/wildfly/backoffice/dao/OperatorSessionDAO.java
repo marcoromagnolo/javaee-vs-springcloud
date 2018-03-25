@@ -1,5 +1,6 @@
 package jeevsspring.wildfly.backoffice.dao;
 
+import jeevsspring.wildfly.backoffice.entity.AccountEntity;
 import jeevsspring.wildfly.backoffice.entity.OperatorSessionEntity;
 import org.jboss.logging.Logger;
 
@@ -7,6 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.List;
 
 /**
  * @author Marco Romagnolo
@@ -21,10 +23,13 @@ public class OperatorSessionDAO {
     private EntityManager em;
 
     public OperatorSessionEntity getByIdAndToken(String id, String token) {
-        Query query = em.createQuery("FROM OperatorSessionEntity WHERE id = :id AND token = :token");
+        Query query = em.createQuery("SELECT os FROM OperatorSessionEntity os WHERE os.id = :id AND os.token = :token");
         query.setParameter("id", id);
         query.setParameter("token", token);
-        OperatorSessionEntity entity = (OperatorSessionEntity) query.getSingleResult();
+        List list = query.getResultList();
+        OperatorSessionEntity entity;
+        if (list.isEmpty()) entity = null;
+        else entity= (OperatorSessionEntity) list.get(0);
         logger.debug("getByIdAndToken(" + id + ", " + token + ") return " + entity);
         return entity;
     }

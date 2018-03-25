@@ -11,8 +11,10 @@ import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 /**
@@ -39,41 +41,41 @@ public class OperatorService {
      * @param username
      * @param password
      * @return
-     * @throws BackOfficeException
      */
-    public OperatorLoginOut login(String username, String password) throws BackOfficeException, AuthenticationException {
-        try {
-            OperatorEntity operator = operatorDAO.getByUsernameAndPassword(username, password);
+    public OperatorLoginOut login(String username, String password) throws AuthenticationException {
+        logger.debug("login(" + username + ", " + password + ")");
 
-            if (operator == null) throw new AuthenticationException();
-            OperatorSessionEntity session = new OperatorSessionEntity();
-            session.setId(UUID.randomUUID().toString());
-            session.setToken(UUID.randomUUID().toString());
-            session.setOperator(operator);
-            long now = System.currentTimeMillis();
-            session.setCreateTime(now);
-            int duration = config.getPlayerSessionDuration() * 1000;
-            session.setExpireTime(now + duration);
-            sessionDAO.insert(session);
+        // Calculate Hash
+        String hash = HashPassword.hash(password);
 
-            OperatorLoginOut out = new OperatorLoginOut();
-            out.setOperatorId(operator.getId().toString());
-            out.setUsername(operator.getUsername());
-            out.setSessionId(session.getId());
-            out.setSessionToken(session.getToken());
-            out.setSessionCreateTime(session.getCreateTime());
-            out.setSessionExpireTime(session.getCreateTime());
+        OperatorEntity operator = operatorDAO.getByUsernameAndPassword(username, hash);
 
-            // Set Account
-            out.setFirstName(operator.getFirstName());
-            out.setLastName(operator.getLastName());
-            out.setEmail(operator.getEmail());
+        if (operator == null) throw new AuthenticationException();
 
-            return out;
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw new BackOfficeException();
-        }
+        OperatorSessionEntity session = new OperatorSessionEntity();
+        session.setId(UUID.randomUUID().toString());
+        session.setToken(UUID.randomUUID().toString());
+        session.setOperator(operator);
+        long now = System.currentTimeMillis();
+        session.setCreateTime(now);
+        int duration = config.getPlayerSessionDuration() * 1000;
+        session.setExpireTime(now + duration);
+        sessionDAO.insert(session);
+
+        OperatorLoginOut out = new OperatorLoginOut();
+        out.setOperatorId(operator.getId().toString());
+        out.setUsername(operator.getUsername());
+        out.setSessionId(session.getId());
+        out.setSessionToken(session.getToken());
+        out.setSessionCreateTime(session.getCreateTime());
+        out.setSessionExpireTime(session.getCreateTime());
+
+        // Set Account
+        out.setFirstName(operator.getFirstName());
+        out.setLastName(operator.getLastName());
+        out.setEmail(operator.getEmail());
+
+        return out;
     }
 
     /**
@@ -82,20 +84,15 @@ public class OperatorService {
      * @param sessionId
      * @param sessionToken
      * @return
-     * @throws BackOfficeException
      */
-    public OperatorLogoutOut logout(String operatorId, String sessionId, String sessionToken) throws BackOfficeException {
+    public OperatorLogoutOut logout(String operatorId, String sessionId, String sessionToken) throws InvalidSessionException {
         sessionCheck(operatorId, sessionId, sessionToken);
-        try {
-            sessionDAO.delete(sessionId);
-            OperatorLogoutOut out = new OperatorLogoutOut();
-            out.setOperatorId(operatorId);
-            out.setMessage("Logged Out");
-            return out;
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw new BackOfficeException();
-        }
+
+        sessionDAO.delete(sessionId);
+        OperatorLogoutOut out = new OperatorLogoutOut();
+        out.setOperatorId(operatorId);
+        out.setMessage("Logged Out");
+        return out;
     }
 
     /**
@@ -103,17 +100,11 @@ public class OperatorService {
      * @param operatorId
      * @param sessionId
      * @param sessionToken
-     * @throws BackOfficeException
      */
-    private void sessionCheck(String operatorId, String sessionId, String sessionToken) throws BackOfficeException {
-        try {
-            OperatorSessionEntity entity = sessionDAO.getByIdAndToken(sessionId, sessionToken);
-            if (!entity.getOperator().getId().equals(operatorId)) {
-                throw new BackOfficeException();
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw new BackOfficeException();
+    private void sessionCheck(String operatorId, String sessionId, String sessionToken) throws InvalidSessionException {
+        OperatorSessionEntity entity = sessionDAO.getByIdAndToken(sessionId, sessionToken);
+        if (entity == null || !entity.getOperator().getId().equals(operatorId)) {
+            throw new InvalidSessionException();
         }
     }
 

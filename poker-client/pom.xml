@@ -20,14 +20,32 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <groupId>org.codehaus.mojo</groupId>
                 <executions>
-                    <execution><!-- Run our version calculation script -->
-                        <id>Build</id>
+                    <execution>
+                        <id>Build for Wildfly</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>build.cmd</executable>
+                            <executable>cmd</executable>
+                            <arguments>
+                                <argument>/C</argument>
+                                <argument>build-wildfly.bat</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>Build for Spring</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>cmd</executable>
+                            <arguments>
+                                <argument>/C</argument>
+                                <argument>build-spring.bat</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>

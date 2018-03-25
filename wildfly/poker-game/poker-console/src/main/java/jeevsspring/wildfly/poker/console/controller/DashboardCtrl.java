@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  * @author Marco Romagnolo
  */
-@Named
+@Named("dashboardCtrl")
 @RequestScoped
 public class DashboardCtrl implements Serializable {
 

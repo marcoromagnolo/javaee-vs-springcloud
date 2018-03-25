@@ -1,7 +1,7 @@
 ### Configure WildFly ###
 
 # Start WildFly listening on all interfaces with JMS and Infinispan support
-./bin/standalone.sh -Djboss.bind.address=0.0.0.0 -c standalone-full-ha.xml
+./bin/standalone.sh -Djboss.bind.address=0.0.0.0 -c standalone-full-ha.xml &> /dev/null &
 
 # Enter in interactive WildFly command line
 ./jboss-cli.sh –c

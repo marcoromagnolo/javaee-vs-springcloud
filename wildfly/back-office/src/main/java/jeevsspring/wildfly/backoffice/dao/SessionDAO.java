@@ -8,6 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.List;
 
 /**
  * @author Marco Romagnolo
@@ -22,10 +23,13 @@ public class SessionDAO {
     private EntityManager em;
 
     public SessionEntity getByIdAndToken(String id, String token) {
-        Query query = em.createQuery("FROM SessionEntity WHERE id = :id AND token = :token");
+        Query query = em.createQuery("SELECT s FROM SessionEntity s WHERE s.id = :id AND s.token = :token");
         query.setParameter("id", id);
         query.setParameter("token", token);
-        SessionEntity entity = (SessionEntity) query.getSingleResult();
+        List list = query.getResultList();
+        SessionEntity entity;
+        if (list.isEmpty()) entity = null;
+        else entity= (SessionEntity) list.get(0);
         logger.debug("getByIdAndToken(" + id + ", " + token + ") return " + entity);
         return entity;
     }

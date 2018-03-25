@@ -1,5 +1,6 @@
 package jeevsspring.wildfly.backoffice.dao;
 
+import jeevsspring.wildfly.backoffice.entity.SessionEntity;
 import jeevsspring.wildfly.backoffice.entity.WalletEntity;
 import org.jboss.logging.Logger;
 
@@ -8,6 +9,7 @@ import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.List;
 
 /**
  * @author Marco Romagnolo
@@ -22,9 +24,12 @@ public class WalletDAO {
     private EntityManager em;
 
     public WalletEntity getByPlayerId(String playerId) {
-        Query query = em.createQuery("FROM WalletEntity WHERE player.id = :playerId");
+        Query query = em.createQuery("SELECT w FROM WalletEntity w WHERE w.player.id = :playerId");
         query.setParameter("playerId", playerId);
-        WalletEntity entity = (WalletEntity) query.getSingleResult();
+        List list = query.getResultList();
+        WalletEntity entity;
+        if (list.isEmpty()) entity = null;
+        else entity= (WalletEntity) list.get(0);
         logger.debug("getByPlayerId(" + playerId + ") return " + entity);
         return entity;
     }

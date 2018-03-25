@@ -1,12 +1,14 @@
 package jeevsspring.wildfly.backoffice.dao;
 
 import jeevsspring.wildfly.backoffice.entity.AccountEntity;
+import jeevsspring.wildfly.backoffice.entity.OperatorEntity;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.List;
 
 /**
  * @author Marco Romagnolo
@@ -21,9 +23,12 @@ public class AccountDAO {
     private EntityManager em;
 
     public AccountEntity getByPlayerId(String playerId) {
-        Query query = em.createQuery("FROM AccountEntity WHERE player.id = :playerId");
+        Query query = em.createQuery("SELECT a FROM AccountEntity a WHERE a.player.id = :playerId");
         query.setParameter("playerId", playerId);
-        AccountEntity entity = (AccountEntity) query.getSingleResult();
+        List list = query.getResultList();
+        AccountEntity entity;
+        if (list.isEmpty()) entity = null;
+        else entity= (AccountEntity) list.get(0);
         logger.debug("getByPlayerId(" + playerId + ") return " + entity);
         return entity;
     }

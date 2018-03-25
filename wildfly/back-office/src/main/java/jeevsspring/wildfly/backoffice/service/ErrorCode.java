@@ -10,7 +10,8 @@ public enum ErrorCode {
     INSUFFICIENT_FUNDS("Fondo insufficiente"),
     INVALID_AMOUNT("Invalid amount"),
     PASSWORD_ENCRYPTION_ERROR("Password Encryption Error"),
-    INVALID_CREDENTIALS("Invalid Username and Password");
+    INVALID_CREDENTIALS("Invalid Username and Password"),
+    INVALID_SESSION("Invalid Session");
 
     private final String message;
 

@@ -42,7 +42,7 @@ public class BOClient {
         logger.trace("login(" + in + ")");
 
         Response rs = target
-                .path("player/login")
+                .path("operator/login")
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.json(in), Response.class);
         OperatorLoginOut out = rs.readEntity(OperatorLoginOut.class);

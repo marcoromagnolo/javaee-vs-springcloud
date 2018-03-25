@@ -1,9 +1,7 @@
 package jeevsspring.wildfly.backoffice.api;
 
 import jeevsspring.wildfly.backoffice.api.json.*;
-import jeevsspring.wildfly.backoffice.service.AuthenticationException;
-import jeevsspring.wildfly.backoffice.service.PlayerService;
-import jeevsspring.wildfly.backoffice.service.BackOfficeException;
+import jeevsspring.wildfly.backoffice.service.*;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
@@ -40,13 +38,13 @@ public class PlayerApi {
         try {
             WalletOut out = playerService.wallet(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
             response = Response.ok(out).build();
-        } catch (BackOfficeException e) {
-            logger.error(e.getMessage());
+        } catch (InvalidSessionException e) {
+            logger.warn(e.getMessage());
             response = Response.serverError()
                     .entity(new Status(e.getErrorCode()))
-                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
+                    .status(Response.Status.FORBIDDEN).build();
         }
-        logger.debug("wallet(" + in + ") return " + response);
+        logger.debug("wallet(" + in + ") return " + response.getEntity());
         return response;
     }
 
@@ -59,13 +57,13 @@ public class PlayerApi {
         try {
             AccountOut out = playerService.account(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
             response = Response.ok(out).build();
-        } catch (BackOfficeException e) {
-            logger.error(e.getMessage());
+        } catch (InvalidSessionException e) {
+            logger.warn(e.getMessage());
             response = Response.serverError()
                     .entity(new Status(e.getErrorCode()))
-                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
+                    .status(Response.Status.FORBIDDEN).build();
         }
-        logger.debug("account(" + in + ") return " + response);
+        logger.debug("account(" + in + ") return " + response.getEntity());
         return response;
     }
 
@@ -78,18 +76,13 @@ public class PlayerApi {
         try {
             LoginOut out = playerService.login(in.getUsername(), in.getPassword());
             response = Response.ok(out).build();
-        } catch (BackOfficeException e) {
-            logger.error(e.getMessage());
-            response = Response.serverError()
-                    .entity(new Status(e.getErrorCode()))
-                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         } catch (AuthenticationException e) {
             logger.warn(e.getMessage());
             response = Response.serverError()
                     .entity(new Status(e.getErrorCode()))
-                    .status(Response.Status.FORBIDDEN).build();
+                    .status(Response.Status.UNAUTHORIZED).build();
         }
-        logger.debug("login(" + in + ") return " + response);
+        logger.debug("login(" + in + ") return " + response.getEntity());
         return response;
     }
 
@@ -102,13 +95,13 @@ public class PlayerApi {
         try {
             LogoutOut out = playerService.logout(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
             response = Response.ok(out).build();
-        } catch (BackOfficeException e) {
-            logger.error(e.getMessage());
+        } catch (InvalidSessionException e) {
+            logger.warn(e.getMessage());
             response = Response.serverError()
                     .entity(new Status(e.getErrorCode()))
-                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
+                    .status(Response.Status.FORBIDDEN).build();
         }
-        logger.debug("logout(" + in + ") return " + response);
+        logger.debug("logout(" + in + ") return " + response.getEntity());
         return response;
     }
 
@@ -121,13 +114,13 @@ public class PlayerApi {
         try {
             SessionRefreshOut out = playerService.sessionRefresh(in.getPlayerId(), in.getSessionId(), in.getSessionToken());
             response = Response.ok(out).build();
-        } catch (BackOfficeException e) {
-            logger.error(e.getMessage());
+        } catch (InvalidSessionException e) {
+            logger.warn(e.getMessage());
             response = Response.serverError()
                     .entity(new Status(e.getErrorCode()))
-                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
+                    .status(Response.Status.FORBIDDEN).build();
         }
-        logger.debug("sessionRefresh(" + in + ") return " + response);
+        logger.debug("sessionRefresh(" + in + ") return " + response.getEntity());
         return response;
     }
 
@@ -140,13 +133,18 @@ public class PlayerApi {
         try {
             StakeOut out = playerService.stake(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
             response = Response.ok(out).build();
-        } catch (BackOfficeException e) {
-            logger.error(e.getMessage());
+        } catch (InvalidSessionException e) {
+            logger.warn(e.getMessage());
             response = Response.serverError()
                     .entity(new Status(e.getErrorCode()))
-                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
+                    .status(Response.Status.FORBIDDEN).build();
+        } catch (InvalidAmountException | InsufficientFundsException e) {
+            logger.warn(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.BAD_REQUEST).build();
         }
-        logger.debug("stake(" + in + ") return " + response);
+        logger.debug("stake(" + in + ") return " + response.getEntity());
         return response;
     }
 
@@ -159,13 +157,18 @@ public class PlayerApi {
         try {
             WinOut out = playerService.win(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
             response = Response.ok(out).build();
-        } catch (BackOfficeException e) {
-            logger.error(e.getMessage());
+        } catch (InvalidSessionException e) {
+            logger.warn(e.getMessage());
             response = Response.serverError()
                     .entity(new Status(e.getErrorCode()))
-                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
+                    .status(Response.Status.FORBIDDEN).build();
+        } catch (InvalidAmountException e) {
+            logger.warn(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.BAD_REQUEST).build();
         }
-        logger.debug("win(" + in + ") return " + response);
+        logger.debug("win(" + in + ") return " + response.getEntity());
         return response;
     }
 
@@ -178,13 +181,18 @@ public class PlayerApi {
         try {
             RefundOut out = playerService.refund(in.getPlayerId(), in.getSessionId(), in.getSessionToken(), in.getAmount());
             response = Response.ok(out).build();
-        } catch (BackOfficeException e) {
-            logger.error(e.getMessage());
+        } catch (InvalidSessionException e) {
+            logger.warn(e.getMessage());
             response = Response.serverError()
                     .entity(new Status(e.getErrorCode()))
-                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
+                    .status(Response.Status.FORBIDDEN).build();
+        } catch (InvalidAmountException e) {
+            logger.warn(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.BAD_REQUEST).build();
         }
-        logger.debug("refund(" + in + ") return " + response);
+        logger.debug("refund(" + in + ") return " + response.getEntity());
         return response;
     }
 }

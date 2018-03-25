@@ -16,7 +16,7 @@ public class LoginFilter implements Filter {
     private final Logger logger = Logger.getLogger(getClass());
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         // Nothing to do here!
     }
 

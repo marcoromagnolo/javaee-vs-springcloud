@@ -2,8 +2,8 @@ package jeevsspring.wildfly.backoffice.api;
 
 import jeevsspring.wildfly.backoffice.api.json.*;
 import jeevsspring.wildfly.backoffice.service.AuthenticationException;
+import jeevsspring.wildfly.backoffice.service.InvalidSessionException;
 import jeevsspring.wildfly.backoffice.service.OperatorService;
-import jeevsspring.wildfly.backoffice.service.BackOfficeException;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
@@ -40,16 +40,13 @@ public class OperatorApi {
         try {
             OperatorLoginOut out = operatorService.login(in.getUsername(), in.getPassword());
             response = Response.ok(out, MediaType.APPLICATION_JSON).build();
-        } catch (BackOfficeException e) {
-            logger.error(e);
-            response = Response.serverError().status(Response.Status.INTERNAL_SERVER_ERROR).build();
         } catch (AuthenticationException e) {
             logger.warn(e);
             response = Response.serverError()
                     .entity(new Status(e.getErrorCode()))
-                    .status(Response.Status.FORBIDDEN).build();
+                    .status(Response.Status.UNAUTHORIZED).build();
         }
-        logger.debug("login(" + in + ") return " + response);
+        logger.debug("login(" + in + ") return " + response.getEntity());
         return response;
     }
 
@@ -62,13 +59,13 @@ public class OperatorApi {
         try {
             OperatorLogoutOut out = operatorService.logout(in.getOperatorId(), in.getSessionId(), in.getSessionToken());
             response = Response.ok(out, MediaType.APPLICATION_JSON).build();
-        } catch (BackOfficeException e) {
-            logger.error(e);
+        } catch (InvalidSessionException e) {
+            logger.warn(e);
             response = Response.serverError()
                     .entity(new Status(e.getErrorCode()))
-                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
+                    .status(Response.Status.FORBIDDEN).build();
         }
-        logger.debug("logout(" + in + ") return " + response);
+        logger.debug("logout(" + in + ") return " + response.getEntity());
         return response;
     }
 }
