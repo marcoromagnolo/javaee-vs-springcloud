@@ -2,6 +2,7 @@ package jeevsspring.wildfly.poker.manager;
 
 import jeevsspring.wildfly.poker.manager.api.HandApi;
 import jeevsspring.wildfly.poker.manager.api.LobbyApi;
+import jeevsspring.wildfly.poker.manager.api.PlayerApi;
 import jeevsspring.wildfly.poker.manager.api.TableApi;
 import org.jboss.logging.Logger;
 
@@ -18,6 +19,7 @@ public class PMRestActivator extends Application {
     public Set<Class<?>> getClasses() {
         logger.trace("getClasses()");
         Set<Class<?>> classes = new HashSet<>();
+        classes.add(PlayerApi.class);
         classes.add(LobbyApi.class);
         classes.add(TableApi.class);
         classes.add(HandApi.class);
