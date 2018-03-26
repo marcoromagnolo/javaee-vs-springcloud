@@ -7,35 +7,28 @@ import jeevsspring.wildfly.backoffice.service.ErrorCode;
  */
 public class Status {
 
-    private boolean error;
-
-    private String errorCode;
+    private String error;
 
     private String message;
 
     public Status() {
     }
 
-    public Status(ErrorCode errorCode) {
-        this.errorCode = errorCode.name();
-        this.error = true;
-        this.message = errorCode.getMessage();
+    public Status(String message) {
+        this.message = message;
     }
 
-    public boolean isError() {
+    public Status(ErrorCode error) {
+        this.error = error.name();
+        this.message = error.getMessage();
+    }
+
+    public String getError() {
         return error;
     }
 
-    public void setError(boolean error) {
+    public void setError(String error) {
         this.error = error;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
     }
 
     public String getMessage() {
@@ -49,8 +42,7 @@ public class Status {
     @Override
     public String toString() {
         return "Status{" +
-                "error=" + error +
-                ", errorCode='" + errorCode + '\'' +
+                "errorCode='" + error + '\'' +
                 ", message='" + message + '\'' +
                 '}';
     }

@@ -20,6 +20,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,17 +45,19 @@ public class HandApi<E extends GameAction> {
 
     @GET
     @Path("/test")
-    public Status test() {
+    public Response test() {
         logger.trace("test()");
         Status out = new Status();
         out.setMessage("Test completed");
-        return out;
+        return Response.ok("Test completed").build();
     }
 
     @POST
     @Path("/bet")
-    public BetOut bet(BetIn in) {
+    public Response bet(BetIn in) {
         logger.trace("bet(" + in + ")");
+
+        Response response;
         BetOut out = new BetOut();
         try {
             String playerId = playerManager.getPlayerId(in.getSessionId());
@@ -63,19 +66,24 @@ public class HandApi<E extends GameAction> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setSessionToken(in.getToken());
-        } catch (BOException | GameException e) {
+            response = Response.ok(out).build();
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
-            out.setError(true);
-            out.setErrorCode("GAME_NOT_STARTED");
+            out.setError(e.getError());
+            response = Response.serverError()
+                    .entity(out)
+                    .status(Response.Status.FORBIDDEN).build();
         }
         logger.debug("bet(" + in + ") return " + out);
-        return out;
+        return response;
     }
 
     @POST
     @Path("/call")
-    public CallOut call(CallIn in) {
+    public Response call(CallIn in) {
         logger.trace("call(" + in + ")");
+
+        Response response;
         CallOut out = new CallOut();
         try {
             String playerId = playerManager.getPlayerId(in.getSessionId());
@@ -84,19 +92,24 @@ public class HandApi<E extends GameAction> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setSessionToken(in.getToken());
-        } catch (BOException | GameException e) {
+            response = Response.ok(out).build();
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
-            out.setError(true);
-            out.setErrorCode("GAME_NOT_STARTED");
+            out.setError(e.getError());
+            response = Response.serverError()
+                    .entity(out)
+                    .status(Response.Status.FORBIDDEN).build();
         }
         logger.debug("call(" + in + ") return " + out);
-        return out;
+        return response;
     }
 
     @POST
     @Path("/check")
-    public CheckOut check(CheckIn in) {
+    public Response check(CheckIn in) {
         logger.trace("check(" + in + ")");
+
+        Response response;
         CheckOut out = new CheckOut();
         try {
             String playerId = playerManager.getPlayerId(in.getSessionId());
@@ -105,19 +118,24 @@ public class HandApi<E extends GameAction> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setSessionToken(in.getToken());
-        } catch (BOException | GameException e) {
+            response = Response.ok(out).build();
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
-            out.setError(true);
-            out.setErrorCode("GAME_NOT_STARTED");
+            out.setError(e.getError());
+            response = Response.serverError()
+                    .entity(out)
+                    .status(Response.Status.FORBIDDEN).build();
         }
         logger.debug("check(" + in + ") return " + out);
-        return out;
+        return response;
     }
 
     @POST
     @Path("/raise")
-    public RaiseOut raise(RaiseIn in) {
+    public Response raise(RaiseIn in) {
         logger.trace("raise(" + in + ")");
+
+        Response response;
         RaiseOut out = new RaiseOut();
         try {
             String playerId = playerManager.getPlayerId(in.getSessionId());
@@ -126,19 +144,24 @@ public class HandApi<E extends GameAction> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setSessionToken(in.getToken());
-        } catch (BOException | GameException e) {
+            response = Response.ok(out).build();
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
-            out.setError(true);
-            out.setErrorCode("GAME_NOT_STARTED");
+            out.setError(e.getError());
+            response = Response.serverError()
+                    .entity(out)
+                    .status(Response.Status.FORBIDDEN).build();
         }
         logger.debug("raise(" + in + ") return " + out);
-        return out;
+        return response;
     }
 
     @POST
     @Path("/fold")
-    public FoldOut fold(FoldIn in) {
+    public Response fold(FoldIn in) {
         logger.trace("fold(" + in + ")");
+
+        Response response;
         FoldOut out = new FoldOut();
         try {
             String playerId = playerManager.getPlayerId(in.getSessionId());
@@ -147,19 +170,24 @@ public class HandApi<E extends GameAction> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setSessionToken(in.getToken());
-        } catch (BOException | GameException e) {
+            response = Response.ok(out).build();
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
-            out.setError(true);
-            out.setErrorCode("GAME_NOT_STARTED");
+            out.setError(e.getError());
+            response = Response.serverError()
+                    .entity(out)
+                    .status(Response.Status.FORBIDDEN).build();
         }
         logger.debug("fold(" + in + ") return " + out);
-        return out;
+        return response;
     }
 
     @POST
     @Path("/sync")
-    public SyncOut sync(SyncIn in) {
+    public Response sync(SyncIn in) {
         logger.trace("sync(" + in + ")");
+
+        Response response;
         SyncOut out = new SyncOut();
         try {
             String playerId = playerManager.getPlayerId(in.getSessionId());
@@ -167,13 +195,16 @@ public class HandApi<E extends GameAction> {
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
             out.setSessionToken(in.getToken());
-        } catch (BOException | GameException e) {
+            response = Response.ok(out).build();
+        } catch (GameException e) {
             logger.error(e.getMessage(), e);
-            out.setError(true);
-            out.setErrorCode("GAME_NOT_STARTED");
+            out.setError(e.getError());
+            response = Response.serverError()
+                    .entity(out)
+                    .status(Response.Status.FORBIDDEN).build();
         }
         logger.debug("sync(" + in + ") return " + out);
-        return out;
+        return response;
     }
 
     private List<ActionOut> toActions(String tableId, String playerId) throws GameException {

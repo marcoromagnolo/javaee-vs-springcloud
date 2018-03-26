@@ -3,7 +3,7 @@ package jeevsspring.wildfly.poker.manager.bo.json;
 /**
  * @author Marco Romagnolo
  */
-public class BOLogoutOut {
+public class BOLogoutOut extends BOStatus {
 
     private String playerId;
 

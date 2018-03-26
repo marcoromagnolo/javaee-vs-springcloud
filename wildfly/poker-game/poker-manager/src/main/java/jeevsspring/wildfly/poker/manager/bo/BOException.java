@@ -2,7 +2,19 @@ package jeevsspring.wildfly.poker.manager.bo;
 
 public class BOException extends Exception {
 
-    public BOException() {
-        super("Server Error");
+    private final String error;
+
+    public BOException(String error) {
+        super();
+        this.error = error;
+    }
+
+    public BOException(String error, String message) {
+        super(message);
+        this.error = error;
+    }
+
+    public String getError() {
+        return error;
     }
 }

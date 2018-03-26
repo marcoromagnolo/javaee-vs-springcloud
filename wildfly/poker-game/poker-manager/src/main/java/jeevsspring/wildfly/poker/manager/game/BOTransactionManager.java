@@ -1,7 +1,7 @@
 package jeevsspring.wildfly.poker.manager.game;
 
-import jeevsspring.wildfly.poker.manager.bo.BOException;
 import jeevsspring.wildfly.poker.manager.bo.BOClient;
+import jeevsspring.wildfly.poker.manager.bo.BOException;
 import jeevsspring.wildfly.poker.manager.bo.json.*;
 import jeevsspring.wildfly.poker.manager.game.engine.Game;
 import jeevsspring.wildfly.poker.manager.game.engine.GameAction;
@@ -83,27 +83,22 @@ public class BOTransactionManager<E extends GameAction> {
         }
     }
 
-    public BOStakeOut stake(String tableId, String playerId, long amount) throws GameException {
-        if (!games.get(tableId).isRunning()) throw new GameException("Game with tableId: " + tableId + " is not running");
+    public BOStakeOut stake(String tableId, String playerId, long amount) throws GameException, BOException {
+        if (!games.get(tableId).isRunning()) throw new GameException(ErrorCode.GAME_NOT_RUNNING, "Game with tableId: " + tableId + " is not running");
         BOStakeIn in = new BOStakeIn();
         in.setPlayerId(playerId);
         in.setSessionId(systemSession.getSessionId());
         in.setSessionToken(systemSession.getSessionToken());
         in.setAmount(amount);
-        try {
-            BOStakeOut out = boClient.stake(in);
-            Game game = games.get(tableId);
-            Player player = new Player(out.getPlayerId(), out.getNickname(), amount);
-            game.getPlayers().put(out.getPlayerId(), player);
-            return out;
-        } catch (BOException e) {
-            logger.error(e);
-            throw new GameException("REFUND_ERROR");
-        }
+        BOStakeOut out = boClient.stake(in);
+        Game game = games.get(tableId);
+        Player player = new Player(out.getPlayerId(), out.getNickname(), amount);
+        game.getPlayers().put(out.getPlayerId(), player);
+        return out;
     }
 
-    public BORefundOut refund(String tableId, String playerId) throws GameException {
-        if (!games.get(tableId).isRunning()) throw new GameException("Game with tableId: " + tableId + " is not running");
+    public BORefundOut refund(String tableId, String playerId) throws GameException, BOException {
+        if (!games.get(tableId).isRunning()) throw new GameException(ErrorCode.GAME_NOT_RUNNING, "Game with tableId: " + tableId + " is not running");
         Game game = games.get(tableId);
         Player player = game.getPlayer(playerId);
         BORefundIn in = new BORefundIn();
@@ -111,12 +106,7 @@ public class BOTransactionManager<E extends GameAction> {
         in.setAmount(player.getBalance());
         in.setSessionId(systemSession.getSessionId());
         in.setSessionToken(systemSession.getSessionToken());
-        try {
-            BORefundOut out = boClient.refund(in);
-            return out;
-        } catch (BOException e) {
-            logger.error(e);
-            throw new GameException("REFUND_ERROR");
-        }
+        BORefundOut out = boClient.refund(in);
+        return out;
     }
 }

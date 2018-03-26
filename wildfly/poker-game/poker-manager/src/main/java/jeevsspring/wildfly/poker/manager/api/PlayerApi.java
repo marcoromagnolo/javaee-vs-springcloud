@@ -1,9 +1,11 @@
 package jeevsspring.wildfly.poker.manager.api;
 
-import jeevsspring.wildfly.poker.manager.api.json.Status;
 import jeevsspring.wildfly.poker.manager.api.json.player.*;
 import jeevsspring.wildfly.poker.manager.bo.BOException;
-import jeevsspring.wildfly.poker.manager.bo.json.*;
+import jeevsspring.wildfly.poker.manager.bo.json.BOAccountOut;
+import jeevsspring.wildfly.poker.manager.bo.json.BOLoginOut;
+import jeevsspring.wildfly.poker.manager.bo.json.BOLogoutOut;
+import jeevsspring.wildfly.poker.manager.bo.json.BOWalletOut;
 import jeevsspring.wildfly.poker.manager.game.player.PlayerManager;
 import org.jboss.logging.Logger;
 
@@ -12,6 +14,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Stateless
 @LocalBean
@@ -28,52 +31,62 @@ public class PlayerApi {
 
     @GET
     @Path("/test")
-    public Status test() {
+    public Response test() {
         logger.trace("test()");
-        Status out = new Status();
-        out.setMessage("Test completed");
-        return out;
+        return Response.ok("Test completed").build();
     }
 
     @POST
     @Path("/wallet")
-    public WalletOut wallet(WalletIn in) {
+    public Response wallet(WalletIn in) {
         logger.trace("wallet(" + in + ")");
+
+        Response response;
         WalletOut out = new WalletOut();
         try {
             BOWalletOut bo = playerManager.getWallet(in.getSessionId(), in.getToken());
             out.setBalance(bo.getBalance());
+            response = Response.ok(out).build();
         } catch (BOException e) {
             logger.error(e);
-            out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setError(e.getError());
+            response = Response.serverError()
+                    .entity(out)
+                    .status(Response.Status.FORBIDDEN).build();
         }
         logger.debug("wallet(" + in + ") return " + out);
-        return out;
+        return response;
     }
 
     @POST
     @Path("/account")
-    public AccountOut account(AccountIn in) {
+    public Response account(AccountIn in) {
         logger.trace("wallet(" + in + ")");
+
+        Response response;
         AccountOut out = new AccountOut();
         try {
             BOAccountOut bo = playerManager.getAccount(in.getSessionId(), in.getToken());
             out.setFirstName(bo.getFirstName());
             out.setLastName(bo.getLastName());
+            response = Response.ok(out).build();
         } catch (BOException e) {
             logger.error(e);
-            out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setError(e.getError());
+            response = Response.serverError()
+                    .entity(out)
+                    .status(Response.Status.FORBIDDEN).build();
         }
         logger.debug("login(" + in + ") return " + out);
-        return out;
+        return response;
     }
 
     @POST
     @Path("/login")
-    public LoginOut login(LoginIn in) {
+    public Response login(LoginIn in) {
         logger.trace("login(" + in + ")");
+
+        Response response;
         LoginOut out = new LoginOut();
         try {
             BOLoginOut bo = playerManager.login(in.getUsername(), in.getPassword());
@@ -93,28 +106,38 @@ public class PlayerApi {
             WalletOut wallet = new WalletOut();
             wallet.setBalance(bo.getBalance());
             out.setWallet(wallet);
+
+            response = Response.ok(out).build();
         } catch (BOException e) {
             logger.error(e);
-            out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setError(e.getError());
+            response = Response.serverError()
+                    .entity(out)
+                    .status(Response.Status.FORBIDDEN).build();
         }
         logger.debug("login(" + in + ") return " + out);
-        return out;
+        return response;
     }
 
     @POST
     @Path("/logout")
-    public LogoutOut logout(LogoutIn in) {
+    public Response logout(LogoutIn in) {
         logger.trace("logout(" + in + ")");
+
+        Response response;
         LogoutOut out = new LogoutOut();
         try {
             BOLogoutOut bo = playerManager.logout(in.getSessionId(), in.getToken());
+            out.setMessage(bo.getMessage());
+            response = Response.ok(out).build();
         } catch (BOException e) {
             logger.error(e);
-            out.setError(true);
-            out.setErrorCode("PLAYER_ERROR");
+            out.setError(e.getError());
+            response = Response.serverError()
+                    .entity(out)
+                    .status(Response.Status.FORBIDDEN).build();
         }
         logger.debug("logout(" + in + ") return " + out);
-        return out;
+        return response;
     }
 }

@@ -5,26 +5,16 @@ package jeevsspring.wildfly.poker.manager.bo.json;
  */
 public class BOStatus {
 
-    private boolean error;
-
-    private String errorCode;
+    private String error;
 
     private String message;
 
-    public boolean isError() {
+    public String getError() {
         return error;
     }
 
-    public void setError(boolean error) {
+    public void setError(String error) {
         this.error = error;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
     }
 
     public String getMessage() {
@@ -38,8 +28,7 @@ public class BOStatus {
     @Override
     public String toString() {
         return "BOStatus{" +
-                "error=" + error +
-                ", errorCode='" + errorCode + '\'' +
+                "errorCode='" + error + '\'' +
                 ", message='" + message + '\'' +
                 '}';
     }

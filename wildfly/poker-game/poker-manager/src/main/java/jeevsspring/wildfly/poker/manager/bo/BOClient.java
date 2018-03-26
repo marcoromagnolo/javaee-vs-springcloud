@@ -12,7 +12,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -48,7 +47,7 @@ public class BOClient {
         BOLoginOut out = rs.readEntity(BOLoginOut.class);
         logger.debug("JSON REST response: " + out);
         if (rs.getStatus() != 200) {
-            throw new BOException();
+            throw new BOException(out.getError());
         }
 
         logger.debug("login(" + in + ") return " + out);
@@ -65,7 +64,7 @@ public class BOClient {
         BOLogoutOut out = rs.readEntity(BOLogoutOut.class);
         out.setMessage("Bye Bye!");
         if (rs.getStatus() != 200) {
-            throw new BOException();
+            throw new BOException(out.getError());
         }
 
         logger.debug("logout(" + in + ") return " + out);
@@ -81,7 +80,7 @@ public class BOClient {
                 .post(Entity.json(in), Response.class);
         BOSessionRefreshOut out = rs.readEntity(BOSessionRefreshOut.class);
         if (rs.getStatus() != 200) {
-            throw new BOException();
+            throw new BOException(out.getError());
         }
 
         logger.debug("sessionRefresh(" + in + ") return " + out);
@@ -97,7 +96,7 @@ public class BOClient {
                 .post(Entity.json(in), Response.class);
         BOWinOut out = rs.readEntity(BOWinOut.class);
         if (rs.getStatus() != 200) {
-            throw new BOException();
+            throw new BOException(out.getError());
         }
 
         logger.debug("win(" + in + ") return " + out);
@@ -113,7 +112,7 @@ public class BOClient {
                 .post(Entity.json(in), Response.class);
         BOStakeOut out = rs.readEntity(BOStakeOut.class);
         if (rs.getStatus() != 200) {
-            throw new BOException();
+            throw new BOException(out.getError());
         }
 
         logger.debug("stake(" + in + ") return " + out);
@@ -130,7 +129,7 @@ public class BOClient {
                 .post(Entity.json(in), Response.class);
         BORefundOut out = rs.readEntity(BORefundOut.class);
         if (rs.getStatus() != 200) {
-            throw new BOException();
+            throw new BOException(out.getError());
         }
 
         logger.debug("refund(" + in + ") return " + out);
@@ -146,7 +145,7 @@ public class BOClient {
                 .post(Entity.json(in), Response.class);
         BOWalletOut out = rs.readEntity(BOWalletOut.class);
         if (rs.getStatus() != 200) {
-            throw new BOException();
+            throw new BOException(out.getError());
         }
 
         logger.debug("refund(" + in + ") return " + out);
@@ -162,7 +161,7 @@ public class BOClient {
                 .post(Entity.json(in), Response.class);
         BOAccountOut out = rs.readEntity(BOAccountOut.class);
         if (rs.getStatus() != 200) {
-            throw new BOException();
+            throw new BOException(out.getError());
         }
 
         logger.debug("account(" + in + ") return " + out);

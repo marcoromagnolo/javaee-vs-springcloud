@@ -48,26 +48,13 @@ class Login extends Component {
         console.debug(this.state);
         if (this.validateForm()) {
             let playerApi = new ApiClient();
-            playerApi.login(this.state.username, this.state.password).then(response => {
-                console.debug(response);
-                return response.json();
-                if (response.ok) {
-                    
-                } else {
-                    // let errorMessage = response.json().errorCode;
-                    // console.warn(errorMessage);
-                    // this.setState({error: true, errorMessage: errorMessage, loading: false});
-                }
-            }).then(json => {
-                if (json) {
-                    console.debug(json);
-                    this.setState({error: false, errorMessage: '', loading: false});
-                    Session.setSessionId(json.sessionId, json.sessionExpireTime);
-                    localStorage.setItem('sessionToken', json.sessionToken);
-                    localStorage.setItem('nickname', json.nickname);
-                    localStorage.setItem('account', json.account);
-                    localStorage.setItem('wallet', json.wallet);
-                }
+            playerApi.login(this.state.username, this.state.password).then(json => {
+                this.setState({error: false, errorMessage: '', loading: false});
+                Session.setSessionId(json.sessionId, json.sessionExpireTime);
+                localStorage.setItem('sessionToken', json.sessionToken);
+                localStorage.setItem('nickname', json.nickname);
+                localStorage.setItem('account', json.account);
+                localStorage.setItem('wallet', json.wallet);
             }).catch(error => {
                 console.error(error);
                 this.setState({error: true, errorMessage: error.message, loading: false});

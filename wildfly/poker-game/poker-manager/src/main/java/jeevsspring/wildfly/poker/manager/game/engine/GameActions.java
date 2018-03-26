@@ -1,5 +1,6 @@
 package jeevsspring.wildfly.poker.manager.game.engine;
 
+import jeevsspring.wildfly.poker.manager.game.ErrorCode;
 import jeevsspring.wildfly.poker.manager.game.GameException;
 import jeevsspring.wildfly.poker.manager.game.hand.Card;
 import jeevsspring.wildfly.poker.manager.game.player.Player;
@@ -37,7 +38,7 @@ public class GameActions<E extends GameAction>  {
     }
 
     public List<E> get(String tableId, String playerId) throws GameException {
-        if (!actions.containsKey(tableId)) throw new GameException("TableId not Found");
+        if (!actions.containsKey(tableId)) throw new GameException(ErrorCode.GAME_NOT_FOUND);
         List<E> list = new ArrayList<>();
         for (E action : actions.get(tableId)) {
             list.add(filter(action, playerId));

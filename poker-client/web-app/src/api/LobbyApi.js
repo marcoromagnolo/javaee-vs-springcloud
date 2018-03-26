@@ -7,13 +7,7 @@ class LobbyApi extends Component {
 
     test() {
         return fetch(API_URL + '/test').then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Error to connect server');
-            }
-        }).catch(error => {
-            throw error;
+            return response.json();
         });
     }
 
@@ -27,11 +21,8 @@ class LobbyApi extends Component {
             },
             body: json
         }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.json().errorCode);
-            }
+            console.debug(response);
+            return response.json();
         });
     }
 }
