@@ -17,14 +17,16 @@ class Session {
     }
 
     static setSessionId(sessionId, expireTime) {
-        let d = new Date();
-        d.setTime(expireTime);
-        document.cookie = "sessionId=" + sessionId + "; expires=" + d.toUTCString() + ";path=/";
+        if (sessionId && expireTime) {
+            let d = new Date();
+            d.setTime(expireTime);
+            document.cookie = "sessionId=" + sessionId + "; expires=" + d.toUTCString() + ";path=/";
+        }
     }
 
     static isSessionActive() {
         let sessionId = Session.getSessionId();
-        let active = sessionId.length > 0;
+        let active = sessionId && sessionId.length > 0;
         console.debug(active ? 'Session active with id: ' + sessionId : 'Session not active');
         return active;
     }

@@ -12,17 +12,24 @@ class TableApi extends Component {
             } else {
                 throw new Error('Error to connect server');
             }
+        }).catch(error => {
+            throw error;
         });
     }
 
     join(sessionId, sessionToken, tableId) {
+        let json = JSON.stringify({
+            sessionId: sessionId,
+            sessionToken: sessionToken,
+            tableId: tableId
+        });
         return fetch(API_URL + '/join', {
             method: "post",
-            body: {
-                sessionId: sessionId,
-                sessionToken: sessionToken,
-                tableId: tableId
-            }
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json
         }).then(response => {
             if (response.ok) {
                 return response.json();
@@ -33,13 +40,18 @@ class TableApi extends Component {
     }
 
     quit(sessionId, sessionToken, tableId) {
+        let json = JSON.stringify({
+            sessionId: sessionId,
+            sessionToken: sessionToken,
+            tableId: tableId
+        });
         return fetch(API_URL + '/quit', {
             method: "post",
-            body: {
-                sessionId: sessionId,
-                sessionToken: sessionToken,
-                tableId: tableId
-            }
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json
         }).then(response => {
             if (response.ok) {
                 return response.json();
@@ -50,14 +62,19 @@ class TableApi extends Component {
     }
 
     buyin(sessionId, sessionToken, tableId, amount) {
+        let json = JSON.stringify({
+            sessionId: sessionId,
+            sessionToken: sessionToken,
+            tableId: tableId,
+            amount: amount
+        });
         return fetch(API_URL + '/buyin', {
             method: "post",
-            body: {
-                sessionId: sessionId,
-                sessionToken: sessionToken,
-                tableId: tableId,
-                amount: amount
-            }
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json
         }).then(response => {
             if (response.ok) {
                 return response.json();
@@ -68,13 +85,18 @@ class TableApi extends Component {
     }
 
     buyout(sessionId, sessionToken, tableId) {
+        let json = JSON.stringify({
+            sessionId: sessionId,
+            sessionToken: sessionToken,
+            tableId: tableId
+        });
         return fetch(API_URL + '/buyout', {
             method: "post",
-            body: {
-                sessionId: sessionId,
-                sessionToken: sessionToken,
-                tableId: tableId
-            }
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json
         }).then(response => {
             if (response.ok) {
                 return response.json();

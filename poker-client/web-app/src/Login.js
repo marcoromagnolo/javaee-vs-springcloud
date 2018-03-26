@@ -39,10 +39,8 @@ class Login extends Component {
     }
 
     handlePasswordChange(event) {
-        this.setState({ password: event.target.value, error: false, errorMessage: '' });
+        this.setState({password: event.target.value, error: false, errorMessage: ''});
     }
-
-
 
     handleSubmit(event) {
         event.preventDefault();
@@ -51,18 +49,24 @@ class Login extends Component {
         if (this.validateForm()) {
             let playerApi = new ApiClient();
             playerApi.login(this.state.username, this.state.password).then(response => {
+                console.debug(response);
+                return response.json();
                 if (response.ok) {
+                    
+                } else {
+                    // let errorMessage = response.json().errorCode;
+                    // console.warn(errorMessage);
+                    // this.setState({error: true, errorMessage: errorMessage, loading: false});
+                }
+            }).then(json => {
+                if (json) {
+                    console.debug(json);
                     this.setState({error: false, errorMessage: '', loading: false});
-                    let json = response.json();
                     Session.setSessionId(json.sessionId, json.sessionExpireTime);
                     localStorage.setItem('sessionToken', json.sessionToken);
                     localStorage.setItem('nickname', json.nickname);
                     localStorage.setItem('account', json.account);
                     localStorage.setItem('wallet', json.wallet);
-                } else {
-                    let errorMessage = response.json().errorCode;
-                    console.warn(errorMessage);
-                    this.setState({error: true, errorMessage: errorMessage, loading: false});
                 }
             }).catch(error => {
                 console.error(error);

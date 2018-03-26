@@ -12,116 +12,112 @@ class HandApi extends Component {
             } else {
                 throw new Error('Error to connect server');
             }
+        }).catch(error => {
+            throw error;
         });
     }
 
     bet(sessionId, sessionToken, tableId, handId, amount) {
+        let json = JSON.stringify({
+            sessionId: sessionId,
+            sessionToken: sessionToken,
+            tableId: tableId,
+            handId: handId,
+            amount: amount
+        });
         return fetch(API_URL + '/bet', {
             method: "post",
-            body: {
-                sessionId: sessionId,
-                sessionToken: sessionToken,
-                tableId: tableId,
-                handId: handId,
-                amount: amount
-            }
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.json().errorCode);
-            }
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json
         });
     }
 
     call(sessionId, sessionToken, tableId, handId) {
+        let json = JSON.stringify({
+            sessionId: sessionId,
+            sessionToken: sessionToken,
+            tableId: tableId,
+            handId: handId
+        });
         return fetch(API_URL + '/call', {
             method: "post",
-            body: {
-                sessionId: sessionId,
-                sessionToken: sessionToken,
-                tableId: tableId,
-                handId: handId
-            }
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.json().errorCode);
-            }
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json
         });
     }
 
     check(sessionId, sessionToken, tableId, handId) {
+        let json = JSON.stringify({
+            sessionId: sessionId,
+            sessionToken: sessionToken,
+            tableId: tableId,
+            handId: handId
+        });
         return fetch(API_URL + '/check', {
             method: "post",
-            body: {
-                sessionId: sessionId,
-                sessionToken: sessionToken,
-                tableId: tableId,
-                handId: handId
-            }
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.json().errorCode);
-            }
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json
         });
     }
 
     raise(sessionId, sessionToken, tableId, handId, amount) {
+        let json = JSON.stringify({
+            sessionId: sessionId,
+            sessionToken: sessionToken,
+            tableId: tableId,
+            handId: handId,
+            amount: amount
+        });
         return fetch(API_URL + '/raise', {
             method: "post",
-            body: {
-                sessionId: sessionId,
-                sessionToken: sessionToken,
-                tableId: tableId,
-                handId: handId,
-                amount: amount
-            }
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.json().errorCode);
-            }
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json
         });
     }
 
     fold(sessionId, sessionToken, tableId, handId) {
+        let json = JSON.stringify({
+            sessionId: sessionId,
+            sessionToken: sessionToken,
+            tableId: tableId,
+            handId: handId
+        });
         return fetch(API_URL + '/fold', {
             method: "post",
-            body: {
-                sessionId: sessionId,
-                sessionToken: sessionToken,
-                tableId: tableId,
-                handId: handId
-            }
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.json().errorCode);
-            }
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json
         });
     }
 
     sync(sessionId, sessionToken, tableId, handId) {
+        let json = JSON.stringify({
+            sessionId: sessionId,
+            sessionToken: sessionToken,
+            tableId: tableId,
+            handId: handId
+        });
         return fetch(API_URL + '/sync', {
             method: "post",
-            body: {
-                sessionId: sessionId,
-                sessionToken: sessionToken,
-                tableId: tableId,
-                handId: handId
-            }
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.json().errorCode);
-            }
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: json
         });
     }
 
