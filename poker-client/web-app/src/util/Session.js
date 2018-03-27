@@ -21,7 +21,7 @@ class Session {
             console.debug('setSessionId(' + sessionId + ', ' + expireTime + ')');
             let d = new Date();
             d.setTime(expireTime);
-            document.cookie = "sessionId=" + sessionId + ";domain=localhost;expires=" + d.toUTCString() + ";path=/";
+            document.cookie = "sessionId=" + sessionId + ";expires=" + d.toUTCString() + ";path=/";
         }
     }
 
