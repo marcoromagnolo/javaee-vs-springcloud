@@ -63,8 +63,7 @@ public class SystemSessionManager {
                 sessionExpireTime = bo.getSessionExpireTime();
                 logger.debug("System Logged Successfully");
             } catch (BOException e) {
-                logger.error(e);
-                logger.debug("System Login Error");
+                logger.error("System Login Error" + e);
             }
         } else {
             BOSessionRefreshIn in = new BOSessionRefreshIn();

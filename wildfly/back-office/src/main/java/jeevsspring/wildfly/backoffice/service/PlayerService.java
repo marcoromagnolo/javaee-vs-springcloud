@@ -52,7 +52,7 @@ public class PlayerService {
      * @param password
      * @return
      */
-    public LoginOut login(String username, String password) throws AuthenticationException {
+    public LoginOut login(String username, String password) throws AuthenticationException, InconsistentDataException {
         logger.debug("login(" + username + ", " + password + ")");
 
         // Calculate Hash
@@ -97,10 +97,12 @@ public class PlayerService {
         out.setSessionExpireTime(player.getSession().getCreateTime());
 
         // Set Account
+        if (player.getAccount() == null) throw new InconsistentDataException("Player Account cannot be null");
         out.setFirstName(player.getAccount().getFirstName());
         out.setLastName(player.getAccount().getLastName());
 
         // Set Wallet
+        if (player.getWallet() == null) throw new InconsistentDataException("Player Wallet cannot be null");
         out.setBalance(player.getWallet().getBalance());
         return out;
     }

@@ -9,6 +9,11 @@ public class AbstractServiceException extends Exception {
         this.errorCode = errorCode;
     }
 
+    public AbstractServiceException(ErrorCode errorCode, String message) {
+        super(errorCode.getMessage() + ", " + message);
+        this.errorCode = errorCode;
+    }
+
     public ErrorCode getErrorCode() {
         return errorCode;
     }

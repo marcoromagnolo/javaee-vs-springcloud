@@ -49,15 +49,15 @@ class Login extends Component {
         if (this.validateForm()) {
             let playerApi = new ApiClient();
             playerApi.login(this.state.username, this.state.password).then(json => {
-                this.setState({error: false, errorMessage: '', loading: false});
                 Session.setSessionId(json.sessionId, json.sessionExpireTime);
                 localStorage.setItem('sessionToken', json.sessionToken);
                 localStorage.setItem('nickname', json.nickname);
                 localStorage.setItem('account', json.account);
                 localStorage.setItem('wallet', json.wallet);
+                this.setState({error: false, errorMessage: '', loading: false});
             }).catch(error => {
                 console.error(error);
-                this.setState({error: true, errorMessage: error.message, loading: false});
+                this.setState({error: true, errorMessage: error.error, loading: false});
             });
         }
     }
@@ -82,9 +82,9 @@ class Login extends Component {
                         {this.state.loading ? (<i className="fa fa-circle-o-notch fa-spin"></i>) : (null)} Login</Button>
                 </form>
                 <br/>
-                {this.state.error ? (<Alert bsStyle="danger">
-                    <strong>Error!</strong> {this.state.errorMessage}
-                </Alert>) : (null)}
+                {this.state.error
+                    ? (<Alert bsStyle="danger"><strong>Error!</strong> {this.state.errorMessage}</Alert>)
+                    : (null)}
             </div>
         );
     }

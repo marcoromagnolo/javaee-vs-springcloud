@@ -1,6 +1,7 @@
 package jeevsspring.wildfly.poker.manager.bo;
 
 import jeevsspring.wildfly.poker.manager.bo.json.*;
+import jeevsspring.wildfly.poker.manager.game.ErrorCode;
 import jeevsspring.wildfly.poker.manager.util.PMConfig;
 import org.jboss.logging.Logger;
 
@@ -40,18 +41,21 @@ public class BOClient {
     public BOLoginOut login(BOLoginIn in) throws BOException {
         logger.trace("login(" + in + ")");
 
-        Response rs = target
-                .path("player/login")
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .post(Entity.json(in), Response.class);
-        BOLoginOut out = rs.readEntity(BOLoginOut.class);
-        logger.debug("JSON REST response: " + out);
-        if (rs.getStatus() != 200) {
-            throw new BOException(out.getError());
+        try {
+            Response rs = target
+                    .path("player/login")
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(Entity.json(in), Response.class);
+            BOLoginOut out = rs.readEntity(BOLoginOut.class);
+            logger.debug("JSON REST response: " + out);
+            if (rs.getStatus() != 200) {
+                throw new BOException(out.getError());
+            }
+            logger.debug("login(" + in + ") return " + out);
+            return out;
+        } catch (Exception e) {
+            throw new BOException(ErrorCode.INTERNAL_SERVER_ERROR.name());
         }
-
-        logger.debug("login(" + in + ") return " + out);
-        return new BOLoginOut();
     }
 
     public BOLogoutOut logout(BOLogoutIn in) throws BOException {

@@ -11,7 +11,8 @@ public enum ErrorCode {
     INVALID_AMOUNT("Invalid amount"),
     PASSWORD_ENCRYPTION_ERROR("Password Encryption Error"),
     INVALID_CREDENTIALS("Invalid Username and Password"),
-    INVALID_SESSION("Invalid Session");
+    INVALID_SESSION("Invalid Session"),
+    INCONSISTENT_DATA("Inconsistent in database");
 
     private final String message;
 

@@ -81,6 +81,11 @@ public class PlayerApi {
             response = Response.serverError()
                     .entity(new Status(e.getErrorCode()))
                     .status(Response.Status.UNAUTHORIZED).build();
+        } catch (InconsistentDataException e) {
+            logger.error(e.getMessage());
+            response = Response.serverError()
+                    .entity(new Status(e.getErrorCode()))
+                    .status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         logger.debug("login(" + in + ") return " + response.getEntity());
         return response;

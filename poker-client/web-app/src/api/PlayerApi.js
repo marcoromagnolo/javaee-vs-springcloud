@@ -12,18 +12,31 @@ class PlayerApi extends Component {
     }
 
     login(username, password) {
-        let json = JSON.stringify({username: username, password: password});
-        return fetch(API_URL + '/login', {
-            method: "post",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: json
-        }).then(response => {
-            console.debug(response);
-            return response.json();
+        return new Promise(function(resolve, reject) {
+            let ok;
+            fetch(API_URL + '/login', {
+                method: "post",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password})
+            }).then(response => {
+                console.debug(response);
+                ok = response.ok;
+                return response.json();
+            }).then(json => {
+                console.debug(json);
+                return ok ? resolve(json) : reject(json);
+            }).catch(error => {
+                console.error(error);
+                return {error: 'Connection error'};
+            });
         });
+
+
     }
 
     logout(sessionId, sessionToken) {
