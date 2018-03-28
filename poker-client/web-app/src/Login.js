@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ApiClient from './api/PlayerApi';
 import Session from './util/Session';
-import { FormGroup, FormControl, Button, Image, Alert } from 'react-bootstrap';
+import { FormGroup, FormControl, Button, Image, Alert, Grid, Row, Col } from 'react-bootstrap';
 
 class Login extends Component {
 
@@ -12,7 +12,8 @@ class Login extends Component {
             password: '',
             error: false,
             errorMessage: '',
-            loading: false
+            loading: false,
+            isLogged: Session.isSessionActive()
         };
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -54,7 +55,7 @@ class Login extends Component {
                 localStorage.setItem('nickname', json.nickname);
                 localStorage.setItem('account', json.account);
                 localStorage.setItem('wallet', json.wallet);
-                this.setState({error: false, errorMessage: '', loading: false});
+                this.setState({error: false, errorMessage: '', loading: false, isLogged: Session.isSessionActive()});
             }).catch(error => {
                 console.error(error);
                 this.setState({error: true, errorMessage: error.error, loading: false});
@@ -66,6 +67,7 @@ class Login extends Component {
 
     render() {
         return (
+            !this.state.isLogged ?
             <div className="Login container">
                 <form onSubmit={this.handleSubmit}>
                     <Image src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" circle responsive className="center-block" style={this.imgStyle}/>
@@ -85,6 +87,19 @@ class Login extends Component {
                 {this.state.error
                     ? (<Alert bsStyle="danger"><strong>Error!</strong> {this.state.errorMessage}</Alert>)
                     : (null)}
+            </div> :
+
+            <div className="container">
+                <Grid>
+                    <Row className="show-grid">
+                        <Col xs={12} md={3}>
+
+                        </Col>
+                        <Col xs={12} md={9}>
+
+                        </Col>
+                    </Row>
+                </Grid>
             </div>
         );
     }

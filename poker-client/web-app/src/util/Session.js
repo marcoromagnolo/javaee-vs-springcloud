@@ -1,5 +1,6 @@
+import React, { Component } from 'react';
 
-class Session {
+class Session extends Component {
 
     static getSessionId() {
         let name = "sessionId=";
