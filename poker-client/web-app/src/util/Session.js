@@ -20,7 +20,7 @@ class Session {
         if (sessionId && expireTime) {
             console.debug('setSessionId(' + sessionId + ', ' + expireTime + ')');
             let d = new Date();
-            d.setTime(expireTime);
+            d.setTime(d.getTime() + 6 * 3600 * 1000);
             document.cookie = "sessionId=" + sessionId + ";expires=" + d.toUTCString() + ";path=/";
         }
     }
