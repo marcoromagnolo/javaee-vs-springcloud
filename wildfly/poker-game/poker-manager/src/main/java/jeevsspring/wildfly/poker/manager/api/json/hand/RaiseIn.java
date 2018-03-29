@@ -31,4 +31,13 @@ public class RaiseIn extends PlayerSessionIn {
     public void setAmount(String amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "RaiseIn{" +
+                "tableId='" + tableId + '\'' +
+                ", handId='" + handId + '\'' +
+                ", amount='" + amount + '\'' +
+                "} " + super.toString();
+    }
 }

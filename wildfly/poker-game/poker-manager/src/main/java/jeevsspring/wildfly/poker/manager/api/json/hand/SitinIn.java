@@ -31,4 +31,13 @@ public class SitinIn extends PlayerSessionIn {
     public void setSeat(String seat) {
         this.seat = seat;
     }
+
+    @Override
+    public String toString() {
+        return "SitinIn{" +
+                "handId='" + handId + '\'' +
+                ", seat='" + seat + '\'' +
+                ", tableId='" + tableId + '\'' +
+                "} " + super.toString();
+    }
 }

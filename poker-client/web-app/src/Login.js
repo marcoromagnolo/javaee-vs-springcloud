@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ApiClient from './api/PlayerApi';
 import Session from './util/Session';
-import { FormGroup, FormControl, Button, Image, Alert, Grid, Row, Col } from 'react-bootstrap';
+import Layout from './layout/Layout';
+import { FormGroup, FormControl, Button, Image, Alert } from 'react-bootstrap';
 
 class Login extends Component {
 
@@ -53,8 +54,8 @@ class Login extends Component {
                 Session.setSessionId(json.sessionId, json.sessionExpireTime);
                 localStorage.setItem('sessionToken', json.sessionToken);
                 localStorage.setItem('nickname', json.nickname);
-                localStorage.setItem('account', json.account);
-                localStorage.setItem('wallet', json.wallet);
+                localStorage.setItem('account', JSON.stringify(json.account));
+                localStorage.setItem('wallet', JSON.stringify(json.wallet));
                 this.setState({error: false, errorMessage: '', loading: false, isLogged: Session.isSessionActive()});
             }).catch(error => {
                 console.error(error);
@@ -87,20 +88,7 @@ class Login extends Component {
                 {this.state.error
                     ? (<Alert bsStyle="danger"><strong>Error!</strong> {this.state.errorMessage}</Alert>)
                     : (null)}
-            </div> :
-
-            <div className="container">
-                <Grid>
-                    <Row className="show-grid">
-                        <Col xs={12} md={3}>
-
-                        </Col>
-                        <Col xs={12} md={9}>
-
-                        </Col>
-                    </Row>
-                </Grid>
-            </div>
+            </div> : <Layout/>
         );
     }
 

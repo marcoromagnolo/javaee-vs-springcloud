@@ -22,4 +22,12 @@ public class SyncIn extends PlayerSessionIn {
     public void setTableId(String tableId) {
         this.tableId = tableId;
     }
+
+    @Override
+    public String toString() {
+        return "SyncIn{" +
+                "handId='" + handId + '\'' +
+                ", tableId='" + tableId + '\'' +
+                "} " + super.toString();
+    }
 }

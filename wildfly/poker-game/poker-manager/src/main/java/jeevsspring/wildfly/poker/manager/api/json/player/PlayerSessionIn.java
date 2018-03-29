@@ -23,4 +23,12 @@ public class PlayerSessionIn {
     public void setToken(String token) {
         this.token = token;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerSessionIn{" +
+                "sessionId='" + sessionId + '\'' +
+                ", token='" + token + '\'' +
+                '}';
+    }
 }

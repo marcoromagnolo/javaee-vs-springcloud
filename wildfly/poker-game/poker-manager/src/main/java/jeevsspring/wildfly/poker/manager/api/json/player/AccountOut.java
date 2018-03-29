@@ -20,4 +20,12 @@ public class AccountOut extends PlayerSessionOut {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    @Override
+    public String toString() {
+        return "AccountOut{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                "} " + super.toString();
+    }
 }

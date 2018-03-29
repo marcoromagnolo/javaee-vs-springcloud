@@ -53,4 +53,14 @@ public class PlayerOut {
         this.sitOut = sitOut;
     }
 
+    @Override
+    public String toString() {
+        return "PlayerOut{" +
+                "nickname='" + nickname + '\'' +
+                ", balance=" + balance +
+                ", seat=" + seat +
+                ", cards=" + cards +
+                ", sitOut=" + sitOut +
+                '}';
+    }
 }

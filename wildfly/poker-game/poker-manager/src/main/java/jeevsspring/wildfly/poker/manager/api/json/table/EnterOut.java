@@ -16,4 +16,11 @@ public class EnterOut extends PlayerSessionOut {
     public void setActions(List<ActionOut> actions) {
         this.actions = actions;
     }
+
+    @Override
+    public String toString() {
+        return "EnterOut{" +
+                "actions=" + actions +
+                "} " + super.toString();
+    }
 }

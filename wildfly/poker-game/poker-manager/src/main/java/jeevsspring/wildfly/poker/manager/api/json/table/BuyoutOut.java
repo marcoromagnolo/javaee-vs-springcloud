@@ -23,4 +23,12 @@ public class BuyoutOut extends PlayerSessionOut {
     public void setBalance(long balance) {
         this.balance = balance;
     }
+
+    @Override
+    public String toString() {
+        return "BuyoutOut{" +
+                "amount=" + amount +
+                ", balance=" + balance +
+                "} " + super.toString();
+    }
 }

@@ -22,4 +22,12 @@ public class CheckIn extends PlayerSessionIn {
     public void setHandId(String handId) {
         this.handId = handId;
     }
+
+    @Override
+    public String toString() {
+        return "CheckIn{" +
+                "handId='" + handId + '\'' +
+                ", tableId='" + tableId + '\'' +
+                "} " + super.toString();
+    }
 }

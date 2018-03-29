@@ -43,4 +43,14 @@ public class PlayerSessionOut extends Status {
     public void setSessionCreateTime(long sessionCreateTime) {
         this.sessionCreateTime = sessionCreateTime;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerSessionOut{" +
+                "sessionId='" + sessionId + '\'' +
+                ", sessionToken='" + sessionToken + '\'' +
+                ", sessionExpireTime=" + sessionExpireTime +
+                ", sessionCreateTime=" + sessionCreateTime +
+                "} " + super.toString();
+    }
 }

@@ -31,4 +31,13 @@ public class LoginOut extends PlayerSessionOut {
     public void setWallet(WalletOut wallet) {
         this.wallet = wallet;
     }
+
+    @Override
+    public String toString() {
+        return "LoginOut{" +
+                "nickname='" + nickname + '\'' +
+                ", account=" + account +
+                ", wallet=" + wallet +
+                "} " + super.toString();
+    }
 }

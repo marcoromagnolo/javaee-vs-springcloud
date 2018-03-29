@@ -31,4 +31,13 @@ public class BetIn extends PlayerSessionIn {
     public void setAmount(String amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "BetIn{" +
+                "tableId='" + tableId + '\'' +
+                ", handId='" + handId + '\'' +
+                ", amount='" + amount + '\'' +
+                "} " + super.toString();
+    }
 }

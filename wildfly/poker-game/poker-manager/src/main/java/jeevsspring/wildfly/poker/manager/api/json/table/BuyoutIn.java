@@ -13,4 +13,11 @@ public class BuyoutIn extends PlayerSessionIn {
     public void setTableId(String tableId) {
         this.tableId = tableId;
     }
+
+    @Override
+    public String toString() {
+        return "BuyoutIn{" +
+                "tableId='" + tableId + '\'' +
+                "} " + super.toString();
+    }
 }

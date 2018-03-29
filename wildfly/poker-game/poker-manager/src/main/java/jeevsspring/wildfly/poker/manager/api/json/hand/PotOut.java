@@ -25,4 +25,12 @@ public class PotOut {
     public void setPlayers(List<String> players) {
         this.players = players;
     }
+
+    @Override
+    public String toString() {
+        return "PotOut{" +
+                "value=" + value +
+                ", players=" + players +
+                '}';
+    }
 }

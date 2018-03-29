@@ -13,4 +13,11 @@ public class QuitIn extends PlayerSessionIn {
     public void setTableId(String tableId) {
         this.tableId = tableId;
     }
+
+    @Override
+    public String toString() {
+        return "QuitIn{" +
+                "tableId='" + tableId + '\'' +
+                "} " + super.toString();
+    }
 }

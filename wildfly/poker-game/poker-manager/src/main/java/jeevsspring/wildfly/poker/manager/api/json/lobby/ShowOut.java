@@ -15,4 +15,11 @@ public class ShowOut extends PlayerSessionOut {
     public void setTables(Collection<LobbyTable> tables) {
         this.tables = tables;
     }
+
+    @Override
+    public String toString() {
+        return "ShowOut{" +
+                "tables=" + tables +
+                "} " + super.toString();
+    }
 }

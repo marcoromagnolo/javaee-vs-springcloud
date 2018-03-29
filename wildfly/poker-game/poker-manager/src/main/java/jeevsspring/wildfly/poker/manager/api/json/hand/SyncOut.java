@@ -18,4 +18,11 @@ public class SyncOut extends PlayerSessionOut {
     public void setActions(List<ActionOut> actions) {
         this.actions = actions;
     }
+
+    @Override
+    public String toString() {
+        return "SyncOut{" +
+                "actions=" + actions +
+                "} " + super.toString();
+    }
 }

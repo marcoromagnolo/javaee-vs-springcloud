@@ -4,6 +4,7 @@ import jeevsspring.wildfly.poker.manager.api.json.hand.CardOut;
 import jeevsspring.wildfly.poker.manager.api.json.hand.PlayerOut;
 import jeevsspring.wildfly.poker.manager.api.json.hand.PotOut;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -91,5 +92,20 @@ public class ActionOut {
 
     public void setTurn(String turn) {
         this.turn = turn;
+    }
+
+    @Override
+    public String toString() {
+        return "ActionOut{" +
+                "actionId=" + actionId +
+                ", handId='" + handId + '\'' +
+                ", tableId='" + tableId + '\'' +
+                ", visitors=" + visitors +
+                ", players=" + players +
+                ", seats=" + Arrays.toString(seats) +
+                ", communityCards=" + communityCards +
+                ", pots=" + pots +
+                ", turn='" + turn + '\'' +
+                '}';
     }
 }

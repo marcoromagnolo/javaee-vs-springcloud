@@ -22,4 +22,12 @@ public class CallIn extends PlayerSessionIn {
     public void setHandId(String handId) {
         this.handId = handId;
     }
+
+    @Override
+    public String toString() {
+        return "CallIn{" +
+                "handId='" + handId + '\'' +
+                ", tableId='" + tableId + '\'' +
+                "} " + super.toString();
+    }
 }

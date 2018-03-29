@@ -6,3 +6,33 @@
     max-width: 330px;
     margin: 20px auto;
 }
+
+.Layout {
+    border: 1px solid #E0E0E0;
+
+}
+
+.Header {
+    border: 1px solid #E0E0E0;
+    height: 200px;
+}
+
+.LeftSide {
+
+}
+
+.Center {
+    border: 1px solid #E0E0E0;
+    height: 520px;
+}
+
+.RightSide {
+
+}
+
+.Footer {
+    border: 1px solid #E0E0E0;
+    height: 100px;
+}
+
+

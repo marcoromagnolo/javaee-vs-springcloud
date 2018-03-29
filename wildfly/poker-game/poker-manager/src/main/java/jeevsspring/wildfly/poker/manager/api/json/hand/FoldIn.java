@@ -22,4 +22,12 @@ public class FoldIn extends PlayerSessionIn {
     public void setHandId(String handId) {
         this.handId = handId;
     }
+
+    @Override
+    public String toString() {
+        return "FoldIn{" +
+                "handId='" + handId + '\'' +
+                ", tableId='" + tableId + '\'' +
+                "} " + super.toString();
+    }
 }

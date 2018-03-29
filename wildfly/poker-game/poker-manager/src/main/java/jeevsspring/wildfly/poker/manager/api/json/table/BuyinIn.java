@@ -23,4 +23,12 @@ public class BuyinIn extends PlayerSessionIn {
     public void setAmount(String amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return "BuyinIn{" +
+                "tableId='" + tableId + '\'' +
+                ", amount='" + amount + '\'' +
+                "} " + super.toString();
+    }
 }

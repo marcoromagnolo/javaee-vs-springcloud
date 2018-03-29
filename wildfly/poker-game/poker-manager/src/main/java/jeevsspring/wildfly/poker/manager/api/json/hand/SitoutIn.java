@@ -22,4 +22,12 @@ public class SitoutIn extends PlayerSessionIn {
     public void setHandId(String handId) {
         this.handId = handId;
     }
+
+    @Override
+    public String toString() {
+        return "SitoutIn{" +
+                "handId='" + handId + '\'' +
+                ", tableId='" + tableId + '\'' +
+                "} " + super.toString();
+    }
 }
