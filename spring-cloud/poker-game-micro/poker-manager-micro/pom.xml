@@ -15,6 +15,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>player-pm</module>
         <module>lobby-pm</module>
         <module>table-pm</module>
         <module>hand-pm</module>

@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>poker-console-react</module>
+        <module>poker-console-standalone</module>
         <module>poker-manager-micro</module>
     </modules>
 
