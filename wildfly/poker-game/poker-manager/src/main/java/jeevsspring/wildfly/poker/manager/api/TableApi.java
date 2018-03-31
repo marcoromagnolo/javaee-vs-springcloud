@@ -64,7 +64,7 @@ public class TableApi {
             Game game = games.get(in.getTableId());
             game.getVisitors().add(playerId);
             out.setSessionId(in.getSessionId());
-            out.setSessionToken(in.getToken());
+            out.setSessionToken(in.getSessionToken());
             response = Response.ok(out).build();
         } catch (GameException e) {
             logger.error(e.getMessage(), e);
@@ -89,7 +89,7 @@ public class TableApi {
             Game game = games.get(in.getTableId());
             game.getVisitors().remove(playerId);
             out.setSessionId(in.getSessionId());
-            out.setSessionToken(in.getToken());
+            out.setSessionToken(in.getSessionToken());
             response = Response.ok(out).build();
         } catch (GameException e) {
             logger.error(e.getMessage(), e);
@@ -178,7 +178,7 @@ public class TableApi {
             String playerId = playerManager.getPlayerId(in.getSessionId());
             tableQueue.sitin(in.getTableId(), playerId, Integer.parseInt(in.getSeat()));
             out.setSessionId(in.getSessionId());
-            out.setSessionToken(in.getToken());
+            out.setSessionToken(in.getSessionToken());
             response = Response.ok(out).build();
         } catch (GameException e) {
             logger.error(e.getMessage(), e);
@@ -203,7 +203,7 @@ public class TableApi {
             String playerId = playerManager.getPlayerId(in.getSessionId());
             tableQueue.sitout(in.getTableId(), playerId);
             out.setSessionId(in.getSessionId());
-            out.setSessionToken(in.getToken());
+            out.setSessionToken(in.getSessionToken());
             response = Response.ok(out).build();
         } catch (GameException e) {
             logger.error(e.getMessage(), e);

@@ -44,7 +44,7 @@ public class PlayerApi {
         Response response;
         WalletOut out = new WalletOut();
         try {
-            BOWalletOut bo = playerManager.getWallet(in.getSessionId(), in.getToken());
+            BOWalletOut bo = playerManager.getWallet(in.getSessionId(), in.getSessionToken());
             out.setBalance(bo.getBalance());
             response = Response.ok(out).build();
         } catch (BOException e) {
@@ -66,7 +66,7 @@ public class PlayerApi {
         Response response;
         AccountOut out = new AccountOut();
         try {
-            BOAccountOut bo = playerManager.getAccount(in.getSessionId(), in.getToken());
+            BOAccountOut bo = playerManager.getAccount(in.getSessionId(), in.getSessionToken());
             out.setFirstName(bo.getFirstName());
             out.setLastName(bo.getLastName());
             response = Response.ok(out).build();
@@ -127,7 +127,7 @@ public class PlayerApi {
         Response response;
         LogoutOut out = new LogoutOut();
         try {
-            BOLogoutOut bo = playerManager.logout(in.getSessionId(), in.getToken());
+            BOLogoutOut bo = playerManager.logout(in.getSessionId(), in.getSessionToken());
             out.setMessage(bo.getMessage());
             response = Response.ok(out).build();
         } catch (BOException e) {

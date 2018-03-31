@@ -11,16 +11,40 @@ class LobbyApi extends Component {
         });
     }
 
-    show(sessionId, sessionToken) {
+    tables(sessionId, sessionToken) {
         return new Promise(function(resolve, reject) {
             let ok;
-            fetch(API_URL + '/show', {
+            fetch(API_URL + '/tables', {
                 method: "post",
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({sessionId: sessionId, sessionToken: sessionToken})
+            }).then(response => {
+                console.debug(response);
+                ok = response.ok;
+                return response.json();
+            }).then(json => {
+                console.debug(json);
+                return ok ? resolve(json) : reject(json);
+            }).catch(error => {
+                console.error(error);
+                return {error: 'Connection error'};
+            });
+        });
+    }
+
+    tableSettings(tableId, sessionId, sessionToken) {
+        return new Promise(function(resolve, reject) {
+            let ok;
+            fetch(API_URL + '/table-settings', {
+                method: "post",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({tableId: tableId, sessionId: sessionId, sessionToken: sessionToken})
             }).then(response => {
                 console.debug(response);
                 ok = response.ok;

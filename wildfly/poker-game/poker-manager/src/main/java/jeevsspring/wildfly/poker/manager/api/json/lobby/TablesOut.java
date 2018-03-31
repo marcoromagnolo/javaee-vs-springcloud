@@ -4,15 +4,15 @@ import jeevsspring.wildfly.poker.manager.api.json.player.PlayerSessionOut;
 
 import java.util.Collection;
 
-public class ShowOut extends PlayerSessionOut {
+public class TablesOut extends PlayerSessionOut {
 
-    private Collection<LobbyTable> tables;
+    private Collection<Table> tables;
 
-    public Collection<LobbyTable> getTables() {
+    public Collection<Table> getTables() {
         return tables;
     }
 
-    public void setTables(Collection<LobbyTable> tables) {
+    public void setTables(Collection<Table> tables) {
         this.tables = tables;
     }
 

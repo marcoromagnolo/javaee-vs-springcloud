@@ -6,7 +6,7 @@ package jeevsspring.wildfly.poker.manager.api.json.player;
 public class PlayerSessionIn {
 
     private String sessionId;
-    private String token;
+    private String sessionToken;
 
     public String getSessionId() {
         return sessionId;
@@ -16,19 +16,19 @@ public class PlayerSessionIn {
         this.sessionId = sessionId;
     }
 
-    public String getToken() {
-        return token;
+    public String getSessionToken() {
+        return sessionToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
     }
 
     @Override
     public String toString() {
         return "PlayerSessionIn{" +
                 "sessionId='" + sessionId + '\'' +
-                ", token='" + token + '\'' +
+                ", sessionToken='" + sessionToken + '\'' +
                 '}';
     }
 }

@@ -1,6 +1,6 @@
 package jeevsspring.wildfly.poker.manager.api.json.lobby;
 
-public class LobbyTable {
+public class Table {
 
     private String id;
     private String name;

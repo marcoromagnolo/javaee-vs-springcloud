@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import ApiClient from './api/PlayerApi';
+import PlayerApi from './api/PlayerApi';
 import Session from './util/Session';
-import Layout from './layout/Layout';
+import Lobby from './lobby/Lobby';
 import { FormGroup, FormControl, Button, Image, Alert } from 'react-bootstrap';
 
 class Login extends Component {
@@ -49,7 +49,7 @@ class Login extends Component {
         this.setState({loading: true});
         console.debug(this.state);
         if (this.validateForm()) {
-            let playerApi = new ApiClient();
+            let playerApi = new PlayerApi();
             playerApi.login(this.state.username, this.state.password).then(json => {
                 Session.setSessionId(json.sessionId, json.sessionExpireTime);
                 localStorage.setItem('sessionToken', json.sessionToken);
@@ -88,7 +88,7 @@ class Login extends Component {
                 {this.state.error
                     ? (<Alert bsStyle="danger"><strong>Error!</strong> {this.state.errorMessage}</Alert>)
                     : (null)}
-            </div> : <Layout/>
+            </div> : <Lobby/>
         );
     }
 

@@ -1,4 +1,4 @@
-lang['en_US'] = {
+let language = {
     "HIS_GUI_HAND": "Hand",
     "HIS_GUI_GAME": "Game",
     "HIS_GUI_GAMETYPE": "Real/Practice",
@@ -49,7 +49,7 @@ lang['en_US'] = {
     "HIS_GUI_TABLEID": "Table",
     "HIS_GUI_BACKCARD": "N/A",
     "HIS_DROPDOWN_ALL": "All",
-    "GAME_THM": "Texas Hold\'em",
+    "GAME_THM": "Texas Hold'em",
     "GAME_OMA": "Omaha",
     "GAME_OMATU": "Omaha",
     "GAME_OMAHL": "Omaha Hi/Lo",
@@ -242,3 +242,5 @@ lang['en_US'] = {
     "HAND_DSB": "SB invalide",
     "SCORE": "Score"
 };
+
+export default language;

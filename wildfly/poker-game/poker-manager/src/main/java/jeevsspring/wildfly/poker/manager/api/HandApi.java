@@ -3,7 +3,6 @@ package jeevsspring.wildfly.poker.manager.api;
 import jeevsspring.wildfly.poker.manager.api.json.hand.ActionOut;
 import jeevsspring.wildfly.poker.manager.api.json.Status;
 import jeevsspring.wildfly.poker.manager.api.json.hand.*;
-import jeevsspring.wildfly.poker.manager.bo.BOException;
 import jeevsspring.wildfly.poker.manager.game.GameException;
 import jeevsspring.wildfly.poker.manager.game.engine.GameAction;
 import jeevsspring.wildfly.poker.manager.game.engine.GameActions;
@@ -65,7 +64,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setSessionToken(in.getToken());
+            out.setSessionToken(in.getSessionToken());
             response = Response.ok(out).build();
         } catch (GameException e) {
             logger.error(e.getMessage(), e);
@@ -91,7 +90,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setSessionToken(in.getToken());
+            out.setSessionToken(in.getSessionToken());
             response = Response.ok(out).build();
         } catch (GameException e) {
             logger.error(e.getMessage(), e);
@@ -117,7 +116,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setSessionToken(in.getToken());
+            out.setSessionToken(in.getSessionToken());
             response = Response.ok(out).build();
         } catch (GameException e) {
             logger.error(e.getMessage(), e);
@@ -143,7 +142,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setSessionToken(in.getToken());
+            out.setSessionToken(in.getSessionToken());
             response = Response.ok(out).build();
         } catch (GameException e) {
             logger.error(e.getMessage(), e);
@@ -169,7 +168,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setSessionToken(in.getToken());
+            out.setSessionToken(in.getSessionToken());
             response = Response.ok(out).build();
         } catch (GameException e) {
             logger.error(e.getMessage(), e);
@@ -194,7 +193,7 @@ public class HandApi<E extends GameAction> {
             List<ActionOut> actions = toActions(in.getTableId(), playerId);
             out.setActions(actions);
             out.setSessionId(in.getSessionId());
-            out.setSessionToken(in.getToken());
+            out.setSessionToken(in.getSessionToken());
             response = Response.ok(out).build();
         } catch (GameException e) {
             logger.error(e.getMessage(), e);
