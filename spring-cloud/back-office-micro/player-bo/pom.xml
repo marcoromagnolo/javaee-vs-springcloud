@@ -10,7 +10,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>player-wallet-bo</artifactId>
+    <artifactId>player-bo</artifactId>
     <version>1.0-SNAPSHOT</version>
 
 </project>

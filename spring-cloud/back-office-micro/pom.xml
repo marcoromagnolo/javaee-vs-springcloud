@@ -16,8 +16,7 @@
 
     <modules>
         <module>operator-bo</module>
-        <module>player-account-bo</module>
-        <module>player-wallet-bo</module>
+        <module>player-bo</module>
     </modules>
     
 </project>
