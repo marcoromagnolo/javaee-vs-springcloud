@@ -1,0 +1,43 @@
+package jeevsspring.spring.poker.manager.player.api.json;
+
+public class LoginOut extends PlayerSessionOut {
+
+    private String nickname;
+
+    private AccountOut account;
+
+    private WalletOut wallet;
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public AccountOut getAccount() {
+        return account;
+    }
+
+    public void setAccount(AccountOut account) {
+        this.account = account;
+    }
+
+    public WalletOut getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(WalletOut wallet) {
+        this.wallet = wallet;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginOut{" +
+                "nickname='" + nickname + '\'' +
+                ", account=" + account +
+                ", wallet=" + wallet +
+                "} " + super.toString();
+    }
+}
