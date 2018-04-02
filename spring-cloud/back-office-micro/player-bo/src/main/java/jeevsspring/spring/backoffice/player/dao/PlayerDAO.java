@@ -10,7 +10,7 @@ public interface PlayerDAO extends CrudRepository<PlayerEntity, Long> {
 
     PlayerEntity getByUsernameAndPassword(String username, String password);
 
-    PlayerEntity get(String id);
+    PlayerEntity findOne(Long id);
 
-    void insert(PlayerEntity entity);
+    PlayerEntity save(PlayerEntity entity);
 }

@@ -4,16 +4,16 @@ import jeevsspring.spring.console.bean.ListOperatorBean;
 import jeevsspring.spring.console.bean.ListTableGameBean;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
-import javax.inject.Named;
 import java.io.Serializable;
 
 /**
  * @author Marco Romagnolo
  */
-@Named("dashboardCtrl")
-@RequestScope
+@Scope("request")
+@Controller("dashboardCtrl")
 public class DashboardCtrl implements Serializable {
 
     // JBoss Logger

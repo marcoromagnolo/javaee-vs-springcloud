@@ -1,6 +1,7 @@
 package jeevsspring.spring.console.bean;
 
 import jeevsspring.spring.console.util.OperatorSession;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.context.annotation.RequestScope;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +13,7 @@ import java.util.List;
  * @author Marco Romagnolo
  */
 @RequestScope
+@Controller
 public class ListOperatorBean implements Serializable {
 
     private List<OperatorSession> operators;

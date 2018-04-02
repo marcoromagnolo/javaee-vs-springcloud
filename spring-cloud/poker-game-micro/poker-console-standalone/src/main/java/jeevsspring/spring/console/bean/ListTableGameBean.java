@@ -1,5 +1,6 @@
 package jeevsspring.spring.console.bean;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.context.annotation.RequestScope;
 
 import javax.annotation.PostConstruct;
@@ -7,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Controller
 @RequestScope
 public class ListTableGameBean implements Serializable {
 

@@ -1,13 +1,14 @@
 package jeevsspring.spring.console.controller;
 
 import org.jboss.logging.Logger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.context.annotation.RequestScope;
 
-import javax.inject.Named;
 import java.io.Serializable;
 
-@Named("listTableCtrl")
-@RequestScope
+@Scope("request")
+@Controller("listTableCtrl")
 public class ListTableGameCtrl implements Serializable {
 
     // JBoss Logger

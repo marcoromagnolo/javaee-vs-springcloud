@@ -9,16 +9,17 @@ import jeevsspring.spring.console.bo.json.OperatorLogoutOut;
 import jeevsspring.spring.console.util.OperatorSession;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.context.annotation.RequestScope;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import java.io.IOException;
 import java.io.Serializable;
 
-@Named("loginCtrl")
-@RequestScope
+@Scope("request")
+@Controller("loginCtrl")
 public class LoginCtrl implements Serializable {
 
     // JBoss Logger

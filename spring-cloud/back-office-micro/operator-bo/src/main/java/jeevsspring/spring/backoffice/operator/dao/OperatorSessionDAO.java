@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * @author Marco Romagnolo
  */
-public interface OperatorSessionDAO extends CrudRepository<OperatorSessionEntity, Long> {
+public interface OperatorSessionDAO extends CrudRepository<OperatorSessionEntity, String> {
 
     OperatorSessionEntity findByIdAndToken(String id, String token);
 

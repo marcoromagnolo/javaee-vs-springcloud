@@ -1,7 +1,6 @@
 package jeevsspring.spring.backoffice.operator.entity;
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 import java.io.Serializable;

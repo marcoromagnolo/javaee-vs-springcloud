@@ -6,11 +6,11 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * @author Marco Romagnolo
  */
-public interface SessionDAO extends CrudRepository<SessionEntity, Long> {
+public interface SessionDAO extends CrudRepository<SessionEntity, String> {
 
     SessionEntity findByIdAndToken(String id, String token);
 
-    void insert(SessionEntity entity);
+    SessionEntity save(SessionEntity enstity);
 
     void delete(String id);
 }

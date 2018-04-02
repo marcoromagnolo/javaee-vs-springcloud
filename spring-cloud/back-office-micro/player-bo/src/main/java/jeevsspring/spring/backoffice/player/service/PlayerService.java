@@ -71,7 +71,7 @@ public class PlayerService {
             session.setCreateTime(now);
             int duration = Integer.parseInt(env.getProperty("player.session.duration")) * 1000;
             session.setExpireTime(now + duration);
-            sessionDAO.insert(session);
+            sessionDAO.save(session);
             player.setSession(session);
         }
 
@@ -148,7 +148,7 @@ public class PlayerService {
     public WalletOut wallet(String playerId, String sessionId, String sessionToken) throws InvalidSessionException {
         sessionCheck(playerId, sessionId, sessionToken);
 
-        PlayerEntity player = playerDAO.get(playerId);
+        PlayerEntity player = playerDAO.findOne(Long.parseLong(playerId));
         // Create a wallet if not exists
         if (player.getWallet() == null) {
             WalletEntity wallet = new WalletEntity();
