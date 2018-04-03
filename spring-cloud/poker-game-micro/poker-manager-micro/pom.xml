@@ -17,8 +17,7 @@
     <modules>
         <module>player-pm</module>
         <module>lobby-pm</module>
-        <module>table-pm</module>
-        <module>hand-pm</module>
+        <module>game-pm</module>
     </modules>
 
 </project>

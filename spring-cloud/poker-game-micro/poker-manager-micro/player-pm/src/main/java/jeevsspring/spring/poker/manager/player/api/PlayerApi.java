@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @RestController()
-@RequestMapping("/manager/player")
+@RequestMapping("/player")
 public class PlayerApi {
 
     private final Logger logger = Logger.getLogger(getClass().toString());

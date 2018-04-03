@@ -1,4 +1,4 @@
-package jeevsspring.spring.poker.manager.player;
+package jeevsspring.spring.poker.manager.hand;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,9 +6,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @EnableEurekaClient
 @SpringBootApplication
-public class PlayerManagerApp {
-
+public class GameManagerApp {
     public static void main(String[] args) {
-        SpringApplication.run(PlayerManagerApp.class, args);
+        SpringApplication.run(GameManagerApp.class, args);
     }
 }
