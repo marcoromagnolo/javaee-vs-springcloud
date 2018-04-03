@@ -17,8 +17,9 @@
     <modules>
         <module>back-office-micro</module>
         <module>poker-game-micro</module>
-        <module>load-balancer</module>
+        <module>gateway</module>
         <module>config-server</module>
+        <module>discovery</module>
     </modules>
 
     <dependencyManagement>

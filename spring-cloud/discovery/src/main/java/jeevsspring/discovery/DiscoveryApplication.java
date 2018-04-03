@@ -1,18 +1,18 @@
-package jeevsspring.gateway;
+package jeevsspring.discovery;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
  * @author Marco Romagnolo
  */
-@EnableZuulProxy
 @SpringBootApplication
-public class GatewayApplication {
+@EnableEurekaServer
+public class DiscoveryApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(GatewayApplication.class, args);
+        SpringApplication.run(DiscoveryApplication.class, args);
     }
 
 }
