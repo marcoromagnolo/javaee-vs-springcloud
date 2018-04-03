@@ -15,7 +15,7 @@
         </servlet-class>
         <init-param>
             <param-name>javax.ws.rs.Application</param-name>
-            <param-value>jeevsspring.wildfly.BORestActivator</param-value>
+            <param-value>jeevsspring.wildfly.backoffice.BORestActivator</param-value>
         </init-param>
     </servlet>
 

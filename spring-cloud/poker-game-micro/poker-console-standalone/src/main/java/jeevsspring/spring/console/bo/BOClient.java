@@ -5,6 +5,7 @@ import jeevsspring.spring.console.bo.json.OperatorLoginOut;
 import jeevsspring.spring.console.bo.json.OperatorLogoutIn;
 import jeevsspring.spring.console.bo.json.OperatorLogoutOut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +29,8 @@ public class BOClient {
 
     @Autowired
     private Environment config;
-    private String target;
 
-    @PostConstruct
-    public void init() {
-        target = config.getProperty("bo.target.url");
-    }
+    private final String target = "http://poker-operator-bo/back-office/api";
 
     public OperatorLoginOut login(OperatorLoginIn in) throws BOException {
         logger.log(Level.FINEST, "login(" + in + ")");
