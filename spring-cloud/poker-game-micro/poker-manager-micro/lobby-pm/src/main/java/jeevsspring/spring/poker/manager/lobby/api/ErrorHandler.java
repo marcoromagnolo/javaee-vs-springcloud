@@ -1,7 +1,7 @@
-package jeevsspring.spring.backoffice.operator.api;
+package jeevsspring.spring.poker.manager.lobby.api;
 
-import jeevsspring.spring.backoffice.operator.api.json.Status;
-import jeevsspring.spring.backoffice.operator.service.ErrorCode;
+import jeevsspring.spring.poker.manager.lobby.api.json.Status;
+import jeevsspring.spring.poker.manager.lobby.manager.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,6 +18,6 @@ public class ErrorHandler {
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<Status> handleThrowable(final Throwable ex) {
         logger.log(Level.SEVERE, ex.getMessage(), ex);
-        return new ResponseEntity<>(new Status(ErrorCode.BACKOFFICE_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Status>(new Status(ErrorCode.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

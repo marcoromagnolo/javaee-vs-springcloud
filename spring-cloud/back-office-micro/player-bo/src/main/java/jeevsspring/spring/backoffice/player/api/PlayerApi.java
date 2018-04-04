@@ -5,10 +5,7 @@ import jeevsspring.spring.backoffice.player.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +26,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/wallet")
-    public ResponseEntity wallet(WalletIn in) {
+    public @ResponseBody ResponseEntity wallet(@RequestBody WalletIn in) {
         logger.log(Level.FINEST,"wallet(" + in + ")");
 
         ResponseEntity response;
@@ -47,7 +44,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/account")
-    public ResponseEntity account(AccountIn in) {
+    public @ResponseBody ResponseEntity account(@RequestBody AccountIn in) {
         logger.log(Level.FINEST,"account(" + in + ")");
 
         ResponseEntity response;
@@ -64,7 +61,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(LoginIn in) {
+    public @ResponseBody ResponseEntity login(@RequestBody LoginIn in) {
         logger.log(Level.FINEST,"login(" + in + ")");
 
         ResponseEntity response;
@@ -73,10 +70,10 @@ public class PlayerApi {
             response = ResponseEntity.ok(out);
 
         } catch (AuthenticationException e) {
-            logger.log(Level.WARNING, e.getMessage(), e);
+            logger.log(Level.WARNING, e.getMessage());
             response = ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Status(e.getErrorCode()));
         } catch (InconsistentDataException e) {
-            logger.log(Level.WARNING, e.getMessage(), e);
+            logger.log(Level.WARNING, e.getMessage());
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Status(e.getErrorCode()));
         }
 
@@ -85,7 +82,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity logout(LogoutIn in) {
+    public @ResponseBody ResponseEntity logout(@RequestBody LogoutIn in) {
         logger.log(Level.FINEST,"logout(" + in + ")");
 
         ResponseEntity response;
@@ -103,7 +100,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/session-refresh")
-    public ResponseEntity sessionRefresh(SessionRefreshIn in) {
+    public @ResponseBody ResponseEntity sessionRefresh(@RequestBody SessionRefreshIn in) {
         logger.log(Level.FINEST,"sessionRefresh(" + in + ")");
 
         ResponseEntity response;
@@ -121,7 +118,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/stake")
-    public ResponseEntity stake(StakeIn in) {
+    public @ResponseBody ResponseEntity stake(@RequestBody StakeIn in) {
         logger.log(Level.FINEST,"stake(" + in + ")");
 
         ResponseEntity response;
@@ -142,7 +139,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/win")
-    public ResponseEntity win(WinIn in) {
+    public @ResponseBody ResponseEntity win(@RequestBody WinIn in) {
         logger.log(Level.FINEST,"win(" + in + ")");
 
         ResponseEntity response;
@@ -163,7 +160,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/refund")
-    public ResponseEntity refund(RefundIn in) {
+    public @ResponseBody ResponseEntity refund(@RequestBody RefundIn in) {
         logger.log(Level.FINEST,"refund(" + in + ")");
 
         ResponseEntity response;

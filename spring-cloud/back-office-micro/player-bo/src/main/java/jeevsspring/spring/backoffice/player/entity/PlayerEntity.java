@@ -9,7 +9,6 @@ import java.io.Serializable;
  * @author Marco Romagnolo
  */
 @Entity
-@Cacheable
 @Table(name="PLAYER")
 public class PlayerEntity implements Serializable {
 

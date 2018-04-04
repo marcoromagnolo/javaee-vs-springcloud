@@ -29,7 +29,7 @@ public class OperatorApi {
 
     @PostMapping("/login")
     public @ResponseBody ResponseEntity login(@RequestBody OperatorLoginIn in) {
-        logger.log(Level.FINE,"login(" + in + ")");
+        logger.log(Level.INFO,"login(" + in + ")");
 
         ResponseEntity response;
         try {
@@ -45,7 +45,7 @@ public class OperatorApi {
     }
 
     @PostMapping("/logout")
-    public @ResponseBody ResponseEntity login(@RequestBody OperatorLogoutIn in) {
+    public @ResponseBody ResponseEntity logout(@RequestBody OperatorLogoutIn in) {
         logger.log(Level.FINEST,"logout(" + in + ")");
 
         ResponseEntity response;

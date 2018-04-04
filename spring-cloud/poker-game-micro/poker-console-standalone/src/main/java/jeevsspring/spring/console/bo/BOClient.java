@@ -36,12 +36,8 @@ public class BOClient {
     public OperatorLoginOut login(OperatorLoginIn in) throws BOException {
         logger.log(Level.INFO, "login(" + in.getUsername() + ", " + in.getPassword() + ")");
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<OperatorLoginIn> entity = new HttpEntity<>(in, headers);
         try {
-            ResponseEntity rs = restTemplate.postForEntity(target + "/operator/login", entity, OperatorLoginOut.class);
+            ResponseEntity rs = restTemplate.postForEntity(target + "/operator/login", in, OperatorLoginOut.class);
             if (rs.getStatusCode() != HttpStatus.OK) {
                 throw new BOException();
             }
@@ -57,7 +53,7 @@ public class BOClient {
         logger.log(Level.FINEST, "logout(" + in + ")");
 
         try {
-            ResponseEntity rs = restTemplate.postForEntity(target + "operator/login", in, OperatorLogoutOut.class);
+            ResponseEntity rs = restTemplate.postForEntity(target + "operator/logout", in, OperatorLogoutOut.class);
             if (rs.getStatusCode() != HttpStatus.OK) {
                 throw new BOException();
             }

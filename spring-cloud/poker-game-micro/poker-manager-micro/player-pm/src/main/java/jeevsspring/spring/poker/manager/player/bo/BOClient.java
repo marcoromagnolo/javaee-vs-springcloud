@@ -7,6 +7,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -21,32 +23,26 @@ public class BOClient {
 
     private final Logger logger = Logger.getLogger(getClass().toString());
 
-    private RestTemplate restTemplate = new RestTemplate();
-
-    private String target;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private Environment config;
 
-    @PostConstruct
-    public void init() {
-        target = config.getProperty("bo.target.url");
-    }
+    private String target = "http://poker-player-bo/back-office/api";
 
     public BOLoginOut login(BOLoginIn in) throws BOException {
         logger.log(Level.FINEST, "login(" + in + ")");
 
+        ResponseEntity<BOLoginOut> rs;
         try {
-            ResponseEntity<BOLoginOut> rs = restTemplate.postForEntity(target + "/player/login", in, BOLoginOut.class);
-            logger.log(Level.FINE, "JSON REST response: " + rs.getBody());
-            if (rs.getStatusCode() != HttpStatus.OK) {
-                throw new BOException(rs.getBody().getError());
-            }
+            rs = restTemplate.postForEntity(target + "/player/login", in, BOLoginOut.class);
             BOLoginOut out = rs.getBody();
-            logger.log(Level.FINE, "login(" + in + ") return " + out);
+            logger.log(Level.INFO, "login(" + in + ") return " + out);
             return out;
-        } catch (Exception e) {
-            throw new BOException(ErrorCode.INTERNAL_SERVER_ERROR.name());
+        } catch (HttpClientErrorException e) {
+            logger.log(Level.WARNING, e.getMessage(), e);
+            throw new BOException("Invalid Credentials");
         }
     }
 
@@ -64,6 +60,7 @@ public class BOClient {
             logger.log(Level.FINE, "logout(" + in + ") return " + out);
             return out;
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new BOException(ErrorCode.INTERNAL_SERVER_ERROR.name());
         }
     }
@@ -81,6 +78,7 @@ public class BOClient {
             logger.log(Level.FINE, "sessionRefresh(" + in + ") return " + out);
             return out;
         } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new BOException(ErrorCode.INTERNAL_SERVER_ERROR.name());
         }
     }

@@ -11,10 +11,7 @@ import jeevsspring.spring.poker.manager.player.manager.PlayerManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +32,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/wallet")
-    public ResponseEntity wallet(WalletIn in) {
+    public @ResponseBody ResponseEntity wallet(@RequestBody WalletIn in) {
         logger.log(Level.FINEST,"wallet(" + in + ")");
 
         ResponseEntity response;
@@ -54,7 +51,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/account")
-    public ResponseEntity account(AccountIn in) {
+    public @ResponseBody ResponseEntity account(@RequestBody AccountIn in) {
         logger.log(Level.FINEST,"wallet(" + in + ")");
 
         ResponseEntity response;
@@ -74,7 +71,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(LoginIn in) {
+    public @ResponseBody ResponseEntity login(@RequestBody LoginIn in) {
         logger.log(Level.FINEST,"login(" + in + ")");
 
         ResponseEntity response;
@@ -109,7 +106,7 @@ public class PlayerApi {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity logout(LogoutIn in) {
+    public @ResponseBody ResponseEntity logout(@RequestBody LogoutIn in) {
         logger.log(Level.FINEST,"logout(" + in + ")");
 
         ResponseEntity response;

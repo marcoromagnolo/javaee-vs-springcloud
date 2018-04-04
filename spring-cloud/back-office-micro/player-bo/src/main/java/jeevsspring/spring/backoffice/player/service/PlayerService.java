@@ -70,7 +70,6 @@ public class PlayerService {
             session.setCreateTime(now);
             int duration = Integer.parseInt(env.getProperty("player.session.duration")) * 1000;
             session.setExpireTime(now + duration);
-            sessionDAO.save(session);
             player.setSession(session);
         }
 
@@ -79,7 +78,6 @@ public class PlayerService {
             WalletEntity wallet = new WalletEntity();
             wallet.setPlayer(player);
             wallet.setBalance(0);
-            walletDAO.save(wallet);
             player.setWallet(wallet);
         }
 
