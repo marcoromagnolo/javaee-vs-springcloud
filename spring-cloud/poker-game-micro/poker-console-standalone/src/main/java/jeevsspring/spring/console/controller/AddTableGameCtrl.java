@@ -1,26 +1,26 @@
 package jeevsspring.spring.console.controller;
 
 import jeevsspring.spring.console.bean.TableGameBean;
-import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Scope("request")
 @Controller("addTableGameCtrl")
 public class AddTableGameCtrl implements Serializable {
 
-    // JBoss Logger
-    private final Logger logger = Logger.getLogger(getClass());
+    private final Logger logger = Logger.getLogger(getClass().toString());
 
     @Autowired
     private TableGameBean tableGame;
 
 
     public void create() {
-        logger.debug("create() tableGame: " + tableGame);
+        logger.log(Level.FINE, "create() tableGame: " + tableGame);
 
         TableGameBean tableSettings = new TableGameBean();
         tableSettings.setActionTimeout(tableGame.getActionTimeout());

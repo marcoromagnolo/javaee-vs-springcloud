@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 @RequestMapping("/player")
 public class PlayerApi {
 
-    // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass().toString());
 
     @Autowired

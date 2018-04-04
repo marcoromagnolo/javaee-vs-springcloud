@@ -2,12 +2,12 @@ package jeevsspring.spring.console.controller;
 
 import jeevsspring.spring.console.bean.ListOperatorBean;
 import jeevsspring.spring.console.bean.ListTableGameBean;
-import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 /**
  * @author Marco Romagnolo
@@ -16,8 +16,7 @@ import java.io.Serializable;
 @Controller("dashboardCtrl")
 public class DashboardCtrl implements Serializable {
 
-    // JBoss Logger
-    private final Logger logger = Logger.getLogger(getClass());
+    private final Logger logger = Logger.getLogger(getClass().toString());
 
     @Autowired
     private ListOperatorBean operators;

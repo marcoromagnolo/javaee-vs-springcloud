@@ -6,13 +6,14 @@ import jeevsspring.spring.backoffice.operator.dao.OperatorDAO;
 import jeevsspring.spring.backoffice.operator.dao.OperatorSessionDAO;
 import jeevsspring.spring.backoffice.operator.entity.OperatorEntity;
 import jeevsspring.spring.backoffice.operator.entity.OperatorSessionEntity;
-import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Marco Romagnolo
@@ -21,8 +22,7 @@ import java.util.UUID;
 @Transactional
 public class OperatorService {
 
-    //JBoss Logger
-    private final Logger logger = Logger.getLogger(getClass());
+    private final Logger logger = Logger.getLogger(getClass().toString());
 
     @Autowired
     private OperatorDAO operatorDAO;
@@ -40,7 +40,7 @@ public class OperatorService {
      * @return
      */
     public OperatorLoginOut login(String username, String password) throws AuthenticationException {
-        logger.debug("login(" + username + ", " + password + ")");
+        logger.log(Level.FINE, "login(" + username + ", " + password + ")");
 
         // Calculate Hash
         String hash = HashPassword.hash(password);

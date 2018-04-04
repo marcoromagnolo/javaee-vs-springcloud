@@ -7,10 +7,7 @@ import jeevsspring.spring.backoffice.operator.service.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,8 +28,8 @@ public class OperatorApi {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(OperatorLoginIn in) {
-        logger.log(Level.FINEST,"login(" + in + ")");
+    public @ResponseBody ResponseEntity login(@RequestBody OperatorLoginIn in) {
+        logger.log(Level.FINE,"login(" + in + ")");
 
         ResponseEntity response;
         try {
@@ -48,7 +45,7 @@ public class OperatorApi {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity login(OperatorLogoutIn in) {
+    public @ResponseBody ResponseEntity login(@RequestBody OperatorLogoutIn in) {
         logger.log(Level.FINEST,"logout(" + in + ")");
 
         ResponseEntity response;

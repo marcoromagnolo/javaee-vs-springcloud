@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 @Service
 public class PlayerManager {
 
-    // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass().toString());
 
     private Map<String, String> sessions;

@@ -7,23 +7,22 @@ import jeevsspring.spring.console.bo.json.OperatorLoginOut;
 import jeevsspring.spring.console.bo.json.OperatorLogoutIn;
 import jeevsspring.spring.console.bo.json.OperatorLogoutOut;
 import jeevsspring.spring.console.util.OperatorSession;
-import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.annotation.RequestScope;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Scope("request")
 @Controller("loginCtrl")
 public class LoginCtrl implements Serializable {
 
-    // JBoss Logger
-    private final Logger logger = Logger.getLogger(getClass());
+    private final Logger logger = Logger.getLogger(getClass().toString());
 
     @Autowired
     private BOClient boClient;
@@ -54,7 +53,7 @@ public class LoginCtrl implements Serializable {
      * Login
      */
     public void login() {
-        logger.trace("login() username=" + username + ", password=" + password);
+        logger.log(Level.FINE, "login() username=" + username + ", password=" + password);
 
         //Request Json
         OperatorLoginIn in = new OperatorLoginIn();
@@ -72,17 +71,17 @@ public class LoginCtrl implements Serializable {
             session.setSessionToken(out.getSessionToken());
             session.setUsername(out.getUsername());
             context.getExternalContext().getSessionMap().put("operator", session);
-            logger.debug("login() Authenticated with session=" + session);
+            logger.log(Level.FINE, "login() Authenticated with session=" + session);
             try {
                 String contextPath = context.getExternalContext().getRequestContextPath();
                 context.getExternalContext().redirect(contextPath + "/admin/dashboard.xhtml");
             } catch (IOException e) {
-                logger.error(e.getMessage(), e);
+                logger.log(Level.SEVERE, e.getMessage(), e);
             }
         } catch (BOException e) {
-            logger.error(e);
+            logger.log(Level.SEVERE, e.getMessage(), e);
             context.addMessage(null, new FacesMessage("Authentication Failed. Check username or password!"));
-            logger.debug("login() Authentication failure: username=" + username + ", password=" + password);
+            logger.log(Level.FINE, "login() Authentication failure: username=" + username + ", password=" + password);
         }
     }
 
@@ -90,7 +89,7 @@ public class LoginCtrl implements Serializable {
      * Logout
      */
     public void logout() {
-        logger.trace("logout()");
+        logger.log(Level.FINE, "logout()");
 
         OperatorSession session = (OperatorSession) context.getExternalContext().getSessionMap().get("operator");
 
@@ -107,10 +106,10 @@ public class LoginCtrl implements Serializable {
                 String contextPath = context.getExternalContext().getRequestContextPath();
                 context.getExternalContext().redirect(contextPath + "/login.xhtml");
             } catch (IOException e) {
-                logger.error(e.getMessage(), e);
+                logger.log(Level.SEVERE, e.getMessage(), e);
             }
         } catch (BOException e) {
-            logger.error(e);
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
 
 

@@ -1,19 +1,19 @@
 package jeevsspring.spring.console.bo;
 
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
 import jeevsspring.spring.console.bo.json.OperatorLoginIn;
 import jeevsspring.spring.console.bo.json.OperatorLoginOut;
 import jeevsspring.spring.console.bo.json.OperatorLogoutIn;
 import jeevsspring.spring.console.bo.json.OperatorLogoutOut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,24 +25,30 @@ public class BOClient {
 
     private final Logger logger = Logger.getLogger(getClass().toString());
 
-    private RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private Environment config;
 
-    private final String target = "http://poker-operator-bo/back-office/api";
+    private String target = "http://poker-operator-bo/back-office/api";
 
     public OperatorLoginOut login(OperatorLoginIn in) throws BOException {
-        logger.log(Level.FINEST, "login(" + in + ")");
+        logger.log(Level.INFO, "login(" + in.getUsername() + ", " + in.getPassword() + ")");
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<OperatorLoginIn> entity = new HttpEntity<>(in, headers);
         try {
-            ResponseEntity rs = restTemplate.postForEntity(target + "/operator/login", in, OperatorLoginOut.class);
+            ResponseEntity rs = restTemplate.postForEntity(target + "/operator/login", entity, OperatorLoginOut.class);
             if (rs.getStatusCode() != HttpStatus.OK) {
                 throw new BOException();
             }
             logger.log(Level.FINE, "login(" + in + ") return " + rs.getBody());
             return (OperatorLoginOut) rs.getBody();
         } catch (RestClientException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new BOException();
         }
     }

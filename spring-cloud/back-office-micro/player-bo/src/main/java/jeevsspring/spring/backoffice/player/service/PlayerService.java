@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 @Transactional
 public class PlayerService {
 
-    //JBoss Logger
     private final Logger logger = Logger.getLogger(getClass().toString());
 
     @Autowired

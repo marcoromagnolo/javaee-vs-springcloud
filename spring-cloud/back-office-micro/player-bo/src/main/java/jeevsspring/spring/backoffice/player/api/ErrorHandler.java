@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 @ControllerAdvice
 public class ErrorHandler {
 
-    //JBoss Logger
     private final Logger logger = Logger.getLogger(getClass().toString());
 
     @ExceptionHandler(Throwable.class)

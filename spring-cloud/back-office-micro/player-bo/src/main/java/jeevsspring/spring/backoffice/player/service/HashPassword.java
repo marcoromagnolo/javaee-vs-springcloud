@@ -1,15 +1,14 @@
 package jeevsspring.spring.backoffice.player.service;
 
-import org.jboss.logging.Logger;
-
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HashPassword {
 
-    //JBoss Logger
-    private final static Logger logger = Logger.getLogger(HashPassword.class);
+    private final static Logger logger = Logger.getLogger(HashPassword.class.toString());
 
     public static String hash(String password) {
         String hash = "";
@@ -19,9 +18,9 @@ public class HashPassword {
             hash = DatatypeConverter.printHexBinary(digest).toLowerCase();
 
         } catch (NoSuchAlgorithmException e) {
-            logger.error(e.getMessage(), e);
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
-        logger.debug("login() hash: " + hash + ")");
+        logger.log(Level.FINE, "login() hash: " + hash + ")");
         return hash;
     }
 }

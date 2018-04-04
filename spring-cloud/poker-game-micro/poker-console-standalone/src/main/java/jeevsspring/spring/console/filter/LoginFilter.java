@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 @Configuration
 public class LoginFilter implements Filter {
 
-    // JBoss Logger
     private final Logger logger = Logger.getLogger(getClass().toString());
 
     @Override
